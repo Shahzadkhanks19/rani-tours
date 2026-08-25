@@ -17,7 +17,7 @@ export function FloatingActions() {
   }, []);
 
   return (
-    <div className="fixed bottom-5 right-4 z-[70] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+    <div className="fixed bottom-5 right-4 z-[70] flex flex-col items-center gap-3 sm:bottom-6 sm:right-6">
       <AnimatePresence>
         {showTop ? (
           <motion.button
@@ -41,12 +41,12 @@ export function FloatingActions() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with Rani Tours on WhatsApp"
-        whileHover={{ y: -2, scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-        className="group flex h-14 items-center gap-2.5 rounded-full bg-[#25D366] px-4 text-white shadow-[0_14px_34px_rgba(37,211,102,.3)] transition hover:bg-[#20bd5a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9bd500] focus-visible:ring-offset-2"
+        title="WhatsApp Rani Tours"
+        whileHover={{ y: -2, scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
+        className="grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_14px_34px_rgba(37,211,102,.3)] transition hover:bg-[#20bd5a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9bd500] focus-visible:ring-offset-2"
       >
-        <FaWhatsapp className="h-6 w-6 shrink-0" />
-        <span className="hidden pr-1 text-sm font-bold sm:inline">WhatsApp</span>
+        <FaWhatsapp className="h-7 w-7" />
       </motion.a>
     </div>
   );
