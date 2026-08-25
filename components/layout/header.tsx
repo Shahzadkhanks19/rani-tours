@@ -27,8 +27,8 @@ export function Header() {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="relative z-50 bg-white">
-      <div className="bg-[#003f22] text-white">
+    <>
+      <div className="relative z-40 bg-[#003f22] text-white">
         <div className="mx-auto flex min-h-10 max-w-[1180px] items-center justify-between gap-4 px-4 text-[11px] font-semibold sm:text-xs">
           <div className="flex items-center gap-2"><span className="text-[#b5d83d]">🚕</span><span>Reliable Rides. Memorable Journeys.</span></div>
           <div className="hidden items-center gap-5 md:flex">
@@ -40,7 +40,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="sticky top-0 z-50 border-b border-black/5 bg-white shadow-sm">
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-white shadow-sm">
         <div className="mx-auto flex min-h-[82px] max-w-[1180px] items-center justify-between gap-4 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Rani Tour's home">
             <Image src="/rani-tours-icon.svg" alt="Rani Tour's phoenix logo" width={54} height={54} priority />
@@ -87,7 +87,7 @@ export function Header() {
             </motion.nav>
           ) : null}
         </AnimatePresence>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
