@@ -11,15 +11,22 @@ import {
   MapPinned,
   Route,
   ShieldCheck,
-  UserRoundCheck,
   UsersRound,
-  WalletCards,
 } from "lucide-react";
+import {
+  FaFileInvoiceDollar,
+  FaHeadset,
+  FaMapMarkedAlt,
+  FaRoute,
+  FaTaxi,
+  FaUserTie,
+} from "react-icons/fa";
 import { TripSearch } from "@/components/home/trip-search";
 import { siteContact } from "@/lib/site-data";
 
 const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=86&w=2200";
-const storyImage = "https://images.unsplash.com/photo-1579250904005-26308f17e0f8?auto=format&fit=crop&q=84&w=1200";
+const jodhpurClockTowerImage = "https://images.unsplash.com/photo-1677144702435-ef871adac31c?auto=format&fit=crop&q=84&w=1400";
+const jodhpurStoryImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=84&w=1600";
 
 const heroFeatures = [
   [MapPinned, "Local Expertise", "Deep knowledge of Rajasthan & India"],
@@ -29,21 +36,21 @@ const heroFeatures = [
 ] as const;
 
 const promises = [
-  [UserRoundCheck, "Experienced Drivers", "Courteous, professional and well-trained drivers who know the best routes."],
-  [Car, "Well Maintained Vehicles", "Clean, comfortable and regularly serviced vehicles for a safe journey."],
-  [Route, "All India Coverage", "From Jodhpur to any destination across India — we’ve got you covered."],
-  [WalletCards, "Transparent Pricing", "No hidden charges. What we quote is what you pay."],
-  [MapPinned, "Custom Itineraries", "Tailor-made packages and routes as per your requirement."],
-  [Headphones, "24/7 Support", "We are always just a call away, before, during and after your journey."],
+  [FaUserTie, "Experienced Drivers", "Courteous, professional and well-trained drivers who know the best routes."],
+  [FaTaxi, "Well Maintained Vehicles", "Clean, comfortable and regularly serviced vehicles for a safe journey."],
+  [FaMapMarkedAlt, "All India Coverage", "From Jodhpur to any destination across India — we’ve got you covered."],
+  [FaFileInvoiceDollar, "Transparent Pricing", "No hidden charges. What we quote is what you pay."],
+  [FaRoute, "Custom Itineraries", "Tailor-made packages and routes as per your requirement."],
+  [FaHeadset, "24/7 Support", "We are always just a call away, before, during and after your journey."],
 ] as const;
 
 const destinations = [
-  ["Delhi", "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&q=82&w=700"],
-  ["Mumbai", "https://images.unsplash.com/photo-1595658658481-d53d3f999875?auto=format&fit=crop&q=82&w=700"],
+  ["Delhi", "https://images.unsplash.com/photo-1591689837200-57e6d0d7d199?auto=format&fit=crop&q=82&w=700"],
+  ["Mumbai", "https://images.unsplash.com/photo-1598434192043-71111c1b3f41?auto=format&fit=crop&q=82&w=700"],
   ["Jaipur", "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=82&w=700"],
-  ["Udaipur", "https://images.unsplash.com/photo-1598890777032-bde835ba27c2?auto=format&fit=crop&q=82&w=700"],
-  ["Varanasi", "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&q=82&w=700"],
-  ["Manali", "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=82&w=700"],
+  ["Udaipur", "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&q=82&w=700"],
+  ["Varanasi", "https://images.unsplash.com/photo-1740444521580-86521eddf14a?auto=format&fit=crop&q=82&w=700"],
+  ["Manali", "https://images.unsplash.com/photo-1571401835393-8c5f35328320?auto=format&fit=crop&q=82&w=700"],
 ] as const;
 
 export function AboutPageContent() {
@@ -76,7 +83,8 @@ export function AboutPageContent() {
         <div className="mx-auto grid max-w-[1180px] items-center gap-10 px-4 lg:grid-cols-[.9fr_1.1fr]">
           <motion.div initial={{ opacity: 0, x: -22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
             <div className="relative h-[320px] overflow-hidden rounded-2xl bg-[#eef1ea] shadow-xl sm:h-[390px]">
-              <Image src={storyImage} alt="Jodhpur heritage city and travel scene" fill sizes="(max-width:1024px) 100vw, 520px" className="object-cover" />
+              <Image src={jodhpurClockTowerImage} alt="Ghanta Ghar clock tower and old city in Jodhpur" fill sizes="(max-width:1024px) 100vw, 520px" className="object-cover object-center" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#092415]/30 via-transparent to-transparent" />
             </div>
             <div className="absolute -bottom-5 right-5 rounded-2xl bg-[#076c32] px-7 py-6 text-center text-white shadow-xl">
               <div className="font-serif text-4xl font-bold">12+</div><div className="mt-1 text-[11px] leading-4">Years of<br />Experience</div>
@@ -113,12 +121,14 @@ export function AboutPageContent() {
               <p>Today, we are proud to be a preferred choice for local travel, outstation trips, Rajasthan tours, airport transfers, corporate travel and long-distance journeys across the country.</p>
             </div>
           </div>
-          <div className="relative min-h-[220px] rounded-3xl border border-[#d8c8b5] bg-[linear-gradient(135deg,#fffaf2,#f4e3ca)] p-7 sm:min-h-[270px]">
-            <div className="absolute inset-0 opacity-15 bg-[radial-gradient(circle_at_60%_45%,#6c4b2c_0,transparent_45%)]" />
-            <div className="relative flex h-full items-center justify-center text-center">
-              <div><MapPinned className="mx-auto h-16 w-16 text-[#8a6039]" strokeWidth={1.2} /><div className="mt-4 font-serif text-3xl font-bold text-[#6d4b2d]">Jodhpur</div><div className="mt-1 text-xs uppercase tracking-[0.2em] text-[#8b745e]">Our Home • Your Gateway</div></div>
+          <motion.div initial={{ opacity: 0, x: 22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative min-h-[240px] overflow-hidden rounded-3xl border border-[#d8c8b5] shadow-sm sm:min-h-[285px]">
+            <Image src={jodhpurStoryImage} alt="Mehrangarh Fort overlooking Jodhpur, the home of Rani Tours" fill sizes="(max-width:1024px) 100vw, 680px" className="object-cover object-center" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0a2516]/10 via-transparent to-[#0a2516]/35" />
+            <div className="absolute bottom-5 right-5 rounded-2xl border border-white/25 bg-[#073c25]/85 px-6 py-4 text-right text-white backdrop-blur-sm">
+              <div className="font-serif text-2xl font-bold">Jodhpur</div>
+              <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/75">Our Home • Your Gateway</div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -128,7 +138,7 @@ export function AboutPageContent() {
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {promises.map(([Icon, title, text], index) => (
               <motion.article key={title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} whileHover={{ y: -4 }} className="rounded-2xl border border-[#ebe5db] bg-white p-5 text-center shadow-[0_10px_26px_rgba(54,45,32,.07)]">
-                <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[#edf6e9] text-[#067131]"><Icon className="h-8 w-8" strokeWidth={1.7} /></div>
+                <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[#edf6e9] text-[#067131]"><Icon className="h-8 w-8" /></div>
                 <h3 className="mt-4 font-serif text-sm font-bold text-[#1f3123]">{title}</h3><p className="mt-2 text-[10px] leading-[17px] text-[#656b65]">{text}</p>
               </motion.article>
             ))}
@@ -161,5 +171,5 @@ function Stat({ icon: Icon, value, label }: { icon: typeof UsersRound; value: st
 }
 
 function DestinationCard({ name, image }: { name: string; image: string }) {
-  return <Link href={`/destinations/${name.toLowerCase().replaceAll(" ", "-")}`} className="group"><div className="relative h-[96px] overflow-hidden rounded-xl"><Image src={image} alt={`${name} destination`} fill sizes="(max-width:640px) 50vw, 170px" className="object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" /></div><div className="mt-2 text-center text-xs font-semibold text-[#252d26]">{name}</div></Link>;
+  return <Link href={`/destinations/${name.toLowerCase().replaceAll(" ", "-")}`} className="group"><div className="relative h-[96px] overflow-hidden rounded-xl"><Image src={image} alt={`${name} destination`} fill sizes="(max-width:640px) 50vw, 170px" className="object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" /></div><div className="mt-2 text-center text-xs font-semibold text-[#252d26]">{name}</div></Link>;
 }
