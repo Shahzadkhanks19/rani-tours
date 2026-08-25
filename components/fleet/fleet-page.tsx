@@ -30,7 +30,7 @@ const fleet = [
     bags: "3 Bags",
     description: "Comfortable sedan for local sightseeing, airport transfers and outstation travel.",
     bestFor: "Best for Couples & Small Families",
-    image: "https://upload.wikimedia.org/wikipedia/commons/9/96/Toyota_Etios_1.5_XS_Sedan_2015.jpg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota%20Etios%201.5%20XLS%20Sedan%202019.jpg",
   },
   {
     badge: "1 - 4 Seater",
@@ -60,7 +60,7 @@ const fleet = [
     bags: "5 Bags",
     description: "Premium SUV for travellers who prefer extra road presence, comfort and space on long journeys.",
     bestFor: "Best for Premium Family Travel",
-    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota_Fortuner_KUN51_FL2_3.0_V_4x4_Freedom_White_01.jpg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/2025%20Toyota%20Fortuner%202.8%20Q%204x2%20in%20Platinum%20White%20Pearl%20Mica%2C%20front%20right.jpg",
   },
   {
     badge: "1 - 4 Seater",
@@ -70,7 +70,7 @@ const fleet = [
     bags: "3 Bags",
     description: "Comfort-oriented executive sedan for business travel, airport transfers and premium outstation rides.",
     bestFor: "Best for Executive Travel",
-    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8_White.jpg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota%20Corolla%20Altis%20ZRE212%20FL%201.8%20E%20Super%20White%20II.jpg",
   },
   {
     badge: "12 Seater",
@@ -172,7 +172,12 @@ export function FleetPageContent() {
 
       <section className="bg-white py-4">
         <div className="mx-auto grid max-w-[1180px] gap-4 rounded-2xl bg-[#fff8ee] px-5 py-5 sm:grid-cols-2 lg:grid-cols-4">
-          {highlights.map(([Icon, title, text]) => <div key={title} className="flex gap-3 border-[#e8ddcf] lg:border-r lg:pr-4 lg:last:border-r-0"><Icon className="h-9 w-9 shrink-0 text-[#0a6330]" /><div><h3 className="text-sm font-bold text-[#1c2e20]">{title}</h3><p className="mt-1 text-[10px] leading-4 text-[#626962]">{text}</p></div></div>)}
+          {highlights.map(([Icon, title, text]) => (
+            <div key={title} className="flex gap-3 border-[#e8ddcf] lg:border-r lg:pr-4 lg:last:border-r-0">
+              <Icon className="h-9 w-9 shrink-0 text-[#0a6330]" />
+              <div><h3 className="text-sm font-bold text-[#1c2e20]">{title}</h3><p className="mt-1 text-[10px] leading-4 text-[#626962]">{text}</p></div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -183,9 +188,9 @@ export function FleetPageContent() {
           <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {fleet.map((vehicle, index) => (
               <motion.article key={vehicle.name} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.035 }} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-[#e5e0d8] bg-white shadow-[0_10px_28px_rgba(45,38,28,.07)]">
-                <div className="relative h-52 bg-[#f5f5f3]">
+                <div className="relative h-52 bg-[#f5f5f3] p-3">
                   <span className="absolute left-3 top-3 z-10 rounded-full bg-[#0c592d] px-3 py-1 text-[10px] font-bold text-white">{vehicle.badge}</span>
-                  <Image src={vehicle.image} alt={vehicle.model} fill unoptimized sizes="(max-width:768px) 100vw, 390px" className="object-cover" />
+                  <Image src={vehicle.image} alt={vehicle.model} fill unoptimized sizes="(max-width:768px) 100vw, 390px" className="object-contain p-2" />
                 </div>
                 <div className="p-5">
                   <h3 className="font-serif text-xl font-bold text-[#1d3021]">{vehicle.name}</h3>
