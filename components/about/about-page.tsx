@@ -45,12 +45,12 @@ const promises = [
 ] as const;
 
 const destinations = [
-  ["Delhi", "https://images.unsplash.com/photo-1591689837200-57e6d0d7d199?auto=format&fit=crop&q=82&w=700"],
-  ["Mumbai", "https://images.unsplash.com/photo-1598434192043-71111c1b3f41?auto=format&fit=crop&q=82&w=700"],
-  ["Jaipur", "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=82&w=700"],
-  ["Udaipur", "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&q=82&w=700"],
-  ["Varanasi", "https://images.unsplash.com/photo-1740444521580-86521eddf14a?auto=format&fit=crop&q=82&w=700"],
-  ["Manali", "https://images.unsplash.com/photo-1571401835393-8c5f35328320?auto=format&fit=crop&q=82&w=700"],
+  ["Delhi", "https://images.unsplash.com/photo-1591689837200-57e6d0d7d199?auto=format&fit=crop&q=84&w=900"],
+  ["Mumbai", "https://images.unsplash.com/photo-1598434192043-71111c1b3f41?auto=format&fit=crop&q=84&w=900"],
+  ["Jaipur", "https://images.unsplash.com/photo-1578155173088-710a9aef3849?auto=format&fit=crop&q=84&w=900"],
+  ["Udaipur", "https://images.unsplash.com/photo-1695956353120-54ce5e91632b?auto=format&fit=crop&q=84&w=900"],
+  ["Varanasi", "https://images.unsplash.com/photo-1706186839147-0d708602587b?auto=format&fit=crop&q=84&w=900"],
+  ["Manali", "https://images.unsplash.com/photo-1652543393354-2056fc3e9551?auto=format&fit=crop&q=84&w=900"],
 ] as const;
 
 export function AboutPageContent() {
@@ -171,5 +171,5 @@ function Stat({ icon: Icon, value, label }: { icon: typeof UsersRound; value: st
 }
 
 function DestinationCard({ name, image }: { name: string; image: string }) {
-  return <Link href={`/destinations/${name.toLowerCase().replaceAll(" ", "-")}`} className="group"><div className="relative h-[96px] overflow-hidden rounded-xl"><Image src={image} alt={`${name} destination`} fill sizes="(max-width:640px) 50vw, 170px" className="object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" /></div><div className="mt-2 text-center text-xs font-semibold text-[#252d26]">{name}</div></Link>;
+  return <Link href={`/destinations/${name.toLowerCase().replaceAll(" ", "-")}`} className="group"><div className="relative h-[96px] overflow-hidden rounded-xl"><Image src={image} alt={`${name} destination landmark`} fill sizes="(max-width:640px) 50vw, 170px" className="object-cover transition duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" /></div><div className="mt-2 text-center text-xs font-semibold text-[#252d26]">{name}</div></Link>;
 }
