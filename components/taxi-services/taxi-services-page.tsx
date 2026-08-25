@@ -25,27 +25,72 @@ const heroImage = "https://images.unsplash.com/photo-1587474260584-136574528ed5?
 const trustCards = [
   [FaMapMarkedAlt, "All India Coverage", "Taxi service to every corner of India from Jodhpur."],
   [FaShieldAlt, "Safe & Secure", "Verified drivers, safe routes and dependable service."],
-  [FaRupeeSign, "Transparent Pricing", "Clear pricing with no hidden charges."],
+  [FaRupeeSign, "Transparent Pricing", "Clear quotations with no hidden charges."],
   [FaCarSide, "Comfortable Vehicles", "Clean, well-maintained cars for every journey."],
-  [Clock3, "On-time Guarantee", "Punctual pickup and drop for stress-free travel."],
+  [Clock3, "On-time Service", "Punctual pickup and drop for stress-free travel."],
   [FaHeadset, "24/7 Support", "Our travel team is available before, during and after your trip."],
 ] as const;
 
-const destinations = [
-  { name: "Delhi", image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&q=84&w=900", oneWay: "₹2,499", round: "₹4,799" },
-  { name: "Mumbai", image: "https://images.unsplash.com/photo-1595658658481-d53d3f999875?auto=format&fit=crop&q=84&w=900", oneWay: "₹3,499", round: "₹6,499" },
-  { name: "Bangalore", image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&q=84&w=900", oneWay: "₹3,999", round: "₹7,499" },
-  { name: "Goa", image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=84&w=900", oneWay: "₹4,499", round: "₹8,499" },
-  { name: "Haridwar", image: "https://images.unsplash.com/photo-1612438214708-f428a707dd4e?auto=format&fit=crop&q=84&w=900", oneWay: "₹4,999", round: "₹9,499" },
+const rajasthanDestinations = [
+  { name: "Jodhpur", image: "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=84&w=900" },
+  { name: "Jaipur", image: "https://images.unsplash.com/photo-1578155173088-710a9aef3849?auto=format&fit=crop&q=84&w=900" },
+  { name: "Udaipur", image: "https://images.unsplash.com/photo-1695956353120-54ce5e91632b?auto=format&fit=crop&q=84&w=900" },
+  { name: "Jaisalmer", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=84&w=900" },
+  { name: "Mount Abu", image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=84&w=900" },
+  { name: "Pushkar", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=84&w=900" },
+] as const;
+
+const indiaDestinations = [
+  { name: "Delhi", image: "https://images.unsplash.com/photo-1591689837200-57e6d0d7d199?auto=format&fit=crop&q=84&w=900" },
+  { name: "Mumbai", image: "https://images.unsplash.com/photo-1598434192043-71111c1b3f41?auto=format&fit=crop&q=84&w=900" },
+  { name: "Bangalore", image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&q=84&w=900" },
+  { name: "Goa", image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=84&w=900" },
+  { name: "Haridwar", image: "https://images.unsplash.com/photo-1612438214708-f428a707dd4e?auto=format&fit=crop&q=84&w=900" },
 ] as const;
 
 const vehicles = [
-  { name: "Swift Dzire / Etios", seats: "4", luggage: "3", type: "Sedan", price: "From ₹11/km", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=82&w=700" },
-  { name: "Toyota Etios / Amaze", seats: "4", luggage: "3", type: "Sedan", price: "From ₹12/km", image: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&q=82&w=700" },
-  { name: "Toyota Innova Crysta", seats: "7", luggage: "6", type: "SUV", price: "From ₹16/km", image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&q=82&w=700" },
-  { name: "Toyota Fortuner", seats: "7", luggage: "6", type: "SUV", price: "From ₹22/km", image: "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&q=82&w=700" },
-  { name: "Tempo Traveller", seats: "12", luggage: "6", type: "Traveller", price: "From ₹20/km", image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=82&w=700" },
-  { name: "Luxury Car", seats: "4", luggage: "3", type: "Luxury", price: "On Request", image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=82&w=700" },
+  {
+    name: "Maruti Suzuki Dzire",
+    seats: "4",
+    luggage: "3",
+    type: "Sedan",
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Maruti_Suzuki_Dzire_VXi_VVT_%28front%29.JPG",
+  },
+  {
+    name: "Toyota Etios",
+    seats: "4",
+    luggage: "3",
+    type: "Sedan",
+    image: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Toyota_Etios_top_left_front.jpg",
+  },
+  {
+    name: "Toyota Innova Crysta",
+    seats: "7",
+    luggage: "6",
+    type: "MPV",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Toyota_Innova_Crysta_2.4_Z_front_right.jpg",
+  },
+  {
+    name: "Toyota Fortuner",
+    seats: "7",
+    luggage: "6",
+    type: "SUV",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/66/2015_Toyota_Fortuner_%28New_Zealand%29.jpg",
+  },
+  {
+    name: "Force Tempo Traveller",
+    seats: "12+",
+    luggage: "6+",
+    type: "Traveller",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/61/Force_Traveller%2C_Leh-Manali_Highway.jpg",
+  },
+  {
+    name: "Mercedes / Audi",
+    seats: "4",
+    luggage: "3",
+    type: "Luxury",
+    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=84&w=900",
+  },
 ] as const;
 
 export function TaxiServicesPageContent() {
@@ -61,12 +106,12 @@ export function TaxiServicesPageContent() {
             </div>
             <h1 className="font-serif text-5xl font-bold leading-none sm:text-6xl">All India <span className="text-[#78b465]">Taxi Services</span></h1>
             <h2 className="mt-5 font-serif text-2xl font-bold text-[#f2cf63]">One Country. Countless Destinations.</h2>
-            <p className="mt-5 max-w-[640px] text-sm leading-7 text-white/85">Travel anywhere in India with reliable, comfortable and affordable taxi services from Jodhpur. From metro cities to remote destinations, we&apos;ve got you covered.</p>
+            <p className="mt-5 max-w-[640px] text-sm leading-7 text-white/85">Travel anywhere in India with reliable, comfortable and flexible taxi services from Jodhpur. From Rajasthan heritage routes to metro cities and long-distance journeys, we&apos;ve got you covered.</p>
 
             <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               {[
                 [MapPinned, "Pan India Coverage"],
-                [WalletCards, "Affordable Pricing"],
+                [WalletCards, "Clear Quotations"],
                 [Car, "Well Maintained Vehicles"],
                 [FaUserTie, "Experienced Drivers"],
                 [Headphones, "24/7 Customer Support"],
@@ -97,22 +142,8 @@ export function TaxiServicesPageContent() {
         </div>
       </section>
 
-      <section className="bg-[#fffdf9] py-10">
-        <div className="mx-auto max-w-[1180px] px-4">
-          <SectionHeading eyebrow="POPULAR DESTINATIONS ACROSS INDIA" title="Travel Popular Destinations" />
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {destinations.map((item) => (
-              <Link key={item.name} href={`/destinations/${item.name.toLowerCase()}`} className="group overflow-hidden rounded-2xl border border-[#e8e1d7] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <div className="relative h-32 overflow-hidden"><Image src={item.image} alt={`${item.name} landmark`} fill sizes="(max-width:640px) 100vw, 220px" className="object-cover transition duration-500 group-hover:scale-105" /></div>
-                <div className="p-4"><h3 className="font-serif text-base font-bold text-[#233326]">{item.name}</h3><div className="mt-3 grid grid-cols-2 gap-2 text-[9px] text-[#6d726d]"><div>One Way<br /><strong className="text-xs text-[#1b281d]">From {item.oneWay}</strong></div><div>Round Trip<br /><strong className="text-xs text-[#1b281d]">From {item.round}</strong></div></div></div>
-              </Link>
-            ))}
-            <Link href="/destinations" className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#94b99b] bg-[#f4f8f1] p-5 text-center text-[#075f2d] transition hover:-translate-y-1 hover:shadow-md">
-              <MapPinned className="h-12 w-12" /><h3 className="mt-3 font-serif text-base font-bold">And Many More Destinations</h3><p className="mt-2 text-[10px] leading-4 text-[#657165]">Can&apos;t find your destination? Contact us for a custom quote.</p><span className="mt-3 text-xs font-bold">Enquire Now →</span>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <DestinationSection eyebrow="POPULAR DESTINATIONS IN RAJASTHAN" title="Explore Rajasthan with Rani Tours" destinations={rajasthanDestinations} />
+      <DestinationSection eyebrow="POPULAR DESTINATIONS ACROSS INDIA" title="Travel Popular Destinations" destinations={indiaDestinations} />
 
       <section className="bg-white py-10 sm:py-12">
         <div className="mx-auto max-w-[1180px] px-4">
@@ -120,10 +151,9 @@ export function TaxiServicesPageContent() {
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {vehicles.map((vehicle) => (
               <motion.article key={vehicle.name} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-[#ebe4da] bg-white p-3 text-center shadow-[0_8px_24px_rgba(45,37,28,.06)]">
-                <div className="relative h-24 overflow-hidden rounded-xl bg-[#f4f4f2]"><Image src={vehicle.image} alt={vehicle.name} fill sizes="200px" className="object-cover" /></div>
+                <div className="relative h-28 overflow-hidden rounded-xl bg-[#f4f4f2]"><Image src={vehicle.image} alt={vehicle.name} fill sizes="200px" className="object-cover" /></div>
                 <h3 className="mt-3 min-h-10 font-serif text-xs font-bold text-[#243225]">{vehicle.name}</h3>
                 <div className="mt-2 flex items-center justify-center gap-3 text-[9px] text-[#666]"><span className="flex items-center gap-1"><UsersRound className="h-3 w-3" />{vehicle.seats}</span><span>🧳 {vehicle.luggage}</span><span>{vehicle.type}</span></div>
-                <div className="mt-3 text-[11px] font-bold text-[#075f2d]">{vehicle.price}</div>
               </motion.article>
             ))}
           </div>
@@ -132,11 +162,30 @@ export function TaxiServicesPageContent() {
 
       <section className="bg-[#005728] py-4 text-white">
         <div className="mx-auto flex max-w-[1180px] flex-col items-center justify-between gap-4 px-4 sm:flex-row">
-          <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-white text-[#006837]"><Phone className="h-6 w-6" /></div><div><div className="font-serif text-lg font-bold">Planning an All India Trip?</div><div className="text-xs text-white/80">Get the best taxi fare and dependable service.</div></div></div>
+          <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-white text-[#006837]"><Phone className="h-6 w-6" /></div><div><div className="font-serif text-lg font-bold">Planning an All India Trip?</div><div className="text-xs text-white/80">Tell us your route and we&apos;ll help plan the right ride.</div></div></div>
           <div className="flex flex-wrap justify-center gap-3"><a href={siteContact.phones[0].href} className="rounded-full bg-[#f4cf5e] px-7 py-3 text-sm font-bold text-[#0d4223]">☎ {siteContact.phones[0].display}</a><a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#1ca443] px-7 py-3 text-sm font-bold">WhatsApp Us</a></div>
         </div>
       </section>
     </>
+  );
+}
+
+function DestinationSection({ eyebrow, title, destinations }: { eyebrow: string; title: string; destinations: readonly { name: string; image: string }[] }) {
+  return (
+    <section className="bg-[#fffdf9] py-10">
+      <div className="mx-auto max-w-[1180px] px-4">
+        <SectionHeading eyebrow={eyebrow} title={title} />
+        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {destinations.map((item) => (
+            <Link key={item.name} href={`/destinations/${item.name.toLowerCase().replaceAll(" ", "-")}`} className="group overflow-hidden rounded-2xl border border-[#e8e1d7] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+              <div className="relative h-36 overflow-hidden"><Image src={item.image} alt={`${item.name} destination`} fill sizes="(max-width:640px) 100vw, 220px" className="object-cover transition duration-500 group-hover:scale-105" /></div>
+              <div className="p-4"><h3 className="font-serif text-base font-bold text-[#233326]">{item.name}</h3><span className="mt-3 inline-flex text-xs font-bold text-[#0a6c32]">Explore Destination →</span></div>
+            </Link>
+          ))}
+          {destinations.length < 6 ? <Link href="/destinations" className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#94b99b] bg-[#f4f8f1] p-5 text-center text-[#075f2d] transition hover:-translate-y-1 hover:shadow-md"><MapPinned className="h-12 w-12" /><h3 className="mt-3 font-serif text-base font-bold">And Many More Destinations</h3><p className="mt-2 text-[10px] leading-4 text-[#657165]">Can&apos;t find your destination? Contact us for a custom route.</p><span className="mt-3 text-xs font-bold">Enquire Now →</span></Link> : null}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -151,10 +200,7 @@ function RidePlanner() {
         <label className="block text-[11px] font-semibold text-[#383838]">Travellers<div className="mt-1 flex h-11 items-center gap-2 rounded-md border border-[#dedede] bg-white px-3 text-xs text-[#777]"><UserRound className="h-4 w-4" /><span className="flex-1">1 Traveller</span><ChevronDown className="h-4 w-4" /></div></label>
         <button type="submit" className="flex h-11 w-full items-center justify-center gap-3 rounded-full bg-[#067326] text-sm font-bold text-white shadow-sm transition hover:bg-[#055c20]">Get Quote / Enquiry Now <span>→</span></button>
       </form>
-      <div className="mt-4 flex items-center justify-center gap-6 border-t border-[#ececec] pt-4 text-[11px] font-semibold">
-        <a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#087a2c]"><MessageCircle className="h-4 w-4" />WhatsApp Us</a>
-        <a href={siteContact.phones[0].href} className="flex items-center gap-1.5"><Phone className="h-4 w-4 text-[#a5883f]" />{siteContact.phones[0].display}</a>
-      </div>
+      <div className="mt-4 flex items-center justify-center gap-6 border-t border-[#ececec] pt-4 text-[11px] font-semibold"><a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#087a2c]"><MessageCircle className="h-4 w-4" />WhatsApp Us</a><a href={siteContact.phones[0].href} className="flex items-center gap-1.5"><Phone className="h-4 w-4 text-[#a5883f]" />{siteContact.phones[0].display}</a></div>
     </motion.aside>
   );
 }
