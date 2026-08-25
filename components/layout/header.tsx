@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, Headphones, Menu, Phone, Quote, X } from "lucide-react";
 import { useState } from "react";
+import { siteContact } from "@/lib/site-data";
 
 const links = [
   { label: "Home", href: "/" },
@@ -28,9 +29,9 @@ export function Header() {
         <div className="mx-auto flex min-h-10 max-w-[1180px] items-center justify-between gap-4 px-4 text-[11px] font-semibold sm:text-xs">
           <div className="flex items-center gap-2"><span className="text-[#b5d83d]">🚕</span><span>Reliable Rides. Memorable Journeys.</span></div>
           <div className="hidden items-center gap-5 md:flex">
-            <a href="tel:+919828069795" className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-[#d8b752]" />+91 98280 69795</a>
+            <a href={siteContact.phones[0].href} className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-[#d8b752]" />{siteContact.phones[0].display}</a>
             <span className="h-4 w-px bg-white/30" />
-            <a href="tel:+919414167196" className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-[#d8b752]" />+91 94141 67196</a>
+            <a href={siteContact.phones[1].href} className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-[#d8b752]" />{siteContact.phones[1].display}</a>
           </div>
           <div className="flex items-center gap-1.5"><Headphones className="h-3.5 w-3.5 text-[#d8b752]" /><span>24/7 Support</span></div>
         </div>
