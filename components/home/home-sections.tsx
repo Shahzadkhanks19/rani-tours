@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, BusFront, Car, CheckCircle2, Headphones, MapPinned, Plane, ShieldCheck, Star, UsersRound } from "lucide-react";
+import { siteContact } from "@/lib/site-data";
 
 const stats = [
   [MapPinned, "12+", "Years Experience"],
@@ -106,7 +107,7 @@ export function HomeSections() {
       <section className="bg-[#005728] py-4 text-white">
         <div className="mx-auto flex max-w-[1180px] flex-col items-center justify-between gap-4 px-4 sm:flex-row">
           <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-white text-[#006837]"><Headphones className="h-6 w-6" /></div><div><div className="font-serif text-lg font-bold">Need a Ride or Plan a Trip?</div><div className="text-xs text-white/80">We&apos;re just a call away</div></div></div>
-          <div className="flex flex-wrap justify-center gap-3"><a href="tel:+919828069795" className="rounded-full bg-[#f4cf5e] px-7 py-3 text-sm font-bold text-[#0d4223]">☎ +91 98280 69795</a><a href="https://wa.me/919828069795" className="rounded-full bg-[#1ca443] px-7 py-3 text-sm font-bold">WhatsApp Us</a></div>
+          <div className="flex flex-wrap justify-center gap-3"><a href={siteContact.phones[0].href} className="rounded-full bg-[#f4cf5e] px-7 py-3 text-sm font-bold text-[#0d4223]">☎ {siteContact.phones[0].display}</a><a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="rounded-full bg-[#1ca443] px-7 py-3 text-sm font-bold">WhatsApp Us</a></div>
         </div>
       </section>
     </>
