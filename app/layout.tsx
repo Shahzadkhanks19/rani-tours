@@ -8,12 +8,19 @@ export const metadata: Metadata = {
   },
   description:
     "Reliable taxi services, Rajasthan tours and custom travel experiences from Jodhpur with Rani Tour's.",
+  icons: {
+    icon: "/rani-tours-icon.svg",
+    shortcut: "/rani-tours-icon.svg",
+    apple: "/rani-tours-icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className="scroll-smooth">
+      <body className="m-0 bg-[#fffdf7] font-sans text-[#143124] antialiased selection:bg-[#b3df24] selection:text-[#003f22]">
+        {children}
+      </body>
     </html>
   );
 }
