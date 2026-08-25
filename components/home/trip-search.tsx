@@ -2,6 +2,7 @@
 
 import { CalendarDays, ChevronDown, MapPin, MessageCircle, Phone, UserRound } from "lucide-react";
 import { motion } from "motion/react";
+import { siteContact } from "@/lib/site-data";
 
 export function TripSearch() {
   return (
@@ -23,8 +24,8 @@ export function TripSearch() {
       </form>
 
       <div className="mt-4 flex items-center justify-center gap-6 border-t border-[#ececec] pt-4 text-[11px] font-semibold">
-        <a href="https://wa.me/919828069795" className="flex items-center gap-1.5 text-[#087a2c]"><MessageCircle className="h-4 w-4" />WhatsApp Us</a>
-        <a href="tel:+919828069795" className="flex items-center gap-1.5"><Phone className="h-4 w-4 text-[#a5883f]" />+91 98280 69795</a>
+        <a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#087a2c]"><MessageCircle className="h-4 w-4" />WhatsApp Us</a>
+        <a href={siteContact.phones[0].href} className="flex items-center gap-1.5"><Phone className="h-4 w-4 text-[#a5883f]" />{siteContact.phones[0].display}</a>
       </div>
     </motion.aside>
   );
