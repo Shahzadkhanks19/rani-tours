@@ -29,9 +29,9 @@ export function FloatingActions() {
             whileTap={{ scale: 0.96 }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="Scroll to top"
-            className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-[#17341f] text-white shadow-[0_12px_30px_rgba(0,0,0,.24)] transition hover:bg-[#0d2816] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9bd500] focus-visible:ring-offset-2"
+            className="grid h-14 w-14 place-items-center rounded-full border border-white/20 bg-[#17341f] text-white shadow-[0_12px_30px_rgba(0,0,0,.24)] transition hover:bg-[#0d2816] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9bd500] focus-visible:ring-offset-2"
           >
-            <ArrowUp className="h-5 w-5" />
+            <ArrowUp className="h-6 w-6" />
           </motion.button>
         ) : null}
       </AnimatePresence>
