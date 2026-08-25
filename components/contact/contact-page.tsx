@@ -3,13 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import {
   BadgeIndianRupee,
   CalendarDays,
   Clock3,
-  Facebook,
   Headphones,
-  Instagram,
   LockKeyhole,
   Mail,
   MapPin,
@@ -17,7 +16,6 @@ import {
   Phone,
   Send,
   ShieldCheck,
-  Youtube,
 } from "lucide-react";
 import { siteContact } from "@/lib/site-data";
 
@@ -97,7 +95,7 @@ export function ContactPageContent() {
               <ContactItem icon={Clock3} title="Office Hours">Mon - Sun: 9:00 AM - 8:00 PM<br/><span className="text-[#8a918a]">Booking support available 24/7</span></ContactItem>
               <div className="flex gap-4 py-6">
                 <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#0b6531] text-white"><MessageCircle className="h-5 w-5"/></div>
-                <div><h3 className="text-sm font-bold text-[#1c3221]">Follow Us</h3><div className="mt-3 flex gap-2"><Social href="#" label="Facebook"><Facebook className="h-4 w-4"/></Social><Social href="#" label="Instagram"><Instagram className="h-4 w-4"/></Social><Social href="#" label="YouTube"><Youtube className="h-4 w-4"/></Social><Social href={siteContact.whatsapp} label="WhatsApp"><MessageCircle className="h-4 w-4"/></Social></div></div>
+                <div><h3 className="text-sm font-bold text-[#1c3221]">Follow Us</h3><div className="mt-3 flex gap-2"><Social href="#" label="Facebook"><FaFacebookF className="h-4 w-4"/></Social><Social href="#" label="Instagram"><FaInstagram className="h-4 w-4"/></Social><Social href="#" label="YouTube"><FaYoutube className="h-4 w-4"/></Social><Social href={siteContact.whatsapp} label="WhatsApp"><FaWhatsapp className="h-4 w-4"/></Social></div></div>
               </div>
             </div>
           </div>
