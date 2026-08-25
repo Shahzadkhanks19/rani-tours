@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const quickLinks = ["Home", "About Us", "Taxi Services", "Tour Packages", "Destinations", "Fleet", "Corporate Travel", "Gallery", "Blog", "Contact", "Enquiry", "Privacy Policy"];
 const services = ["Local Taxi", "Rajasthan Tours", "Outstation Taxi", "All India Taxi", "Airport Transfers", "Wedding & Events"];
