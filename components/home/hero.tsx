@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { TripSearch } from "@/components/home/trip-search";
 
 const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=86&w=2200";
-const fortunerImage = "https://upload.wikimedia.org/wikipedia/commons/a/a6/Toyota_Fortuner_Full.jpg";
+const fortunerImage = "https://cdn-s3.autocarindia.com/legacy/cdni/mmv_images/colors/20250714023958_Toyota_Fortuner_Super_White%5B1%5D.jpg?w=1200";
 
 export function Hero() {
   return (
@@ -30,12 +30,9 @@ export function Hero() {
             <span className="flex items-center gap-2"><Headphones className="h-5 w-5 text-[#e0bb4c]" />24/7 Support</span>
           </div>
 
-          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.6 }} className="relative mt-8 hidden h-48 w-[520px] overflow-hidden rounded-2xl border border-white/15 bg-white/10 shadow-2xl sm:block">
-            <Image src={fortunerImage} alt="Toyota Fortuner used for premium taxi and outstation travel" fill sizes="520px" className="object-cover object-[center_58%]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent" />
-            <div className="absolute bottom-[31px] left-[80px] rounded-[2px] border border-black/50 bg-[#f5c400] px-3 py-0.5 text-[9px] font-black tracking-[0.16em] text-black shadow-sm sm:bottom-[42px] sm:left-[103px] sm:text-[10px]">
-              TAXI
-            </div>
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.6 }} className="relative mt-8 hidden h-44 w-[520px] overflow-hidden rounded-2xl border border-white/15 bg-[#f4f4f2] shadow-2xl sm:block">
+            <Image src={fortunerImage} alt="White Toyota Fortuner for premium taxi and outstation travel" fill unoptimized sizes="520px" className="object-cover object-center" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/5 to-transparent" />
           </motion.div>
         </motion.div>
 
