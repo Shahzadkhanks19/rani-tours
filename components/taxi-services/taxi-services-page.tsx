@@ -6,7 +6,6 @@ import { motion } from "motion/react";
 import {
   CalendarDays,
   Car,
-  CheckCircle2,
   ChevronDown,
   Clock3,
   Headphones,
@@ -14,8 +13,6 @@ import {
   MapPinned,
   MessageCircle,
   Phone,
-  Route,
-  ShieldCheck,
   UserRound,
   UsersRound,
   WalletCards,
@@ -75,7 +72,6 @@ export function TaxiServicesPageContent() {
                 [Headphones, "24/7 Customer Support"],
               ].map(([Icon, label]) => (
                 <div key={String(label)} className="text-center sm:text-left">
-                  {/* @ts-expect-error icon types are compatible for rendering */}
                   <Icon className="mx-auto h-7 w-7 text-[#e9c335] sm:mx-0" />
                   <div className="mt-2 text-[11px] font-bold leading-4">{String(label)}</div>
                 </div>
@@ -155,7 +151,10 @@ function RidePlanner() {
         <label className="block text-[11px] font-semibold text-[#383838]">Travellers<div className="mt-1 flex h-11 items-center gap-2 rounded-md border border-[#dedede] bg-white px-3 text-xs text-[#777]"><UserRound className="h-4 w-4" /><span className="flex-1">1 Traveller</span><ChevronDown className="h-4 w-4" /></div></label>
         <button type="submit" className="flex h-11 w-full items-center justify-center gap-3 rounded-full bg-[#067326] text-sm font-bold text-white shadow-sm transition hover:bg-[#055c20]">Get Quote / Enquiry Now <span>→</span></button>
       </form>
-      <div className="mt-4 flex items-center justify-center gap-6 border-t border-[#ececec] pt-4 text-[11px] font-semibold"><a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#087a2c]"><MessageCircle className="h-4 w-4" />WhatsApp Us</a><a href={siteContact.phones[0].href} className="flex items-center gap-1.5"><Phone className="h-4 w-4 text-[#a5883f]" />{siteContact.phones[0].display}</a></div>
+      <div className="mt-4 flex items-center justify-center gap-6 border-t border-[#ececec] pt-4 text-[11px] font-semibold">
+        <a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[#087a2c]"><MessageCircle className="h-4 w-4" />WhatsApp Us</a>
+        <a href={siteContact.phones[0].href} className="flex items-center gap-1.5"><Phone className="h-4 w-4 text-[#a5883f]" />{siteContact.phones[0].display}</a>
+      </div>
     </motion.aside>
   );
 }
@@ -169,5 +168,5 @@ function SelectField({ label, text }: { label: string; text: string }) {
 }
 
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
-  return <div className="text-center"><p className="text-[10px] font-bold uppercase tracking-[0.13em] text-[#267142]">{eyebrow}</p><h2 className="mt-2 font-serif text-3xl font-bold text-[#17341f]">{title}</h2><div className="mx-auto mt-2 h-px w-16 bg-[#c7a556]" /></div>;
+  return <div className="text-center"><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#237643]">{eyebrow}</p><h2 className="mt-2 font-serif text-3xl font-bold text-[#172c1c]">{title}</h2><div className="mx-auto mt-3 h-px w-16 bg-[#c8a75a]" /></div>;
 }
