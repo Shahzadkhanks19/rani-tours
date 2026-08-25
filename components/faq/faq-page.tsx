@@ -190,8 +190,8 @@ export function FaqPageContent() {
 
       <section className="bg-white py-14">
         <div className="mx-auto grid max-w-[1180px] gap-8 px-4 lg:grid-cols-[300px_1fr]">
-          <aside>
-            <div className="rounded-2xl border border-[#e6e2da] bg-[#fffdfa] p-5 shadow-sm lg:sticky lg:top-[118px]">
+          <aside className="self-start">
+            <div className="rounded-2xl border border-[#e6e2da] bg-[#fffdfa] p-5 shadow-sm">
               <h2 className="font-serif text-2xl font-bold text-[#17341f]">FAQ Categories</h2>
               <div className="mt-3 flex items-center gap-2 text-[#d29a2c]"><span className="h-px w-8 bg-current"/><span>✤</span></div>
               <div className="mt-5 grid gap-1.5">
