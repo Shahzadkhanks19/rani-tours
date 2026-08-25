@@ -4,16 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronDown, Headphones, Menu, Phone, Quote, X } from "lucide-react";
+import { Headphones, Menu, Phone, Quote, X } from "lucide-react";
 import { useState } from "react";
 import { siteContact } from "@/lib/site-data";
 
 const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Taxi Services", href: "/taxi-services", dropdown: true },
-  { label: "Tour Packages", href: "/tour-packages", dropdown: true },
-  { label: "Destinations", href: "/destinations", dropdown: true },
+  { label: "Taxi Services", href: "/taxi-services" },
+  { label: "Tour Packages", href: "/tour-packages" },
+  { label: "Destinations", href: "/destinations" },
   { label: "Fleet", href: "/fleet" },
   { label: "Corporate", href: "/corporate" },
   { label: "Gallery", href: "/gallery" },
@@ -54,9 +54,8 @@ export function Header() {
             {links.map((item) => {
               const active = isActive(item.href);
               return (
-                <Link key={item.label} href={item.href} aria-current={active ? "page" : undefined} className={`group relative flex whitespace-nowrap items-center gap-1 py-7 text-[13px] font-semibold transition-colors duration-300 ${active ? "text-[#006837]" : "text-[#171717] hover:text-[#006837]"}`}>
+                <Link key={item.label} href={item.href} aria-current={active ? "page" : undefined} className={`group relative flex whitespace-nowrap items-center py-7 text-[13px] font-semibold transition-colors duration-300 ${active ? "text-[#006837]" : "text-[#171717] hover:text-[#006837]"}`}>
                   <span>{item.label}</span>
-                  {item.dropdown ? <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" /> : null}
                   <span className={`absolute bottom-[18px] left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-[#8fbe22] transition-all duration-300 ${active ? "w-7" : "w-0 group-hover:w-5"}`} />
                 </Link>
               );
@@ -78,8 +77,8 @@ export function Header() {
               {links.map((item) => {
                 const active = isActive(item.href);
                 return (
-                  <Link key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition ${active ? "bg-[#f4f8f1] text-[#006837]" : "hover:bg-[#f6f8f4] hover:text-[#006837]"}`}>
-                    <span>{item.label}</span>{item.dropdown ? <ChevronDown className="h-4 w-4" /> : null}
+                  <Link key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={`flex items-center rounded-xl px-4 py-3 text-sm font-semibold transition ${active ? "bg-[#f4f8f1] text-[#006837]" : "hover:bg-[#f6f8f4] hover:text-[#006837]"}`}>
+                    {item.label}
                   </Link>
                 );
               })}
