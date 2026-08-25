@@ -48,7 +48,12 @@ export function Footer() {
         <div className="mx-auto flex max-w-[1180px] flex-col gap-3 px-4 py-4 text-[10px] text-white/65 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 Rani Tour&apos;s. All Rights Reserved.</span>
           <div className="flex flex-wrap gap-4"><Link href="/terms-and-conditions">Terms & Conditions</Link><span>|</span><Link href="/privacy-policy">Privacy Policy</Link><span>|</span><Link href="/cancellation-policy">Cancellation Policy</Link></div>
-          <span>Designed &amp; Developed by Shahzad</span>
+          <span>
+            Designed &amp; Developed by{" "}
+            <a href="https://builtbyshahzad.vercel.app" target="_blank" rel="noopener noreferrer" className="font-semibold text-white transition hover:text-[#e1bd58]">
+              Shahzad
+            </a>
+          </span>
         </div>
       </div>
     </footer>
