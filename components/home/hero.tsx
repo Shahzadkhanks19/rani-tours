@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { TripSearch } from "@/components/home/trip-search";
 
 const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=86&w=2200";
+const fortunerImage = "https://images.unsplash.com/photo-1670054953044-2605dbd0d747?auto=format&fit=crop&q=82&w=1200";
 
 export function Hero() {
   return (
@@ -30,7 +31,7 @@ export function Hero() {
           </div>
 
           <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.6 }} className="relative mt-8 hidden h-36 w-[430px] overflow-hidden rounded-2xl border border-white/15 bg-white/10 shadow-2xl sm:block">
-            <Image src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=82&w=1000" alt="Comfortable premium vehicle for Rani Tour journeys" fill sizes="430px" className="object-cover object-center" />
+            <Image src={fortunerImage} alt="Toyota Fortuner SUV suitable for Indian taxi and outstation travel" fill sizes="430px" className="object-cover object-center" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/15 to-transparent" />
           </motion.div>
         </motion.div>
