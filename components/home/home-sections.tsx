@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowRight, BusFront, Car, CheckCircle2, Headphones, MapPinned, Plane, ShieldCheck, Sparkles, Star, UsersRound } from "lucide-react";
+import { ArrowRight, BusFront, Car, CheckCircle2, Headphones, MapPinned, Plane, ShieldCheck, Star, UsersRound } from "lucide-react";
 
 const stats = [
   [MapPinned, "12+", "Years Experience"],
