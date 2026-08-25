@@ -27,7 +27,7 @@ export function Header() {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="relative z-50 bg-white">
       <div className="bg-[#003f22] text-white">
         <div className="mx-auto flex min-h-10 max-w-[1180px] items-center justify-between gap-4 px-4 text-[11px] font-semibold sm:text-xs">
           <div className="flex items-center gap-2"><span className="text-[#b5d83d]">🚕</span><span>Reliable Rides. Memorable Journeys.</span></div>
@@ -40,7 +40,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="border-b border-black/5 bg-white">
+      <div className="sticky top-0 z-50 border-b border-black/5 bg-white shadow-sm">
         <div className="mx-auto flex min-h-[82px] max-w-[1180px] items-center justify-between gap-4 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Rani Tour's home">
             <Image src="/rani-tours-icon.svg" alt="Rani Tour's phoenix logo" width={54} height={54} priority />
@@ -71,23 +71,23 @@ export function Header() {
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
-      </div>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.nav initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="absolute inset-x-4 top-full rounded-2xl border border-black/5 bg-white p-3 text-[#171717] shadow-2xl xl:hidden">
-            {links.map((item) => {
-              const active = isActive(item.href);
-              return (
-                <Link key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition ${active ? "bg-[#f4f8f1] text-[#006837]" : "hover:bg-[#f6f8f4] hover:text-[#006837]"}`}>
-                  <span>{item.label}</span>{item.dropdown ? <ChevronDown className="h-4 w-4" /> : null}
-                </Link>
-              );
-            })}
-            <Link href="/get-quote" onClick={() => setOpen(false)} className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-[#067326] px-4 py-3 font-bold text-white"><Quote className="h-4 w-4" />Get Quote</Link>
-          </motion.nav>
-        ) : null}
-      </AnimatePresence>
+        <AnimatePresence>
+          {open ? (
+            <motion.nav initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="absolute inset-x-4 top-full rounded-2xl border border-black/5 bg-white p-3 text-[#171717] shadow-2xl xl:hidden">
+              {links.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <Link key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition ${active ? "bg-[#f4f8f1] text-[#006837]" : "hover:bg-[#f6f8f4] hover:text-[#006837]"}`}>
+                    <span>{item.label}</span>{item.dropdown ? <ChevronDown className="h-4 w-4" /> : null}
+                  </Link>
+                );
+              })}
+              <Link href="/get-quote" onClick={() => setOpen(false)} className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-[#067326] px-4 py-3 font-bold text-white"><Quote className="h-4 w-4" />Get Quote</Link>
+            </motion.nav>
+          ) : null}
+        </AnimatePresence>
+      </div>
     </header>
   );
 }
