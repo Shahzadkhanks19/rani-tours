@@ -16,7 +16,7 @@ const stats = [
 
 const services = [
   { title: "Local Services", text: "Sightseeing, airport pickup, railway station transfers and hotel drop services in Jodhpur", image: "https://images.unsplash.com/photo-1764243213897-45e6def5ad3e?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
-  { title: "Rajasthan Tours", text: "Explore Rajasthan's iconic destinations with comfort and care", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
+  { title: "Rajasthan Tours", text: "Explore Rajasthan&apos;s iconic destinations with comfort and care", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
   { title: "Outstation Taxi", text: "Taxi service for any destination across India — safe and reliable", image: "https://images.unsplash.com/photo-1650643683806-cdaf346a0bb2?auto=format&fit=crop&q=82&w=900", icon: Car },
   { title: "All India Taxi Service", text: "Travel anywhere in India with comfort, on time every time", image: "https://images.unsplash.com/photo-1532664189809-02133fee698d?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
   { title: "Airport & Railway Transfers", text: "Timely airport pickups and drop-offs to all major locations", image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=82&w=900", icon: Plane },
@@ -47,7 +47,7 @@ export function HomeSections() {
 
       <section className="bg-[#fffdf9] py-8 sm:py-10">
         <div className="mx-auto max-w-[1180px] px-4">
-          <SectionHeading eyebrow="OUR SERVICES" title="Your Journey, Our Commitment" subtitle="From local rides to all India travel — we've got you covered." />
+          <SectionHeading eyebrow="OUR SERVICES" title="Your Journey, Our Commitment" subtitle="From local rides to all India travel — we&apos;ve got you covered." />
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {services.map((service, index) => {
               const Icon = service.icon;
@@ -105,7 +105,7 @@ export function HomeSections() {
 
       <section className="bg-[#005728] py-4 text-white">
         <div className="mx-auto flex max-w-[1180px] flex-col items-center justify-between gap-4 px-4 sm:flex-row">
-          <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-white text-[#006837]"><Headphones className="h-6 w-6" /></div><div><div className="font-serif text-lg font-bold">Need a Ride or Plan a Trip?</div><div className="text-xs text-white/80">We're just a call away</div></div></div>
+          <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-full bg-white text-[#006837]"><Headphones className="h-6 w-6" /></div><div><div className="font-serif text-lg font-bold">Need a Ride or Plan a Trip?</div><div className="text-xs text-white/80">We&apos;re just a call away</div></div></div>
           <div className="flex flex-wrap justify-center gap-3"><a href="tel:+919828069795" className="rounded-full bg-[#f4cf5e] px-7 py-3 text-sm font-bold text-[#0d4223]">☎ +91 98280 69795</a><a href="https://wa.me/919828069795" className="rounded-full bg-[#1ca443] px-7 py-3 text-sm font-bold">WhatsApp Us</a></div>
         </div>
       </section>
