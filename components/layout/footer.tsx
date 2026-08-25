@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { SiTripadvisor } from "react-icons/si";
+import { siteContact } from "@/lib/site-data";
 
 const quickLinks = ["Home", "About Us", "Taxi Services", "Tour Packages", "Destinations", "Fleet", "Corporate Travel", "Gallery", "Blog", "Contact", "Enquiry", "Privacy Policy"];
 const services = ["Local Taxi", "Rajasthan Tours", "Outstation Taxi", "All India Taxi", "Airport Transfers", "Wedding & Events"];
@@ -36,10 +37,9 @@ export function Footer() {
         <FooterGroup title="Destinations"><div className="grid grid-cols-2 gap-x-4 gap-y-1.5">{destinations.map((item) => <span key={item} className="text-[11px] text-white/72">{item}</span>)}</div></FooterGroup>
         <FooterGroup title="Contact Us">
           <div className="grid gap-2 text-[11px] text-white/75">
-            <a href="tel:+919828069795" className="flex items-center gap-2"><Phone className="h-4 w-4 text-[#d8b752]" />+91 98280 69795</a>
-            <a href="tel:+919414167196" className="flex items-center gap-2"><Phone className="h-4 w-4 text-[#d8b752]" />+91 94141 67196</a>
-            <a href="mailto:info@ranitour.in" className="flex items-center gap-2"><Mail className="h-4 w-4 text-[#d8b752]" />info@ranitour.in</a>
-            <span className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d8b752]" />Jodhpur, Rajasthan, India</span>
+            {siteContact.phones.map((phone) => <a key={phone.href} href={phone.href} className="flex items-center gap-2"><Phone className="h-4 w-4 text-[#d8b752]" />{phone.display}</a>)}
+            <a href={siteContact.emailHref} className="flex items-center gap-2"><Mail className="h-4 w-4 text-[#d8b752]" />{siteContact.email}</a>
+            <a href={siteContact.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 transition hover:text-white"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d8b752]" /><span>{siteContact.address}</span></a>
           </div>
         </FooterGroup>
       </div>
