@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { FleetPageContent } from "@/components/fleet/fleet-page";
+import { Footer } from "@/components/layout/footer";
+import { FloatingActions } from "@/components/layout/floating-actions";
+import { Header } from "@/components/layout/header";
 
 export const metadata: Metadata = {
   title: "Our Fleet | Rani Tour's Jodhpur",
@@ -7,5 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default function FleetPage() {
-  return <FleetPageContent />;
+  return (
+    <>
+      <Header />
+      <main>
+        <FleetPageContent />
+      </main>
+      <Footer />
+      <FloatingActions />
+    </>
+  );
 }
