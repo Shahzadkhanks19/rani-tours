@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowRight, BusFront, Car, CheckCircle2, Headphones, MapPinned, Plane, ShieldCheck, Star, UsersRound } from "lucide-react";
+import { ArrowRight, BusFront, Car, CheckCircle2, Headphones, MapPinned, Plane, ShieldCheck, UsersRound } from "lucide-react";
+import { GoogleReviewsSlider } from "@/components/home/google-reviews-slider";
 import { siteContact } from "@/lib/site-data";
 
 const stats = [
@@ -87,19 +88,16 @@ export function HomeSections() {
 
       <section className="relative overflow-hidden bg-[#f9f0e5] py-8">
         <div className="absolute inset-y-0 right-0 hidden w-[28%] bg-[radial-gradient(circle_at_center,#e5b46f_0,transparent_68%)] opacity-30 lg:block" />
-        <div className="relative mx-auto grid max-w-[1180px] gap-8 px-4 lg:grid-cols-[1fr_1.05fr]">
+        <div className="relative mx-auto grid max-w-[1180px] gap-8 px-4 lg:grid-cols-[.9fr_1.2fr]">
           <div>
             <h2 className="font-serif text-xl font-bold text-[#17341f]">WHY CHOOSE RANI TOURS</h2>
-            <div className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            <div className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {["Experienced & Professional Drivers", "24/7 Customer Support", "Well Maintained & Sanitized Vehicles", "All India Coverage", "Transparent Pricing – No Hidden Charges", "On-Time Pickup & Drop", "Safe & Comfortable Travel", "Custom Itineraries as per Need"].map((item) => <div key={item} className="flex items-start gap-2 text-xs text-[#3f463f]"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 fill-[#15913e] text-white" />{item}</div>)}
             </div>
           </div>
           <div>
             <h2 className="font-serif text-xl font-bold text-[#17341f]">WHAT OUR CUSTOMERS SAY</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <Testimonial name="Anjali Sharma" city="Jaipur" text="Excellent service! The driver was punctual and very polite. Our trip from Jodhpur to Delhi was smooth and comfortable." />
-              <Testimonial name="Rahul Mehta" city="Mumbai" text="Rani Tours is the best taxi service in Jodhpur. Reliable, safe and always on time. Highly recommended!" />
-            </div>
+            <div className="mt-4"><GoogleReviewsSlider /></div>
           </div>
         </div>
       </section>
@@ -116,8 +114,4 @@ export function HomeSections() {
 
 function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
   return <div className="text-center"><div className="flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.13em] text-[#285c36]"><span className="h-px w-9 bg-[#bc9c59]/70" />{eyebrow}<span className="h-px w-9 bg-[#bc9c59]/70" /></div><h2 className="mt-1 font-serif text-3xl font-bold text-[#17341f]">{title}</h2><p className="mt-1 text-xs text-[#666]">{subtitle}</p></div>;
-}
-
-function Testimonial({ name, city, text }: { name: string; city: string; text: string }) {
-  return <article className="rounded-xl bg-white p-4 shadow-sm"><div className="text-3xl leading-none text-[#08762c]">“</div><p className="-mt-2 text-[11px] leading-[18px] text-[#666]">{text}</p><div className="mt-4 flex items-center justify-between"><div><div className="text-xs font-bold">{name}</div><div className="text-[10px] text-[#777]">{city}</div></div><div className="flex text-[#14913d]">{Array.from({ length: 5 }).map((_, index) => <Star key={index} className="h-3.5 w-3.5 fill-current" />)}</div></div></article>;
 }
