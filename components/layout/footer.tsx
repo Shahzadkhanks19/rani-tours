@@ -49,7 +49,12 @@ export function Footer() {
       <div className="border-t border-white/15">
         <div className="mx-auto flex max-w-[1180px] flex-col gap-3 px-4 py-4 text-[10px] text-white/65 sm:flex-row sm:items-center sm:justify-between">
           <span>© 2026 Rani Tour&apos;s. All Rights Reserved.</span>
-          <div className="flex flex-wrap gap-4"><Link href="/terms-and-conditions" className="transition hover:text-[#e1bd58]">Terms & Conditions</Link><span>|</span><Link href="/privacy-policy" className="transition hover:text-[#e1bd58]">Privacy Policy</Link><span>|</span><Link href="/cancellation-policy" className="transition hover:text-[#e1bd58]">Cancellation Policy</Link></div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/terms-and-conditions" className="transition hover:text-[#e1bd58]">Terms & Conditions</Link><span>|</span>
+            <Link href="/privacy-policy" className="transition hover:text-[#e1bd58]">Privacy Policy</Link><span>|</span>
+            <Link href="/cancellation-policy" className="transition hover:text-[#e1bd58]">Cancellation Policy</Link><span>|</span>
+            <Link href="/faq" className="transition hover:text-[#e1bd58]">FAQ</Link>
+          </div>
           <span>
             Designed &amp; Developed by{" "}
             <a href="https://builtbyshahzad.vercel.app" target="_blank" rel="noopener noreferrer" className="font-semibold text-white transition hover:text-[#e1bd58]">
