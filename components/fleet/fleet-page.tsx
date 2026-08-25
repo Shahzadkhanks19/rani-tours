@@ -3,7 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { AirVent, BadgeIndianRupee, BriefcaseBusiness, BusFront, Car, Clock3, Headphones, MapPinned, Phone, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
+import {
+  AirVent,
+  BadgeIndianRupee,
+  BriefcaseBusiness,
+  BusFront,
+  Car,
+  Clock3,
+  Headphones,
+  MapPinned,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+  UsersRound,
+} from "lucide-react";
 import { siteContact } from "@/lib/site-data";
 
 const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=86&w=2200";
@@ -11,42 +24,112 @@ const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?
 const fleet = [
   {
     badge: "1 - 4 Seater",
-    name: "Sedan",
+    name: "Toyota Etios",
+    model: "Toyota Etios / Similar",
+    seats: "4 Seats",
+    bags: "3 Bags",
+    description: "Comfortable sedan for local sightseeing, airport transfers and outstation travel.",
+    bestFor: "Best for Couples & Small Families",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/96/Toyota_Etios_1.5_XS_Sedan_2015.jpg",
+  },
+  {
+    badge: "1 - 4 Seater",
+    name: "Swift Dzire",
     model: "Maruti Suzuki Dzire / Similar",
     seats: "4 Seats",
-    bags: "2 Bags",
-    description: "Ideal for small families and couples. Comfortable, practical and perfect for local or outstation travel.",
-    bestFor: "Best for Small Families",
+    bags: "3 Bags",
+    description: "Efficient and comfortable sedan suited for city travel and long-distance taxi journeys.",
+    bestFor: "Best for Everyday Travel",
     image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/2026%20Suzuki%20Dzire%20GL%20in%20Arctic%20White%20Pearl%2002.jpg",
   },
   {
-    badge: "1 - 6 Seater",
-    name: "Innova",
-    model: "Toyota Innova / Similar",
-    seats: "6 Seats",
-    bags: "4 Bags",
-    description: "Spacious and comfortable MPV, ideal for family trips, airport transfers and long-distance journeys.",
+    badge: "1 - 7 Seater",
+    name: "Innova Crysta",
+    model: "Toyota Innova Crysta / Similar",
+    seats: "7 Seats",
+    bags: "5 Bags",
+    description: "Premium family MPV with spacious seating and excellent comfort for Rajasthan and all-India journeys.",
     bestFor: "Best for Families",
     image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota%20Innova%20GUN143%20FL%202.8%20V%20White%20Pearl%20Crystal%20Shine%2001.jpg",
   },
   {
-    badge: "7 - 12 Seater",
-    name: "Tempo Traveller",
+    badge: "1 - 7 Seater",
+    name: "Toyota Fortuner",
+    model: "Toyota Fortuner / Similar",
+    seats: "7 Seats",
+    bags: "5 Bags",
+    description: "Premium SUV for travellers who prefer extra road presence, comfort and space on long journeys.",
+    bestFor: "Best for Premium Family Travel",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota_Fortuner_KUN51_FL2_3.0_V_4x4_Freedom_White_01.jpg",
+  },
+  {
+    badge: "1 - 4 Seater",
+    name: "Toyota Corolla",
+    model: "Toyota Corolla / Similar",
+    seats: "4 Seats",
+    bags: "3 Bags",
+    description: "Comfort-oriented executive sedan for business travel, airport transfers and premium outstation rides.",
+    bestFor: "Best for Executive Travel",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/2019_Toyota_Corolla_Icon_Tech_VVT-i_Hybrid_1.8_White.jpg",
+  },
+  {
+    badge: "12 Seater",
+    name: "Force Tempo Traveller 12",
     model: "Force Traveller / Similar",
     seats: "12 Seats",
-    bags: "8 Bags",
-    description: "Best suited to medium and large groups. Spacious seating and dependable comfort for longer routes.",
-    bestFor: "Best for Groups",
+    bags: "6+ Bags",
+    description: "Comfortable group traveller for families, friend groups, sightseeing circuits and destination tours.",
+    bestFor: "Best for Medium Groups",
     image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/ForceTravellerside.JPG",
   },
   {
-    badge: "13 - 32 Seater",
-    name: "Tourist Bus",
-    model: "Premium Coach / Similar",
-    seats: "32 Seats",
-    bags: "20 Bags",
-    description: "Ideal for corporate tours, school groups, weddings and large-group travel with maximum comfort.",
+    badge: "14 Seater",
+    name: "Force Tempo Traveller 14",
+    model: "Force Traveller / Similar",
+    seats: "14 Seats",
+    bags: "7+ Bags",
+    description: "Spacious traveller configuration for group tours, family functions and longer Rajasthan routes.",
+    bestFor: "Best for Group Tours",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/ForceTravellerside.JPG",
+  },
+  {
+    badge: "17 Seater",
+    name: "Force Tempo Traveller 17",
+    model: "Force Traveller / Similar",
+    seats: "17 Seats",
+    bags: "8+ Bags",
+    description: "High-capacity traveller for medium-large groups with dependable comfort for longer trips.",
+    bestFor: "Best for Large Families",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/ForceTravellerside.JPG",
+  },
+  {
+    badge: "21 Seater",
+    name: "Force Tempo Traveller 21",
+    model: "Force Traveller / Similar",
+    seats: "21 Seats",
+    bags: "10+ Bags",
+    description: "Large traveller option for group tours, events, weddings and multi-city journeys.",
     bestFor: "Best for Large Groups",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/ForceTravellerside.JPG",
+  },
+  {
+    badge: "24 Seater",
+    name: "Tourist Bus 24",
+    model: "Premium Tourist Bus / Similar",
+    seats: "24 Seats",
+    bags: "15+ Bags",
+    description: "Comfortable tourist bus for corporate travel, school groups, weddings and organised tours.",
+    bestFor: "Best for Tour Groups",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Moscow%20-%202025%20-%20White%20tour%20bus.jpg",
+  },
+  {
+    badge: "32 Seater",
+    name: "Tourist Bus 32",
+    model: "Premium Tourist Coach / Similar",
+    seats: "32 Seats",
+    bags: "20+ Bags",
+    description: "Full-size tourist coach for large groups, corporate movement and long-distance group travel.",
+    bestFor: "Best for Large Tour Groups",
     image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Moscow%20-%202025%20-%20White%20tour%20bus.jpg",
   },
 ] as const;
@@ -79,10 +162,10 @@ export function FleetPageContent() {
             <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="mt-6 font-serif text-5xl font-bold text-[#17341f] sm:text-6xl">Our Fleet</motion.h1>
             <h2 className="mt-2 font-serif text-3xl font-bold text-[#d98200]">Comfort. Safety. Reliability.</h2>
             <div className="mt-4 flex items-center gap-3 text-[#d69a28]"><span className="h-px w-8 bg-current" /><span>✤</span><span className="h-px w-8 bg-current" /></div>
-            <p className="mt-5 max-w-[470px] text-sm leading-7 text-[#313b31]">A well-maintained fleet of vehicles to make your journey safe, comfortable and memorable. Choose the right vehicle for your group size and travel needs.</p>
+            <p className="mt-5 max-w-[500px] text-sm leading-7 text-[#313b31]">From sedans and premium SUVs to multiple Force Traveller configurations and tourist buses, choose the right vehicle for your group size and journey.</p>
           </div>
           <div className="pointer-events-none absolute bottom-2 right-4 hidden h-[245px] w-[58%] lg:block">
-            <Image src={fleet[1].image} alt="White Toyota Innova" fill unoptimized sizes="560px" className="object-contain object-bottom drop-shadow-2xl" />
+            <Image src={fleet[2].image} alt="White Toyota Innova Crysta" fill unoptimized sizes="560px" className="object-contain object-bottom drop-shadow-2xl" />
           </div>
         </div>
       </section>
@@ -96,22 +179,30 @@ export function FleetPageContent() {
       <section className="bg-white py-9 sm:py-12">
         <div className="mx-auto max-w-[1180px] px-4">
           <SectionHeading title="Our Vehicle Options" />
-          <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <p className="mx-auto mt-3 max-w-2xl text-center text-xs leading-5 text-[#687068]">Vehicle model and exact seating configuration may vary by availability. Tell us your route and group size and we&apos;ll recommend the right option.</p>
+          <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {fleet.map((vehicle, index) => (
-              <motion.article key={vehicle.name} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-[#e5e0d8] bg-white shadow-[0_10px_28px_rgba(45,38,28,.07)]">
-                <div className="relative h-44 bg-[#f5f5f3]">
+              <motion.article key={vehicle.name} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.035 }} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-[#e5e0d8] bg-white shadow-[0_10px_28px_rgba(45,38,28,.07)]">
+                <div className="relative h-52 bg-[#f5f5f3]">
                   <span className="absolute left-3 top-3 z-10 rounded-full bg-[#0c592d] px-3 py-1 text-[10px] font-bold text-white">{vehicle.badge}</span>
-                  <Image src={vehicle.image} alt={vehicle.model} fill unoptimized sizes="(max-width:768px) 100vw, 290px" className="object-cover" />
+                  <Image src={vehicle.image} alt={vehicle.model} fill unoptimized sizes="(max-width:768px) 100vw, 390px" className="object-cover" />
                 </div>
                 <div className="p-5">
                   <h3 className="font-serif text-xl font-bold text-[#1d3021]">{vehicle.name}</h3>
                   <p className="mt-1 text-xs text-[#687068]">{vehicle.model}</p>
                   <div className="mt-4 flex flex-wrap gap-4 text-[10px] text-[#4f574f]"><span className="flex items-center gap-1"><UsersRound className="h-4 w-4 text-[#087239]" />{vehicle.seats}</span><span className="flex items-center gap-1"><BriefcaseBusiness className="h-4 w-4 text-[#087239]" />{vehicle.bags}</span><span className="flex items-center gap-1"><AirVent className="h-4 w-4 text-[#087239]" />AC</span></div>
-                  <p className="mt-5 min-h-[68px] text-[11px] leading-[18px] text-[#5f675f]">{vehicle.description}</p>
+                  <p className="mt-5 min-h-[54px] text-[11px] leading-[18px] text-[#5f675f]">{vehicle.description}</p>
                   <div className="mt-4 rounded-lg border border-[#7a9a7f] px-3 py-2 text-center text-[11px] font-bold text-[#174a29]">{vehicle.bestFor}</div>
                 </div>
               </motion.article>
             ))}
+
+            <motion.article whileHover={{ y: -4 }} className="flex min-h-[410px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#83a486] bg-[#f5f9f2] p-8 text-center">
+              <div className="grid h-16 w-16 place-items-center rounded-full bg-white text-[#0a6330] shadow-sm"><Car className="h-8 w-8" /></div>
+              <h3 className="mt-5 font-serif text-2xl font-bold text-[#1d3021]">Other Vehicles on Demand</h3>
+              <p className="mt-3 max-w-xs text-xs leading-6 text-[#606b61]">Need a different premium car, larger coach or a specific vehicle configuration? Contact us and we&apos;ll arrange it based on availability and your trip requirements.</p>
+              <Link href="/get-quote" className="mt-6 rounded-full bg-[#087239] px-6 py-3 text-xs font-bold text-white transition hover:bg-[#075e30]">Request a Vehicle →</Link>
+            </motion.article>
           </div>
         </div>
       </section>
