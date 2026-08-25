@@ -24,8 +24,7 @@ const links = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
-  const isActive = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
     <header className="relative z-50 bg-white">
@@ -51,19 +50,14 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-2 xl:flex" aria-label="Primary navigation">
+          <nav className="hidden items-center gap-4 xl:flex" aria-label="Primary navigation">
             {links.map((item) => {
               const active = isActive(item.href);
               return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`group relative flex items-center gap-1 overflow-hidden rounded-full px-3.5 py-2.5 text-[13px] font-semibold transition duration-300 ${active ? "bg-[#edf6e8] text-[#006837] shadow-[inset_0_0_0_1px_rgba(0,104,55,.12)]" : "text-[#171717] hover:bg-[#f3f7ef] hover:text-[#006837]"}`}
-                >
-                  <span className="relative z-10">{item.label}</span>
-                  {item.dropdown ? <ChevronDown className="relative z-10 h-3.5 w-3.5 transition duration-300 group-hover:rotate-180" /> : null}
-                  <span className={`absolute inset-x-3 bottom-1 h-[2px] origin-left rounded-full bg-[#9bd500] transition-transform duration-300 ${active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} />
+                <Link key={item.label} href={item.href} aria-current={active ? "page" : undefined} className={`group relative flex whitespace-nowrap items-center gap-1 py-7 text-[13px] font-semibold transition-colors duration-300 ${active ? "text-[#006837]" : "text-[#171717] hover:text-[#006837]"}`}>
+                  <span>{item.label}</span>
+                  {item.dropdown ? <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" /> : null}
+                  <span className={`absolute bottom-[18px] left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-[#8fbe22] transition-all duration-300 ${active ? "w-7" : "w-0 group-hover:w-5"}`} />
                 </Link>
               );
             })}
@@ -85,7 +79,7 @@ export function Header() {
             {links.map((item) => {
               const active = isActive(item.href);
               return (
-                <Link key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition ${active ? "bg-[#edf6e8] text-[#006837]" : "hover:bg-[#f2f6ee] hover:text-[#006837]"}`}>
+                <Link key={item.label} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition ${active ? "bg-[#f4f8f1] text-[#006837]" : "hover:bg-[#f6f8f4] hover:text-[#006837]"}`}>
                   <span>{item.label}</span>{item.dropdown ? <ChevronDown className="h-4 w-4" /> : null}
                 </Link>
               );
