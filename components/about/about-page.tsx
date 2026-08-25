@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import {
-  ArrowRight,
   Car,
   Clock3,
   Headphones,
