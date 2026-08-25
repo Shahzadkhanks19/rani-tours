@@ -35,9 +35,9 @@ const rajasthanDestinations = [
   { name: "Jodhpur", image: "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=84&w=900" },
   { name: "Jaipur", image: "https://images.unsplash.com/photo-1578155173088-710a9aef3849?auto=format&fit=crop&q=84&w=900" },
   { name: "Udaipur", image: "https://images.unsplash.com/photo-1695956353120-54ce5e91632b?auto=format&fit=crop&q=84&w=900" },
-  { name: "Jaisalmer", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=84&w=900" },
-  { name: "Mount Abu", image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=84&w=900" },
-  { name: "Pushkar", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=84&w=900" },
+  { name: "Jaisalmer", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/JaisalmerFort.jpg" },
+  { name: "Mount Abu", image: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Nakki_Lake-Mount_Abu.jpg" },
+  { name: "Pushkar", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pushkar_Lake_in_Rajasthan.jpg" },
 ] as const;
 
 const indiaDestinations = [
@@ -45,7 +45,7 @@ const indiaDestinations = [
   { name: "Mumbai", image: "https://images.unsplash.com/photo-1598434192043-71111c1b3f41?auto=format&fit=crop&q=84&w=900" },
   { name: "Bangalore", image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&q=84&w=900" },
   { name: "Goa", image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=84&w=900" },
-  { name: "Haridwar", image: "https://images.unsplash.com/photo-1612438214708-f428a707dd4e?auto=format&fit=crop&q=84&w=900" },
+  { name: "Haridwar", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Har_Ki_Pauri_Haridwar.jpg" },
 ] as const;
 
 const vehicles = [
@@ -54,28 +54,28 @@ const vehicles = [
     seats: "4",
     luggage: "3",
     type: "Sedan",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Maruti_Suzuki_Dzire_VXi_VVT_%28front%29.JPG",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/2026_Suzuki_Dzire_GL_in_Arctic_White_Pearl_02.jpg",
   },
   {
     name: "Toyota Etios",
     seats: "4",
     luggage: "3",
     type: "Sedan",
-    image: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Toyota_Etios_top_left_front.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/96/Toyota_Etios_1.5_XS_Sedan_2015.jpg",
   },
   {
     name: "Toyota Innova Crysta",
     seats: "7",
     luggage: "6",
     type: "MPV",
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Toyota_Innova_Crysta_2.4_Z_front_right.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/87/Toyota_Innova_Crysta_2.4_Z_side.jpg",
   },
   {
     name: "Toyota Fortuner",
     seats: "7",
     luggage: "6",
     type: "SUV",
-    image: "https://upload.wikimedia.org/wikipedia/commons/6/66/2015_Toyota_Fortuner_%28New_Zealand%29.jpg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Toyota_Fortuner_KUN51_FL2_3.0_V_4x4_Freedom_White_01.jpg",
   },
   {
     name: "Force Tempo Traveller",
@@ -89,7 +89,7 @@ const vehicles = [
     seats: "4",
     luggage: "3",
     type: "Luxury",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=84&w=900",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Mercedes-Benz_W213_E_350_4_matic_AMG_Line_white_%281%29.jpg",
   },
 ] as const;
 
@@ -107,7 +107,6 @@ export function TaxiServicesPageContent() {
             <h1 className="font-serif text-5xl font-bold leading-none sm:text-6xl">All India <span className="text-[#78b465]">Taxi Services</span></h1>
             <h2 className="mt-5 font-serif text-2xl font-bold text-[#f2cf63]">One Country. Countless Destinations.</h2>
             <p className="mt-5 max-w-[640px] text-sm leading-7 text-white/85">Travel anywhere in India with reliable, comfortable and flexible taxi services from Jodhpur. From Rajasthan heritage routes to metro cities and long-distance journeys, we&apos;ve got you covered.</p>
-
             <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               {[
                 [MapPinned, "Pan India Coverage"],
@@ -151,7 +150,7 @@ export function TaxiServicesPageContent() {
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {vehicles.map((vehicle) => (
               <motion.article key={vehicle.name} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-[#ebe4da] bg-white p-3 text-center shadow-[0_8px_24px_rgba(45,37,28,.06)]">
-                <div className="relative h-28 overflow-hidden rounded-xl bg-[#f4f4f2]"><Image src={vehicle.image} alt={vehicle.name} fill sizes="200px" className="object-cover" /></div>
+                <div className="relative h-28 overflow-hidden rounded-xl bg-[#f5f5f3]"><Image unoptimized src={vehicle.image} alt={vehicle.name} fill sizes="200px" className="object-cover" /></div>
                 <h3 className="mt-3 min-h-10 font-serif text-xs font-bold text-[#243225]">{vehicle.name}</h3>
                 <div className="mt-2 flex items-center justify-center gap-3 text-[9px] text-[#666]"><span className="flex items-center gap-1"><UsersRound className="h-3 w-3" />{vehicle.seats}</span><span>🧳 {vehicle.luggage}</span><span>{vehicle.type}</span></div>
               </motion.article>
@@ -178,7 +177,7 @@ function DestinationSection({ eyebrow, title, destinations }: { eyebrow: string;
         <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {destinations.map((item) => (
             <Link key={item.name} href={`/destinations/${item.name.toLowerCase().replaceAll(" ", "-")}`} className="group overflow-hidden rounded-2xl border border-[#e8e1d7] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-              <div className="relative h-36 overflow-hidden"><Image src={item.image} alt={`${item.name} destination`} fill sizes="(max-width:640px) 100vw, 220px" className="object-cover transition duration-500 group-hover:scale-105" /></div>
+              <div className="relative h-36 overflow-hidden"><Image unoptimized src={item.image} alt={`${item.name} destination`} fill sizes="(max-width:640px) 100vw, 220px" className="object-cover transition duration-500 group-hover:scale-105" /></div>
               <div className="p-4"><h3 className="font-serif text-base font-bold text-[#233326]">{item.name}</h3><span className="mt-3 inline-flex text-xs font-bold text-[#0a6c32]">Explore Destination →</span></div>
             </Link>
           ))}
