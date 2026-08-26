@@ -2,9 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Destination/tour imagery comes from licensed third-party CDNs such as
-    // Wikimedia Commons. Serving the original URL avoids Next's image proxy
-    // making a second request that can be rate-limited by the upstream host.
+    // Public travel imagery comes from external CDNs. Serving original URLs
+    // avoids an additional Next image-proxy request to rate-limited hosts.
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
@@ -35,6 +34,17 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.sreestours.com" },
       { protocol: "https", hostname: "telugu.nativeplanet.com" },
       { protocol: "https", hostname: "www.transindiatravels.com" },
+      { protocol: "https", hostname: "maataxiservice.com" },
+      { protocol: "https", hostname: "menworld.pl" },
+      { protocol: "https", hostname: "www.motorbeam.com" },
+      { protocol: "https", hostname: "assets.cdntoyota.co.za" },
+      { protocol: "https", hostname: "images10.gaadi.com" },
+      { protocol: "https", hostname: "www.smtravelhub.com" },
+      { protocol: "https", hostname: "www.southtourism.in" },
+      { protocol: "https", hostname: "godavarigrand.com" },
+      { protocol: "https", hostname: "ncdtempotravellerhire.com" },
+      { protocol: "https", hostname: "busesandvans.tatamotors.com" },
+      { protocol: "https", hostname: "aaitoursandtravels.com" },
     ],
   },
 };
