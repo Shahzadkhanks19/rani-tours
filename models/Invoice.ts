@@ -1,5 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
+const MediaSchema=new Schema({url:{type:String,default:""},publicId:{type:String,default:""}},{_id:false});
 const InvoiceSchema=new Schema({
   invoiceNumber:{type:String,required:true,unique:true,index:true},
   billDate:{type:Date,required:true,default:Date.now,index:true},
@@ -29,6 +30,9 @@ const InvoiceSchema=new Schema({
   paymentMethod:{type:String,enum:["cash","upi","bank_transfer","card","other",""],default:""},
   status:{type:String,enum:["draft","issued","cancelled"],default:"issued",index:true},
   notes:{type:String,default:""},
+  signatoryName:{type:String,default:"Authorized Signatory"},
+  signatureImage:{type:MediaSchema,default:()=>({url:"",publicId:""})},
+  stampImage:{type:MediaSchema,default:()=>({url:"",publicId:""})},
   createdBy:{type:Schema.Types.ObjectId,ref:"AdminUser",default:null},
   updatedBy:{type:Schema.Types.ObjectId,ref:"AdminUser",default:null},
 },{timestamps:true});
