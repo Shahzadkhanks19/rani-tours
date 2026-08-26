@@ -65,8 +65,8 @@ export function TourPackagesListing({ packages }: { packages: Package[] }) {
 
     <section className="bg-[#f7f8f2] py-14">
       <div className="mx-auto max-w-[1180px] px-4">
-        <Heading eyebrow="All Tour Packages" title="Explore Every Published Package"/>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-[#718074]">Every package below is managed from the CMS and can be customized around your route, duration and travel preferences.</p>
+        <Heading eyebrow="All Tour Packages" title="Explore Every Tour Package"/>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-[#718074]">Browse all available journeys and choose the route, duration and travel style that suits you best.</p>
         <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{packages.map((item)=><PackageCard key={item._id} item={item}/>)}</div>
       </div>
     </section>
