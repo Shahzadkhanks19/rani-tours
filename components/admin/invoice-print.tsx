@@ -2,255 +2,33 @@
 
 import Image from "next/image";
 import { Mail, MapPin, Phone, Printer } from "lucide-react";
-import { siteContact } from "@/lib/site-data";
 
 type Media = { url?: string; publicId?: string };
-type InvoiceData = {
-  invoiceNumber: string;
-  billDate: string;
-  customerName: string;
-  customerPhone?: string;
-  travelDate?: string | null;
-  travelType: string;
-  itinerary?: string;
-  vehicleName: string;
-  vehicleNumber: string;
-  totalKm: number;
-  pricePerKm: number;
-  distanceAmount: number;
-  tollIncluded: boolean;
-  tollAmount: number;
-  parkingIncluded: boolean;
-  parkingAmount: number;
-  otherCharges: number;
-  otherChargesLabel: string;
-  taxableAmount: number;
-  taxRate: number;
-  taxAmount: number;
-  total: number;
-  amountPaid: number;
-  balanceDue: number;
-  paymentStatus: string;
-  paymentMethod?: string;
-  notes?: string;
-  signatoryName?: string;
-  signatureImage?: Media;
-  stampImage?: Media;
-};
+type InvoiceData = { invoiceNumber:string;billDate:string;customerName:string;customerPhone?:string;travelDate?:string|null;travelType:string;itinerary?:string;vehicleName:string;vehicleNumber:string;totalKm:number;pricePerKm:number;distanceAmount:number;tollIncluded:boolean;tollAmount:number;parkingIncluded:boolean;parkingAmount:number;otherCharges:number;otherChargesLabel:string;taxableAmount:number;taxRate:number;taxAmount:number;total:number;amountPaid:number;balanceDue:number;paymentStatus:string;paymentMethod?:string;notes?:string;signatoryName?:string;signatureImage?:Media;stampImage?:Media };
+type SettingsData={business:{name:string;tagline:string;address:string;primaryPhone:string;secondaryPhone:string;email:string};billing:{declaration:string;footerNote:string}};
+const money=(n:number)=>`₹${Number(n||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+const date=(value:string)=>new Date(value).toLocaleDateString("en-IN");
 
-const money = (n: number) =>
-  `₹${Number(n || 0).toLocaleString("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-
-const date = (value: string) => new Date(value).toLocaleDateString("en-IN");
-
-export function InvoicePrint({ invoice }: { invoice: InvoiceData }) {
-  return (
-    <div className="invoice-preview-shell min-h-screen bg-[#e9eee8] py-6 print:min-h-0 print:bg-white print:py-0">
-      <div className="mx-auto mb-4 flex w-[210mm] max-w-[calc(100vw-2rem)] justify-end print:hidden">
-        <button
-          onClick={() => window.print()}
-          className="inline-flex items-center gap-2 rounded-xl bg-[#07552e] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#064326]"
-        >
-          <Printer className="size-4" />
-          Print / Save PDF
-        </button>
-      </div>
-
-      <article className="invoice-a4 mx-auto flex h-[297mm] w-[210mm] max-w-[calc(100vw-2rem)] flex-col overflow-hidden bg-white text-[#1d3022] shadow-2xl print:max-w-none print:shadow-none">
-        <header className="relative shrink-0 overflow-hidden bg-[#064326] px-[10mm] py-[7mm] text-white">
-          <div className="absolute -right-[18mm] -top-[20mm] size-[62mm] rounded-full border-[11mm] border-[#d6b74b]/20" />
-          <div className="absolute -bottom-[22mm] right-[34mm] size-[43mm] rounded-full bg-[#d6b74b]/10" />
-          <div className="relative flex items-start justify-between gap-8">
-            <div className="flex min-w-0 items-center gap-4">
-              <div className="grid size-[18mm] shrink-0 place-items-center rounded-[5mm] bg-white p-[2mm] shadow-lg">
-                <Image src="/rani-tours-icon.svg" alt="Rani Tour's logo" width={62} height={62} priority />
-              </div>
-              <div className="min-w-0">
-                <p className="font-serif text-[25px] font-black leading-none tracking-tight">Rani Tour&apos;s</p>
-                <p className="mt-1 text-[11px] font-bold text-[#e7c95c]">Your Tour Expert</p>
-                <p className="mt-2 max-w-[370px] text-[9px] leading-[15px] text-white/72">
-                  Reliable taxi services, Rajasthan tours and comfortable travel solutions from Jodhpur.
-                </p>
-              </div>
-            </div>
-            <div className="shrink-0 text-right">
-              <p className="text-[9px] font-black uppercase tracking-[.23em] text-[#e7c95c]">Tax Invoice</p>
-              <p className="mt-1.5 text-[21px] font-black leading-none">{invoice.invoiceNumber}</p>
-              <div className="mt-2.5 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] font-bold">
-                Bill Date · {date(invoice.billDate)}
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <section className="grid shrink-0 grid-cols-[1.25fr_.9fr_1fr] gap-5 border-b border-[#e6e8df] bg-[#fbf8ed] px-[10mm] py-[4mm] text-[8px]">
-          <Info icon={MapPin}>{siteContact.address}</Info>
-          <Info icon={Phone}>{siteContact.phones.map((p) => p.display).join(" · ")}</Info>
-          <Info icon={Mail}>{siteContact.email}</Info>
-        </section>
-
-        <div className="flex flex-1 flex-col px-[10mm] pb-[6mm] pt-[6mm]">
-          <section className="grid shrink-0 grid-cols-[.76fr_1.24fr] gap-[5mm]">
-            <div className="rounded-[4mm] border border-[#dce5dc] bg-[#f8faf7] p-[5mm]">
-              <Tag>Bill To</Tag>
-              <h2 className="mt-1.5 font-serif text-[20px] font-black leading-tight text-[#17341f]">{invoice.customerName}</h2>
-              {invoice.customerPhone ? <p className="mt-1.5 text-[10px] text-[#5d695f]">+91 {invoice.customerPhone}</p> : null}
-              <div
-                className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-[8px] font-black capitalize ${
-                  invoice.paymentStatus === "paid"
-                    ? "bg-[#e7f6e7] text-[#176b32]"
-                    : invoice.paymentStatus === "partial"
-                      ? "bg-[#fff4d8] text-[#996b09]"
-                      : "bg-[#fde7e4] text-[#9a3126]"
-                }`}
-              >
-                {invoice.paymentStatus}
-              </div>
-            </div>
-
-            <div className="rounded-[4mm] border border-[#dce5dc] p-[5mm]">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <Tag>Travel Details</Tag>
-                  <p className="mt-1.5 max-h-[31px] overflow-hidden text-[10px] font-bold leading-[15px] text-[#253529]">
-                    {invoice.itinerary || "Travel service"}
-                  </p>
-                </div>
-                {invoice.travelDate ? (
-                  <div className="shrink-0 text-right">
-                    <p className="text-[7px] font-black uppercase tracking-[.16em] text-[#7c897e]">Travel Date</p>
-                    <p className="mt-1 text-[10px] font-black">{date(invoice.travelDate)}</p>
-                  </div>
-                ) : null}
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-x-5 gap-y-2 rounded-[3mm] bg-[#f6f8f5] px-4 py-3 text-[9px]">
-                <Fact label="Vehicle" value={invoice.vehicleName} />
-                <Fact label="Vehicle No." value={invoice.vehicleNumber} />
-                <Fact label="Distance" value={`${invoice.totalKm} km`} />
-                <Fact label="Rate" value={`${money(invoice.pricePerKm)} / km`} />
-              </div>
-            </div>
-          </section>
-
-          <section className="mt-[5mm] shrink-0 overflow-hidden rounded-[4mm] border border-[#d9e1d9]">
-            <div className="grid grid-cols-[1fr_38mm] bg-[#07552e] px-5 py-2.5 text-[8px] font-black uppercase tracking-[.14em] text-white">
-              <span>Particulars</span>
-              <span className="text-right">Amount</span>
-            </div>
-            <ChargeRow label={`Vehicle Travel Charges · ${invoice.totalKm} km × ${money(invoice.pricePerKm)}`} value={money(invoice.distanceAmount)} />
-            <ChargeRow label="Toll Taxes" value={invoice.tollIncluded ? "Included" : money(invoice.tollAmount)} />
-            <ChargeRow label="Parking Charges" value={invoice.parkingIncluded ? "Included" : money(invoice.parkingAmount)} />
-            {invoice.otherCharges > 0 ? <ChargeRow label={invoice.otherChargesLabel || "Other Charges"} value={money(invoice.otherCharges)} /> : null}
-          </section>
-
-          <section className="mt-[5mm] grid shrink-0 grid-cols-[1fr_70mm] gap-[7mm]">
-            <div className="min-w-0">
-              {invoice.notes ? (
-                <div className="rounded-[3mm] bg-[#fbf8ed] px-4 py-3">
-                  <Tag>Notes</Tag>
-                  <p className="mt-1 max-h-[34px] overflow-hidden whitespace-pre-line text-[8px] leading-[12px] text-[#59665c]">{invoice.notes}</p>
-                </div>
-              ) : null}
-              <div className="mt-3 flex items-center gap-2 text-[8px] text-[#748077]">
-                <span className="h-px flex-1 bg-[#dce3dc]" />
-                <span>Thank you for choosing Rani Tour&apos;s</span>
-                <span className="h-px flex-1 bg-[#dce3dc]" />
-              </div>
-            </div>
-
-            <div className="rounded-[4mm] border border-[#d9e1d9] p-4 text-[9px]">
-              <TotalRow label="Taxable Amount" value={money(invoice.taxableAmount)} />
-              <TotalRow label={`Tax (${invoice.taxRate}%)`} value={money(invoice.taxAmount)} />
-              <div className="my-2 border-t border-dashed border-[#8e978f]" />
-              <div className="flex items-end justify-between gap-3">
-                <span className="font-serif text-[15px] font-black text-[#17341f]">Grand Total</span>
-                <span className="text-[19px] font-black text-[#07552e]">{money(invoice.total)}</span>
-              </div>
-              <div className="mt-1.5"><TotalRow label="Amount Paid" value={money(invoice.amountPaid)} /></div>
-              <div className="mt-2 flex justify-between rounded-[3mm] bg-[#f5eee0] px-3 py-2 font-black text-[#8b4f19]">
-                <span>Balance Due</span>
-                <span>{money(invoice.balanceDue)}</span>
-              </div>
-              {invoice.paymentMethod ? (
-                <p className="pt-2 text-[8px] capitalize text-[#78847a]">
-                  Payment Method: <b className="text-[#2d3b31]">{invoice.paymentMethod.replaceAll("_", " ")}</b>
-                </p>
-              ) : null}
-            </div>
-          </section>
-
-          <section className="mt-auto grid shrink-0 grid-cols-[1fr_66mm] items-end gap-[8mm] border-t border-[#e0e6e0] pt-[5mm]">
-            <div>
-              <Tag>Declaration</Tag>
-              <p className="mt-1.5 max-w-[105mm] text-[8px] leading-[13px] text-[#657168]">
-                This invoice records the travel service provided by Rani Tour&apos;s. Toll and parking are charged separately only when marked as extra. Tax is calculated on the taxable invoice amount.
-              </p>
-            </div>
-            <div className="relative h-[31mm] rounded-[4mm] border border-dashed border-[#aebbae] bg-[#fbfcfa] px-4 py-2.5 text-center">
-              <p className="text-[7px] font-black uppercase tracking-[.18em] text-[#708074]">For Rani Tour&apos;s</p>
-              <div className="relative mx-auto mt-1 flex h-[17mm] max-w-[48mm] items-center justify-center">
-                {invoice.stampImage?.url ? (
-                  <Image src={invoice.stampImage.url} alt="Company stamp" width={76} height={62} className="absolute left-1 max-h-[15mm] w-auto object-contain opacity-85" />
-                ) : null}
-                {invoice.signatureImage?.url ? (
-                  <Image src={invoice.signatureImage.url} alt="Authorized signature" width={112} height={58} className="relative z-10 max-h-[14mm] w-auto object-contain" />
-                ) : null}
-              </div>
-              <div className="mx-auto h-px max-w-[43mm] bg-[#839083]" />
-              <p className="mt-1 text-[8px] font-black text-[#26372a]">{invoice.signatoryName || "Authorized Signatory"}</p>
-              {!invoice.signatureImage?.url && !invoice.stampImage?.url ? <p className="mt-0.5 text-[7px] text-[#89938b]">Signature / Stamp</p> : null}
-            </div>
-          </section>
-        </div>
-
-        <footer className="shrink-0 bg-[#064326] px-[10mm] py-[3mm] text-center text-[7px] leading-[12px] text-white/72">
-          <span className="font-black text-[#e7c95c]">Rani Tour&apos;s · Your Tour Expert</span> · {siteContact.address} · {siteContact.phones[0].display} · {siteContact.email}
-        </footer>
-      </article>
-    </div>
-  );
+export function InvoicePrint({invoice,settings}:{invoice:InvoiceData;settings:SettingsData}){
+ const business=settings.business;const billing=settings.billing;const phones=[business.primaryPhone,business.secondaryPhone].filter(Boolean).join(" · ");
+ return <div className="invoice-preview-shell min-h-screen bg-[#e9eee8] py-6 print:min-h-0 print:bg-white print:py-0">
+  <div className="mx-auto mb-4 flex w-[210mm] max-w-[calc(100vw-2rem)] justify-end print:hidden"><button onClick={()=>window.print()} className="inline-flex items-center gap-2 rounded-xl bg-[#07552e] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#064326]"><Printer className="size-4"/>Print / Save PDF</button></div>
+  <article className="invoice-a4 mx-auto flex h-[297mm] w-[210mm] max-w-[calc(100vw-2rem)] flex-col overflow-hidden bg-white text-[#1d3022] shadow-2xl print:max-w-none print:shadow-none">
+   <header className="relative shrink-0 overflow-hidden bg-[#064326] px-[10mm] py-[7mm] text-white"><div className="absolute -right-[18mm] -top-[20mm] size-[62mm] rounded-full border-[11mm] border-[#d6b74b]/20"/><div className="absolute -bottom-[22mm] right-[34mm] size-[43mm] rounded-full bg-[#d6b74b]/10"/><div className="relative flex items-start justify-between gap-8"><div className="flex min-w-0 items-center gap-4"><div className="grid size-[18mm] shrink-0 place-items-center rounded-[5mm] bg-white p-[2mm] shadow-lg"><Image src="/rani-tours-icon.svg" alt={`${business.name} logo`} width={62} height={62} priority/></div><div className="min-w-0"><p className="font-serif text-[25px] font-black leading-none tracking-tight">{business.name}</p><p className="mt-1 text-[11px] font-bold text-[#e7c95c]">{business.tagline}</p><p className="mt-2 max-w-[370px] text-[9px] leading-[15px] text-white/72">Reliable taxi services, Rajasthan tours and comfortable travel solutions from Jodhpur.</p></div></div><div className="shrink-0 text-right"><p className="text-[9px] font-black uppercase tracking-[.23em] text-[#e7c95c]">Tax Invoice</p><p className="mt-1.5 text-[21px] font-black leading-none">{invoice.invoiceNumber}</p><div className="mt-2.5 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] font-bold">Bill Date · {date(invoice.billDate)}</div></div></div></header>
+   <section className="grid shrink-0 grid-cols-[1.25fr_.9fr_1fr] gap-5 border-b border-[#e6e8df] bg-[#fbf8ed] px-[10mm] py-[4mm] text-[8px]"><Info icon={MapPin}>{business.address}</Info><Info icon={Phone}>{phones}</Info><Info icon={Mail}>{business.email}</Info></section>
+   <div className="flex flex-1 flex-col px-[10mm] pb-[6mm] pt-[6mm]">
+    <section className="grid shrink-0 grid-cols-[.76fr_1.24fr] gap-[5mm]"><div className="rounded-[4mm] border border-[#dce5dc] bg-[#f8faf7] p-[5mm]"><Tag>Bill To</Tag><h2 className="mt-1.5 font-serif text-[20px] font-black leading-tight text-[#17341f]">{invoice.customerName}</h2>{invoice.customerPhone?<p className="mt-1.5 text-[10px] text-[#5d695f]">+91 {invoice.customerPhone}</p>:null}<div className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-[8px] font-black capitalize ${invoice.paymentStatus==="paid"?"bg-[#e7f6e7] text-[#176b32]":invoice.paymentStatus==="partial"?"bg-[#fff4d8] text-[#996b09]":"bg-[#fde7e4] text-[#9a3126]"}`}>{invoice.paymentStatus}</div></div>
+     <div className="rounded-[4mm] border border-[#dce5dc] p-[5mm]"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><Tag>Travel Details</Tag><p className="mt-1.5 max-h-[31px] overflow-hidden text-[10px] font-bold leading-[15px] text-[#253529]">{invoice.itinerary||"Travel service"}</p></div>{invoice.travelDate?<div className="shrink-0 text-right"><p className="text-[7px] font-black uppercase tracking-[.16em] text-[#7c897e]">Travel Date</p><p className="mt-1 text-[10px] font-black">{date(invoice.travelDate)}</p></div>:null}</div><div className="mt-3 grid grid-cols-2 gap-x-5 gap-y-2 rounded-[3mm] bg-[#f6f8f5] px-4 py-3 text-[9px]"><Fact label="Vehicle" value={invoice.vehicleName}/><Fact label="Vehicle No." value={invoice.vehicleNumber}/><Fact label="Distance" value={`${invoice.totalKm} km`}/><Fact label="Rate" value={`${money(invoice.pricePerKm)} / km`}/></div></div></section>
+    <section className="mt-[5mm] shrink-0 overflow-hidden rounded-[4mm] border border-[#d9e1d9]"><div className="grid grid-cols-[1fr_38mm] bg-[#07552e] px-5 py-2.5 text-[8px] font-black uppercase tracking-[.14em] text-white"><span>Particulars</span><span className="text-right">Amount</span></div><ChargeRow label={`Vehicle Travel Charges · ${invoice.totalKm} km × ${money(invoice.pricePerKm)}`} value={money(invoice.distanceAmount)}/><ChargeRow label="Toll Taxes" value={invoice.tollIncluded?"Included":money(invoice.tollAmount)}/><ChargeRow label="Parking Charges" value={invoice.parkingIncluded?"Included":money(invoice.parkingAmount)}/>{invoice.otherCharges>0?<ChargeRow label={invoice.otherChargesLabel||"Other Charges"} value={money(invoice.otherCharges)}/>:null}</section>
+    <section className="mt-[5mm] grid shrink-0 grid-cols-[1fr_70mm] gap-[7mm]"><div className="min-w-0">{invoice.notes?<div className="rounded-[3mm] bg-[#fbf8ed] px-4 py-3"><Tag>Notes</Tag><p className="mt-1 max-h-[34px] overflow-hidden whitespace-pre-line text-[8px] leading-[12px] text-[#59665c]">{invoice.notes}</p></div>:null}<div className="mt-3 flex items-center gap-2 text-[8px] text-[#748077]"><span className="h-px flex-1 bg-[#dce3dc]"/><span>{billing.footerNote}</span><span className="h-px flex-1 bg-[#dce3dc]"/></div></div><div className="rounded-[4mm] border border-[#d9e1d9] p-4 text-[9px]"><TotalRow label="Taxable Amount" value={money(invoice.taxableAmount)}/><TotalRow label={`Tax (${invoice.taxRate}%)`} value={money(invoice.taxAmount)}/><div className="my-2 border-t border-dashed border-[#8e978f]"/><div className="flex items-end justify-between gap-3"><span className="font-serif text-[15px] font-black text-[#17341f]">Grand Total</span><span className="text-[19px] font-black text-[#07552e]">{money(invoice.total)}</span></div><div className="mt-1.5"><TotalRow label="Amount Paid" value={money(invoice.amountPaid)}/></div><div className="mt-2 flex justify-between rounded-[3mm] bg-[#f5eee0] px-3 py-2 font-black text-[#8b4f19]"><span>Balance Due</span><span>{money(invoice.balanceDue)}</span></div>{invoice.paymentMethod?<p className="pt-2 text-[8px] capitalize text-[#78847a]">Payment Method: <b className="text-[#2d3b31]">{invoice.paymentMethod.replaceAll("_"," ")}</b></p>:null}</div></section>
+    <section className="mt-auto grid shrink-0 grid-cols-[1fr_66mm] items-end gap-[8mm] border-t border-[#e0e6e0] pt-[5mm]"><div><Tag>Declaration</Tag><p className="mt-1.5 max-w-[105mm] text-[8px] leading-[13px] text-[#657168]">{billing.declaration}</p></div><div className="relative h-[31mm] rounded-[4mm] border border-dashed border-[#aebbae] bg-[#fbfcfa] px-4 py-2.5 text-center"><p className="text-[7px] font-black uppercase tracking-[.18em] text-[#708074]">For {business.name}</p><div className="relative mx-auto mt-1 flex h-[17mm] max-w-[48mm] items-center justify-center">{invoice.stampImage?.url?<Image src={invoice.stampImage.url} alt="Company stamp" width={76} height={62} className="absolute left-1 max-h-[15mm] w-auto object-contain opacity-85"/>:null}{invoice.signatureImage?.url?<Image src={invoice.signatureImage.url} alt="Authorized signature" width={112} height={58} className="relative z-10 max-h-[14mm] w-auto object-contain"/>:null}</div><div className="mx-auto h-px max-w-[43mm] bg-[#839083]"/><p className="mt-1 text-[8px] font-black text-[#26372a]">{invoice.signatoryName||"Authorized Signatory"}</p>{!invoice.signatureImage?.url&&!invoice.stampImage?.url?<p className="mt-0.5 text-[7px] text-[#89938b]">Signature / Stamp</p>:null}</div></section>
+   </div>
+   <footer className="shrink-0 bg-[#064326] px-[10mm] py-[3mm] text-center text-[7px] leading-[12px] text-white/72"><span className="font-black text-[#e7c95c]">{business.name} · {business.tagline}</span> · {business.address} · {business.primaryPhone} · {business.email}</footer>
+  </article>
+ </div>
 }
-
-function Tag({ children }: { children: React.ReactNode }) {
-  return <p className="text-[7px] font-black uppercase tracking-[.18em] text-[#a47919]">{children}</p>;
-}
-
-function Info({ icon: Icon, children }: { icon: typeof Phone; children: React.ReactNode }) {
-  return (
-    <div className="flex min-w-0 items-start gap-2 text-[#526057]">
-      <Icon className="mt-0.5 size-3 shrink-0 text-[#0b6531]" />
-      <span className="leading-[12px]">{children}</span>
-    </div>
-  );
-}
-
-function Fact({ label, value }: { label: string; value: string }) {
-  return (
-    <p>
-      <span className="text-[#78847a]">{label}</span>
-      <br />
-      <b>{value}</b>
-    </p>
-  );
-}
-
-function ChargeRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="grid grid-cols-[1fr_38mm] border-t border-[#e4e9e4] px-5 py-2.5 text-[9px]">
-      <span>{label}</span>
-      <b className="text-right">{value}</b>
-    </div>
-  );
-}
-
-function TotalRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between gap-4">
-      <span className="text-[#657168]">{label}</span>
-      <b>{value}</b>
-    </div>
-  );
-}
+function Tag({children}:{children:React.ReactNode}){return <p className="text-[7px] font-black uppercase tracking-[.18em] text-[#a47919]">{children}</p>}
+function Info({icon:Icon,children}:{icon:typeof Phone;children:React.ReactNode}){return <div className="flex min-w-0 items-start gap-2 text-[#526057]"><Icon className="mt-0.5 size-3 shrink-0 text-[#0b6531]"/><span className="leading-[12px]">{children}</span></div>}
+function Fact({label,value}:{label:string;value:string}){return <p><span className="text-[#78847a]">{label}</span><br/><b>{value}</b></p>}
+function ChargeRow({label,value}:{label:string;value:string}){return <div className="grid grid-cols-[1fr_38mm] border-t border-[#e4e9e4] px-5 py-2.5 text-[9px]"><span>{label}</span><b className="text-right">{value}</b></div>}
+function TotalRow({label,value}:{label:string;value:string}){return <div className="flex justify-between gap-4"><span className="text-[#657168]">{label}</span><b>{value}</b></div>}
