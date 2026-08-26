@@ -63,7 +63,7 @@ export function AdminShell({ admin, children }: AdminShellProps) {
         <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
           <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={() => setOpen(false)}>
             <div className="grid size-10 place-items-center rounded-xl bg-[#b3df24] font-black text-[#073b25]">RT</div>
-            <div><p className="font-bold leading-none">Rani Tours</p><p className="mt-1 text-xs text-white/55">Admin CMS</p></div>
+            <div><p className="font-bold leading-none">Rani Tours</p><p className="mt-1 text-xs text-white/55">Administration</p></div>
           </Link>
           <button className="rounded-lg p-2 hover:bg-white/10 lg:hidden" onClick={() => setOpen(false)} aria-label="Close admin navigation"><X className="size-5" /></button>
         </div>
@@ -79,7 +79,7 @@ export function AdminShell({ admin, children }: AdminShellProps) {
       {open && <button className="fixed inset-0 z-40 bg-black/45 lg:hidden print:hidden" onClick={() => setOpen(false)} aria-label="Close admin navigation overlay"/>}
       <div className="lg:pl-[290px] print:pl-0">
         <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#143124]/10 bg-white/90 px-4 backdrop-blur md:px-7 print:hidden">
-          <div className="flex items-center gap-3"><button className="rounded-xl border border-[#143124]/10 p-2.5 lg:hidden" onClick={() => setOpen(true)} aria-label="Open admin navigation"><Menu className="size-5"/></button><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6d806f]">Control Center</p><p className="font-bold">Rani Tours CMS</p></div></div>
+          <div className="flex items-center gap-3"><button className="rounded-xl border border-[#143124]/10 p-2.5 lg:hidden" onClick={() => setOpen(true)} aria-label="Open admin navigation"><Menu className="size-5"/></button><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6d806f]">Administration</p><p className="font-bold">Rani Tours Admin</p></div></div>
           <div className="flex items-center gap-3 rounded-xl border border-[#143124]/10 bg-[#f8faf6] px-3 py-2"><CircleUserRound className="size-8 text-[#0b6b3a]"/><div className="hidden sm:block"><p className="text-sm font-semibold leading-tight">{admin.name}</p><p className="text-xs text-[#6d806f]">{admin.role === "super_admin" ? "Super Admin" : "Admin"}</p></div></div>
         </header>
         <main className="p-4 md:p-7 print:p-0">{children}</main>
