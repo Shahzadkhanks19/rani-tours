@@ -1,0 +1,19 @@
+import type { Metadata } from "next";
+import { LegalPage } from "@/components/legal/legal-page";
+
+export const metadata: Metadata = { title: "Cancellation Policy | Rani Tour's", description: "Read the general cancellation, modification and refund policy for travel services arranged by Rani Tour's." };
+
+const sections = [
+  { title: "About This Policy", paragraphs: ["This policy explains the general approach to cancellations, booking changes and refunds for services arranged by Rani Tour's. The exact conditions for a journey may vary according to the vehicle, route, season, duration and third-party arrangements and will be communicated when applicable."] },
+  { title: "How to Request a Cancellation", paragraphs: ["Please contact Rani Tour's as soon as possible using the phone, email or other official contact details shown on this website. A cancellation is treated as received when our team acknowledges the request against the relevant booking."] },
+  { title: "Cancellation Charges", paragraphs: ["Cancellation charges, where applicable, depend on how close the cancellation is to the scheduled journey and on costs already committed for the booking. The applicable amount or condition should be confirmed by our team for the specific booking rather than assumed from a general website enquiry."] },
+  { title: "Booking Modifications", paragraphs: ["Requests to change travel dates, pickup points, destinations, vehicles, passenger counts or itinerary details are subject to availability. A modification may change the quoted fare or require a fresh quotation where the journey requirements materially change."] },
+  { title: "Refund Eligibility", paragraphs: ["Where a payment is eligible for refund after applicable cancellation charges and committed third-party costs, the refundable balance will be communicated to the customer. Non-refundable third-party charges already incurred may be deducted where applicable."] },
+  { title: "Refund Processing", paragraphs: ["Approved refunds are normally returned through an appropriate payment method after the cancellation has been reviewed. Processing time can vary depending on the original payment method, bank or payment service provider."] },
+  { title: "No-Show and Late Arrival", paragraphs: ["If passengers do not arrive at the agreed pickup point or cannot be contacted within a reasonable waiting period, the booking may be treated as a no-show. Waiting, parking, additional distance or cancellation charges may apply depending on the circumstances and the confirmed trip terms."] },
+  { title: "Weather, Road Closures and Exceptional Events", paragraphs: ["If a journey is materially affected by severe weather, road closures, government restrictions, emergencies or other circumstances beyond reasonable control, our team will try to provide a practical alternative, reschedule or other appropriate resolution based on the service already provided and costs already committed."] },
+  { title: "Third-Party Bookings", paragraphs: ["Hotels, attractions, guides, partner operators and other third-party services may have their own cancellation and refund rules. Their applicable charges may form part of the final cancellation calculation where those services were booked for your journey."] },
+  { title: "Contact for Cancellation Assistance", paragraphs: ["For the most accurate cancellation or refund information, contact Rani Tour's with your booking details. Our team will review the specific journey and explain the applicable conditions before processing the request."] },
+];
+
+export default function CancellationPolicyPage() { return <LegalPage eyebrow="Flexible Travel Support" title="Cancellation Policy" intro="Plans can change. This policy explains how to request a cancellation or modification and how refund eligibility is handled for bookings arranged with Rani Tour's." updated="26 August 2026" sections={sections} />; }
