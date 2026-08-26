@@ -8,7 +8,7 @@ import { GalleryItem } from "@/models/GalleryItem";
 import { TaxiService } from "@/models/TaxiService";
 import { TourPackage } from "@/models/TourPackage";
 
-const modules=["Tour Packages","Taxi Services","Destinations","Fleet","Gallery","Blog","Reviews","Enquiries","Bookings","Users","SEO Manager"];
+const modules=["Tour Packages","Taxi Services","Destinations","Fleet","Gallery","Enquiries","Bookings","Users","SEO Manager"];
 
 export default async function AdminDashboardPage(){
   await connectToDatabase();
