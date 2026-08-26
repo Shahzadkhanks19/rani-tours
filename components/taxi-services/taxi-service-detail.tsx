@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  BriefcaseBusiness,
-  CalendarDays,
   CarFront,
   CheckCircle2,
   Clock3,
@@ -13,7 +11,6 @@ import {
   Phone,
   Route as RouteIcon,
   ShieldCheck,
-  Sparkles,
   UsersRound,
 } from "lucide-react";
 import { siteContact } from "@/lib/site-data";
