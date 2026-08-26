@@ -1,6 +1,14 @@
 import { Schema, model, models } from "mongoose";
 
-const ImageSchema = new Schema({ url:{type:String,required:true}, publicId:{type:String,default:""}, alt:{type:String,default:""} },{_id:false});
+const ImageSchema = new Schema({
+  url:{type:String,required:true},
+  publicId:{type:String,default:""},
+  alt:{type:String,default:""},
+  credit:{type:String,default:""},
+  sourceUrl:{type:String,default:""},
+  license:{type:String,default:""},
+  licenseUrl:{type:String,default:""},
+},{_id:false});
 const CardSchema = new Schema({ title:{type:String,required:true}, description:{type:String,default:""}, image:{type:ImageSchema,default:null}, meta:{type:String,default:""} },{_id:false});
 const FaqSchema = new Schema({ question:{type:String,required:true}, answer:{type:String,required:true} },{_id:false});
 
