@@ -3,11 +3,10 @@ import Link from "next/link";
 import {
   ArrowRight,
   BriefcaseBusiness,
-  BusFront,
   CarFront,
   CheckCircle2,
   Headphones,
-  Map,
+  Map as MapIcon,
   MapPin,
   Phone,
   ShieldCheck,
@@ -31,42 +30,36 @@ const categoryCards = [
   {
     title: "Local Taxi Services",
     icon: CarFront,
-    slugs: ["jodhpur-local-taxi", "airport-transfers", "railway-station-transfers", "hotel-transfers"],
     labels: ["Jodhpur Local Taxi", "Jodhpur Sightseeing", "Airport Transfers", "Railway Station Transfers", "Hotel Transfers"],
     href: "/taxi-services/jodhpur-local-taxi",
   },
   {
     title: "Outstation Taxi",
     icon: MapPin,
-    slugs: ["one-way-taxi", "round-trip-taxi", "multi-city-taxi", "outstation-taxi"],
     labels: ["One Way Taxi", "Round Trip Taxi", "Multi-City Taxi", "Long Distance Taxi"],
     href: "/taxi-services/outstation-taxi",
   },
   {
     title: "Rajasthan Taxi",
-    icon: Map,
-    slugs: ["rajasthan-taxi-service"],
+    icon: MapIcon,
     labels: ["Jodhpur → Jaisalmer", "Jodhpur → Jaipur", "Jodhpur → Udaipur", "Jodhpur → Mount Abu", "More Routes"],
     href: "/taxi-services/rajasthan-taxi-service",
   },
   {
     title: "All India Taxi",
-    icon: Map,
-    slugs: ["all-india-taxi"],
+    icon: MapIcon,
     labels: ["North India", "South India", "East India", "West India", "Custom All India Taxi"],
     href: "/taxi-services/all-india-taxi",
   },
   {
     title: "Corporate Travel",
     icon: BriefcaseBusiness,
-    slugs: ["corporate-travel"],
     labels: ["Employee Transport", "Business Trips", "Airport Pickup", "Event Transportation"],
     href: "/taxi-services/corporate-travel",
   },
   {
     title: "Special Services",
     icon: Sparkles,
-    slugs: ["tempo-traveller-rental", "luxury-car-rental", "bus-rental", "custom-taxi-booking"],
     labels: ["Tempo Traveller", "Luxury Car Rental", "Bus Rental", "Custom Booking"],
     href: "/taxi-services/custom-taxi-booking",
   },
@@ -81,9 +74,9 @@ const fallbackRoutes: Route[] = [
 ];
 
 export function TaxiServicesListing({ services }: { services: Service[] }) {
-  const serviceMap = new Map(services.map((service) => [service.slug, service]));
+  const serviceMap = new globalThis.Map<string, Service>(services.map((service): [string, Service] => [service.slug, service]));
   const outstation = serviceMap.get("outstation-taxi");
-  const routes = outstation?.popularRoutes?.length ? outstation.popularRoutes.slice(0, 5) : fallbackRoutes;
+  const routes: Route[] = outstation?.popularRoutes?.length ? outstation.popularRoutes.slice(0, 5) : fallbackRoutes;
 
   return (
     <div className="bg-white text-[#17341f]">
@@ -120,7 +113,7 @@ export function TaxiServicesListing({ services }: { services: Service[] }) {
       </section>
 
       <section className="mx-auto max-w-[1180px] px-4 py-14">
-        <SectionHeading eyebrow="Our Taxi Services" title="Complete Travel Solutions for Every Journey" subtitle="Choose the service that matches your travel plan." />
+        <SectionHeading eyebrow="Our Taxi Services" title="Complete Travel Solutions for Every Journey" subtitle="Choose the service category that matches your travel plan." />
         <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {categoryCards.map((category) => {
             const Icon = category.icon;
@@ -137,11 +130,34 @@ export function TaxiServicesListing({ services }: { services: Service[] }) {
         </div>
       </section>
 
+      <section className="border-y border-[#17341f]/8 bg-[#fbfcf8] py-14">
+        <div className="mx-auto max-w-[1180px] px-4">
+          <SectionHeading eyebrow="All Taxi Services" title="Explore Every Taxi Service" subtitle="Browse all published taxi services and choose exactly what you need." />
+          <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {services.map((service) => (
+              <Link key={service._id} href={`/taxi-services/${service.slug}`} className="group overflow-hidden rounded-[18px] border border-[#17341f]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div className="relative h-44 overflow-hidden">
+                  <Image src={service.heroImage.url} alt={service.heroImage.alt || service.title} fill className="object-cover transition duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+                  <span className="absolute bottom-3 left-3 rounded-full bg-[#eff6df] px-3 py-1 text-[9px] font-black uppercase tracking-[.08em] text-[#086d38]">{service.serviceType}</span>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-serif text-lg font-black leading-6">{service.title}</h3>
+                  {service.tagline ? <p className="mt-1 text-[11px] font-bold text-[#a07b25]">{service.tagline}</p> : null}
+                  <p className="mt-2 line-clamp-3 text-xs leading-5 text-[#68766c]">{service.shortDescription}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-[#08723c]">View Service <ArrowRight className="size-3.5 transition group-hover:translate-x-1"/></span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[#f5f7ef] py-14">
         <div className="mx-auto max-w-[1180px] px-4">
           <SectionHeading eyebrow="Popular Routes" title="Popular Routes from Jodhpur" subtitle="Reliable taxi service to favourite destinations across Rajasthan and India." />
           <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {routes.map((route, index) => <article key={`${route.title}-${index}`} className="group overflow-hidden rounded-[18px] bg-white shadow-sm"><div className="relative h-36 overflow-hidden">{route.image?.url ? <Image src={route.image.url} alt={route.image.alt || route.title} fill className="object-cover transition duration-500 group-hover:scale-105"/> : null}<div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent"/></div><div className="p-4"><h3 className="font-serif text-base font-black">{route.title}</h3>{route.durationLabel ? <p className="mt-1 text-[11px] text-[#718074]">{route.durationLabel}</p> : null}</div></article>)}
+            {routes.map((route: Route, index: number) => <article key={`${route.title}-${index}`} className="group overflow-hidden rounded-[18px] bg-white shadow-sm"><div className="relative h-36 overflow-hidden">{route.image?.url ? <Image src={route.image.url} alt={route.image.alt || route.title} fill className="object-cover transition duration-500 group-hover:scale-105"/> : null}<div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent"/></div><div className="p-4"><h3 className="font-serif text-base font-black">{route.title}</h3>{route.durationLabel ? <p className="mt-1 text-[11px] text-[#718074]">{route.durationLabel}</p> : null}</div></article>)}
           </div>
         </div>
       </section>
