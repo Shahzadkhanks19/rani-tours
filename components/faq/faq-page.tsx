@@ -172,8 +172,8 @@ export function FaqPageContent() {
     <>
       <section className="relative overflow-hidden bg-[#f8f7f2]">
         <div className="absolute inset-0">
-          <Image src="https://images.pexels.com/photos/3889855/pexels-photo-3889855.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Rajasthan scenic road and hills" fill loading="eager" className="object-cover object-center" sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/30" />
+          <Image src="https://images.pexels.com/photos/797824/pexels-photo-797824.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Mehrangarh Fort and the Blue City of Jodhpur, Rajasthan" fill loading="eager" className="object-cover object-center" sizes="100vw" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/72 via-52% to-white/5" />
         </div>
         <div className="relative mx-auto min-h-[430px] max-w-[1180px] px-4 py-12 sm:py-16">
           <div className="flex items-center gap-2 text-xs text-[#4f5b50]"><Link href="/" className="hover:text-[#0b6531]">Home</Link><span>›</span><span>FAQ</span></div>
