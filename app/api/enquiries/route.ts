@@ -5,13 +5,14 @@ import { Enquiry } from "@/models/Enquiry";
 const phoneRe=/^[6-9]\d{9}$/;
 const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const clean=(v:unknown,max=1000)=>String(v??"").trim().slice(0,max);
+const normalizePhone=(v:unknown)=>String(v??"").replace(/\D/g,"").slice(-10);
 
 export async function POST(request:NextRequest){
   const body=await request.json().catch(()=>null) as Record<string,unknown>|null;
   if(!body)return NextResponse.json({error:"Invalid request."},{status:400});
   const source=body.source==="contact"?"contact":body.source==="get_quote"?"get_quote":null;
   if(!source)return NextResponse.json({error:"Invalid enquiry source."},{status:400});
-  const name=clean(body.name,100);const phone=clean(body.phone,20);const email=clean(body.email,160).toLowerCase();
+  const name=clean(body.name,100);const phone=normalizePhone(body.phone);const email=clean(body.email,160).toLowerCase();
   if(name.length<2)return NextResponse.json({error:"Please enter your name."},{status:400});
   if(!phoneRe.test(phone))return NextResponse.json({error:"Enter a valid 10-digit Indian mobile number."},{status:400});
   if(email&& !emailRe.test(email))return NextResponse.json({error:"Enter a valid email address."},{status:400});
