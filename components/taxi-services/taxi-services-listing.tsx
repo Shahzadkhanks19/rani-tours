@@ -1,12 +1,173 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CarFront, CheckCircle2, Headphones, MapPin, Phone, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  BriefcaseBusiness,
+  BusFront,
+  CarFront,
+  CheckCircle2,
+  Headphones,
+  Map,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { siteContact } from "@/lib/site-data";
 
-type Service={_id:string;title:string;slug:string;tagline?:string;shortDescription:string;heroImage:{url:string;alt?:string};startingPrice?:number;priceUnit?:string;serviceType:string;featured?:boolean};
-export function TaxiServicesListing({services}:{services:Service[]}){const featured=services.filter(s=>s.featured).slice(0,6);return <div className="bg-[#fffdf7] text-[#17341f]">
-<section className="relative isolate overflow-hidden bg-[#073d25] text-white"><Image src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=85" alt="Scenic Rajasthan road" fill priority className="object-cover opacity-35"/><div className="absolute inset-0 bg-gradient-to-r from-[#032d1b]/95 via-[#064326]/85 to-[#064326]/55"/><div className="relative mx-auto grid max-w-[1180px] gap-10 px-4 py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:py-20"><div><p className="text-xs font-black uppercase tracking-[.22em] text-[#d8b752]">Taxi Services</p><h1 className="mt-4 max-w-3xl font-serif text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">Reliable Taxi Services <span className="text-[#b3df24]">From Jodhpur</span></h1><p className="mt-5 max-w-2xl text-base leading-7 text-white/80">Local rides, Rajasthan routes, airport and railway transfers, outstation journeys, group vehicles and custom all-India travel—managed by one trusted team.</p><div className="mt-7 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">{[[ShieldCheck,"Safe & Reliable"],[CarFront,"Clean Vehicles"],[CheckCircle2,"Expert Drivers"],[Headphones,"24/7 Support"]].map(([Icon,label])=>{const I=Icon as typeof ShieldCheck;return <div key={String(label)} className="rounded-2xl border border-white/12 bg-white/8 p-3 backdrop-blur"><I className="size-5 text-[#d8b752]"/><p className="mt-2 text-xs font-bold">{String(label)}</p></div>})}</div></div><div className="rounded-[28px] border border-white/15 bg-white p-6 text-[#17341f] shadow-2xl"><p className="text-xs font-black uppercase tracking-[.18em] text-[#9b7a24]">Plan Your Journey</p><h2 className="mt-2 text-2xl font-black">Tell us where you want to go</h2><p className="mt-2 text-sm leading-6 text-[#667369]">Choose any taxi service below or send us your pickup, destination, travel date and group size. We’ll suggest the right vehicle and quote.</p><Link href="/get-quote" className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#076b39] px-5 py-3.5 text-sm font-black text-white transition hover:bg-[#055b30]">Get Quote / Enquiry <ArrowRight className="size-4"/></Link><div className="mt-4 grid grid-cols-2 gap-2 text-xs"><a href={siteContact.phones[0].href} className="flex items-center justify-center gap-2 rounded-xl border p-3 font-bold"><Phone className="size-4 text-[#0b6b3a]"/>Call Us</a><a href={siteContact.whatsapp} className="flex items-center justify-center gap-2 rounded-xl bg-[#eef5df] p-3 font-bold text-[#0b6b3a]">WhatsApp Us</a></div></div></div></section>
-<section className="mx-auto max-w-[1180px] px-4 py-16"><div className="text-center"><p className="text-xs font-black uppercase tracking-[.2em] text-[#0b6b3a]">Our Taxi Services</p><h2 className="mt-2 font-serif text-3xl font-black sm:text-4xl">A Ride for Every Travel Need</h2><p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#6d786f]">Every published service is managed from the CMS. Update content once and the public page updates automatically.</p></div><div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{services.map(s=><Link key={s._id} href={`/taxi-services/${s.slug}`} className="group overflow-hidden rounded-2xl border border-[#153722]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"><div className="relative h-52 overflow-hidden"><Image src={s.heroImage.url} alt={s.heroImage.alt||s.title} fill className="object-cover transition duration-500 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-transparent"/><span className="absolute bottom-4 left-4 rounded-full bg-[#b3df24] px-3 py-1 text-[10px] font-black uppercase tracking-wide text-[#073b25]">{s.serviceType}</span></div><div className="p-5"><h3 className="font-serif text-xl font-black">{s.title}</h3>{s.tagline&&<p className="mt-1 text-xs font-bold text-[#9b7a24]">{s.tagline}</p>}<p className="mt-3 line-clamp-3 text-sm leading-6 text-[#68746b]">{s.shortDescription}</p><div className="mt-5 flex items-center justify-between"><span className="text-xs font-bold text-[#0b6b3a]">{s.startingPrice?`From ₹${s.startingPrice.toLocaleString("en-IN")}${s.priceUnit||""}`:"Custom quote"}</span><span className="inline-flex items-center gap-1 text-sm font-black text-[#0b6b3a]">Explore <ArrowRight className="size-4 transition group-hover:translate-x-1"/></span></div></div></Link>)}</div></section>
-{featured.length?<section className="bg-[#f1f5e8]"><div className="mx-auto max-w-[1180px] px-4 py-14"><div className="grid gap-5 lg:grid-cols-[.8fr_1.2fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.2em] text-[#0b6b3a]">Popular Choices</p><h2 className="mt-2 font-serif text-3xl font-black">Most Requested Taxi Services</h2><p className="mt-3 text-sm leading-6 text-[#667268]">Quick access to the services travellers ask for most often.</p></div><div className="grid gap-3 sm:grid-cols-2">{featured.map(s=><Link key={s._id} href={`/taxi-services/${s.slug}`} className="flex items-center gap-3 rounded-2xl border border-[#143124]/8 bg-white p-4 transition hover:border-[#0b6b3a]/30"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef5df] text-[#0b6b3a]"><MapPin className="size-5"/></span><div className="min-w-0"><p className="truncate font-bold">{s.title}</p><p className="truncate text-xs text-[#768178]">{s.tagline||s.shortDescription}</p></div><ArrowRight className="ml-auto size-4 text-[#0b6b3a]"/></Link>)}</div></div></div></section>:null}
-<section className="mx-auto max-w-[1180px] px-4 py-14"><div className="rounded-[28px] bg-[#073d25] px-6 py-8 text-white md:flex md:items-center md:justify-between md:gap-8 md:px-10"><div><p className="text-xs font-black uppercase tracking-[.18em] text-[#d8b752]">Need a Taxi?</p><h2 className="mt-2 font-serif text-2xl font-black sm:text-3xl">Tell us your route and we’ll handle the rest.</h2></div><div className="mt-5 flex flex-wrap gap-3 md:mt-0"><a href={siteContact.phones[0].href} className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-black"><Phone className="size-4"/>{siteContact.phones[0].display}</a><Link href="/get-quote" className="rounded-xl bg-[#b3df24] px-5 py-3 text-sm font-black text-[#073b25]">Get Quote</Link></div></div></section>
-</div>}
+type Route = { title: string; durationLabel?: string; image?: { url: string; alt?: string } | null };
+type Service = {
+  _id: string;
+  title: string;
+  slug: string;
+  tagline?: string;
+  shortDescription: string;
+  heroImage: { url: string; alt?: string };
+  serviceType: string;
+  popularRoutes?: Route[];
+};
+
+const categoryCards = [
+  {
+    title: "Local Taxi Services",
+    icon: CarFront,
+    slugs: ["jodhpur-local-taxi", "airport-transfers", "railway-station-transfers", "hotel-transfers"],
+    labels: ["Jodhpur Local Taxi", "Jodhpur Sightseeing", "Airport Transfers", "Railway Station Transfers", "Hotel Transfers"],
+    href: "/taxi-services/jodhpur-local-taxi",
+  },
+  {
+    title: "Outstation Taxi",
+    icon: MapPin,
+    slugs: ["one-way-taxi", "round-trip-taxi", "multi-city-taxi", "outstation-taxi"],
+    labels: ["One Way Taxi", "Round Trip Taxi", "Multi-City Taxi", "Long Distance Taxi"],
+    href: "/taxi-services/outstation-taxi",
+  },
+  {
+    title: "Rajasthan Taxi",
+    icon: Map,
+    slugs: ["rajasthan-taxi-service"],
+    labels: ["Jodhpur → Jaisalmer", "Jodhpur → Jaipur", "Jodhpur → Udaipur", "Jodhpur → Mount Abu", "More Routes"],
+    href: "/taxi-services/rajasthan-taxi-service",
+  },
+  {
+    title: "All India Taxi",
+    icon: Map,
+    slugs: ["all-india-taxi"],
+    labels: ["North India", "South India", "East India", "West India", "Custom All India Taxi"],
+    href: "/taxi-services/all-india-taxi",
+  },
+  {
+    title: "Corporate Travel",
+    icon: BriefcaseBusiness,
+    slugs: ["corporate-travel"],
+    labels: ["Employee Transport", "Business Trips", "Airport Pickup", "Event Transportation"],
+    href: "/taxi-services/corporate-travel",
+  },
+  {
+    title: "Special Services",
+    icon: Sparkles,
+    slugs: ["tempo-traveller-rental", "luxury-car-rental", "bus-rental", "custom-taxi-booking"],
+    labels: ["Tempo Traveller", "Luxury Car Rental", "Bus Rental", "Custom Booking"],
+    href: "/taxi-services/custom-taxi-booking",
+  },
+] as const;
+
+const fallbackRoutes: Route[] = [
+  { title: "Jodhpur → Jaipur", durationLabel: "Popular Rajasthan route", image: { url: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85", alt: "Jaipur heritage architecture" } },
+  { title: "Jodhpur → Udaipur", durationLabel: "Lake City route", image: { url: "https://images.unsplash.com/photo-1595658658481-d53d3f999875?auto=format&fit=crop&w=1200&q=85", alt: "Udaipur lakes and palace" } },
+  { title: "Jodhpur → Jaisalmer", durationLabel: "Golden City route", image: { url: "https://images.unsplash.com/photo-1600954700722-b9df46a3a0d3?auto=format&fit=crop&w=1200&q=85", alt: "Jaisalmer fort" } },
+  { title: "Jodhpur → Mount Abu", durationLabel: "Hill station route", image: { url: "https://images.unsplash.com/photo-1627894483216-2138af692e32?auto=format&fit=crop&w=1200&q=85", alt: "Mount Abu hills" } },
+  { title: "Jodhpur → Delhi", durationLabel: "Interstate route", image: { url: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=85", alt: "India Gate Delhi" } },
+];
+
+export function TaxiServicesListing({ services }: { services: Service[] }) {
+  const serviceMap = new Map(services.map((service) => [service.slug, service]));
+  const outstation = serviceMap.get("outstation-taxi");
+  const routes = outstation?.popularRoutes?.length ? outstation.popularRoutes.slice(0, 5) : fallbackRoutes;
+
+  return (
+    <div className="bg-white text-[#17341f]">
+      <section className="relative isolate min-h-[510px] overflow-hidden bg-[#083e26] text-white">
+        <Image
+          src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=2200&q=88"
+          alt="Rajasthan road and heritage landscape"
+          fill
+          priority
+          className="object-cover object-center opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#062f1e]/95 via-[#073f27]/82 to-[#083e26]/55" />
+        <div className="relative mx-auto grid max-w-[1180px] gap-9 px-4 py-12 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:py-14">
+          <div>
+            <div className="flex items-center gap-2 text-[11px] font-semibold text-white/75"><Link href="/">Home</Link><span>›</span><span>Taxi Services</span></div>
+            <p className="mt-7 text-xs font-extrabold uppercase tracking-[.2em] text-[#e1bd58]">Reliable Rides. Memorable Journeys.</p>
+            <h1 className="mt-3 font-serif text-5xl font-black leading-[.98] sm:text-6xl">Taxi <span className="text-[#8fc93a]">Services</span></h1>
+            <p className="mt-4 font-serif text-xl font-bold text-[#e1bd58]">Drive Safe. Travel Comfortably.</p>
+            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-white/82">From local Jodhpur rides to Rajasthan tours, airport transfers, corporate travel and long-distance journeys across India, Rani Tours provides dependable taxi solutions for every travel need.</p>
+            <div className="mt-8 grid max-w-3xl grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-4">
+              {[
+                [ShieldCheck, "Safe & Reliable Always"],
+                [CarFront, "Well Maintained Vehicles"],
+                [CheckCircle2, "Experienced Drivers"],
+                [Headphones, "24/7 Customer Support"],
+              ].map(([Icon, label]) => {
+                const I = Icon as typeof ShieldCheck;
+                return <div key={String(label)} className="flex items-center gap-2 border-r border-white/15 last:border-r-0"><I className="size-6 shrink-0 text-[#e1bd58]"/><span className="text-xs font-bold leading-4">{String(label)}</span></div>;
+              })}
+            </div>
+          </div>
+          <JourneyPanel />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1180px] px-4 py-14">
+        <SectionHeading eyebrow="Our Taxi Services" title="Complete Travel Solutions for Every Journey" subtitle="Choose the service that matches your travel plan." />
+        <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {categoryCards.map((category) => {
+            const Icon = category.icon;
+            return (
+              <article key={category.title} className="group rounded-[18px] border border-[#163c27]/10 bg-white p-5 shadow-[0_8px_28px_rgba(20,58,34,.07)] transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div className="flex items-start gap-4">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[#eaf2db] text-[#057138]"><Icon className="size-6"/></span>
+                  <div className="min-w-0 flex-1"><h2 className="font-serif text-xl font-black">{category.title}</h2><div className="mt-3 space-y-1.5">{category.labels.map((label) => <p key={label} className="flex items-center gap-2 text-xs text-[#5e6d62]"><span className="size-1.5 rounded-full bg-[#7eab31]"/>{label}</p>)}</div></div>
+                </div>
+                <Link href={category.href} className="mt-5 inline-flex items-center gap-1 text-xs font-black text-[#067438]">Explore <ArrowRight className="size-3.5 transition group-hover:translate-x-1"/></Link>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="bg-[#f5f7ef] py-14">
+        <div className="mx-auto max-w-[1180px] px-4">
+          <SectionHeading eyebrow="Popular Routes" title="Popular Routes from Jodhpur" subtitle="Reliable taxi service to favourite destinations across Rajasthan and India." />
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {routes.map((route, index) => <article key={`${route.title}-${index}`} className="group overflow-hidden rounded-[18px] bg-white shadow-sm"><div className="relative h-36 overflow-hidden">{route.image?.url ? <Image src={route.image.url} alt={route.image.alt || route.title} fill className="object-cover transition duration-500 group-hover:scale-105"/> : null}<div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent"/></div><div className="p-4"><h3 className="font-serif text-base font-black">{route.title}</h3>{route.durationLabel ? <p className="mt-1 text-[11px] text-[#718074]">{route.durationLabel}</p> : null}</div></article>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1180px] px-4 py-12">
+        <SectionHeading eyebrow="Why Choose Rani Tours?" title="Travel With Confidence" />
+        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+          {["Experienced Drivers","Well Maintained Vehicles","On-Time Service","Safe & Secure Journeys","24/7 Customer Support","Comfortable Travel"].map((item, index) => <div key={item} className="rounded-2xl bg-[#f3f6ec] px-3 py-5 text-center"><span className="mx-auto grid size-10 place-items-center rounded-full bg-white text-[#08723c]">{index === 4 ? <Headphones className="size-5"/> : index === 1 ? <CarFront className="size-5"/> : <ShieldCheck className="size-5"/>}</span><p className="mt-3 text-xs font-black leading-4">{item}</p></div>)}
+        </div>
+      </section>
+
+      <section className="bg-[#eff4e5]">
+        <div className="mx-auto flex max-w-[1180px] flex-col items-start justify-between gap-5 px-4 py-7 md:flex-row md:items-center">
+          <div className="flex items-center gap-4"><span className="grid size-12 place-items-center rounded-full bg-[#075d32] text-white"><Phone className="size-5"/></span><div><h2 className="font-serif text-xl font-black">Need a Taxi for Local or Outstation?</h2><p className="mt-1 text-xs text-[#68756c]">Send your travel details and our team will help plan a comfortable journey.</p></div></div>
+          <div className="flex flex-wrap gap-3"><a href={siteContact.phones[0].href} className="inline-flex items-center gap-2 rounded-xl border border-[#0b6b3a]/20 bg-white px-4 py-2.5 text-xs font-black"><Phone className="size-4"/>{siteContact.phones[0].display}</a><a href={siteContact.whatsapp} className="rounded-xl bg-[#08723c] px-5 py-2.5 text-xs font-black text-white">WhatsApp Us</a></div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function JourneyPanel() {
+  const field = "h-10 w-full rounded-lg border border-[#17341f]/10 bg-[#fafbf8] px-3 text-xs outline-none transition focus:border-[#0a713b] focus:ring-2 focus:ring-[#0a713b]/10";
+  return <aside className="rounded-[22px] bg-white p-5 text-[#17341f] shadow-2xl"><div className="text-center"><h2 className="font-serif text-xl font-black text-[#08713b]">Plan Your Journey</h2><div className="mx-auto mt-2 h-px w-20 bg-[#d8b752]"/></div><form action="/get-quote" method="get" className="mt-5 grid gap-3"><label className="text-[10px] font-bold">Pickup Location<input name="pickup" className={`${field} mt-1`} placeholder="Enter pickup location"/></label><label className="text-[10px] font-bold">Destination<input name="destination" className={`${field} mt-1`} placeholder="Enter destination"/></label><div className="grid grid-cols-2 gap-3"><label className="text-[10px] font-bold">Travel Date<input name="date" className={`${field} mt-1`} placeholder="Select date"/></label><label className="text-[10px] font-bold">Travellers<input name="travellers" className={`${field} mt-1`} placeholder="1 Traveller"/></label></div><label className="text-[10px] font-bold">Vehicle Type<input name="vehicle" className={`${field} mt-1`} placeholder="Select vehicle type"/></label><button className="mt-1 inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#08723c] text-xs font-black text-white">Get Quote / Enquiry Now <ArrowRight className="size-4"/></button></form><div className="mt-4 flex items-center justify-center gap-4 text-[10px] font-bold text-[#526258]"><a href={siteContact.whatsapp}>WhatsApp Us</a><span className="h-3 w-px bg-black/15"/><a href={siteContact.phones[0].href}>{siteContact.phones[0].display}</a></div></aside>;
+}
+
+function SectionHeading({eyebrow,title,subtitle}:{eyebrow:string;title:string;subtitle?:string}) {
+  return <div className="text-center"><p className="text-[11px] font-black uppercase tracking-[.18em] text-[#08723c]">{eyebrow}</p><h2 className="mt-2 font-serif text-3xl font-black sm:text-[34px]">{title}</h2>{subtitle ? <p className="mx-auto mt-2 max-w-2xl text-xs leading-5 text-[#6f7d72]">{subtitle}</p> : null}<div className="mx-auto mt-3 h-px w-16 bg-[#d8b752]"/></div>;
+}
