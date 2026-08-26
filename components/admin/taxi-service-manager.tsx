@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Edit3, Plus, Search, Star, Trash2 } from "lucide-react";
 
 type Item = { _id:string; title:string; slug:string; serviceType:string; pageTemplate:string; origin?:string; destination?:string; startingPrice:number; priceUnit?:string; status:"draft"|"published"; featured:boolean; heroImage?:{url?:string}; updatedAt:string };
 
 export function TaxiServiceManager(){
   const [items,setItems]=useState<Item[]>([]); const [search,setSearch]=useState(""); const [status,setStatus]=useState("all"); const [loading,setLoading]=useState(true); const [error,setError]=useState("");
-  async function load(){setLoading(true);setError("");try{const p=new URLSearchParams({limit:"50",status});if(search.trim())p.set("search",search.trim());const r=await fetch(`/api/admin/taxi-services?${p}`,{cache:"no-store"});const j=await r.json();if(!r.ok)throw new Error(j.error||"Unable to load taxi services.");setItems(j.items||[])}catch(e){setError(e instanceof Error?e.message:"Unable to load taxi services.")}finally{setLoading(false)}}
-  useEffect(()=>{const timer=window.setTimeout(()=>{void load()},250);return()=>window.clearTimeout(timer)},[search,status]);
+  const load=useCallback(async()=>{setLoading(true);setError("");try{const p=new URLSearchParams({limit:"50",status});if(search.trim())p.set("search",search.trim());const r=await fetch(`/api/admin/taxi-services?${p}`,{cache:"no-store"});const j=await r.json();if(!r.ok)throw new Error(j.error||"Unable to load taxi services.");setItems(j.items||[])}catch(e){setError(e instanceof Error?e.message:"Unable to load taxi services.")}finally{setLoading(false)}},[search,status]);
+  useEffect(()=>{const timer=window.setTimeout(()=>{void load()},250);return()=>window.clearTimeout(timer)},[load]);
   async function remove(item:Item){if(!window.confirm(`Delete “${item.title}”? This cannot be undone.`))return;const r=await fetch(`/api/admin/taxi-services/${item._id}`,{method:"DELETE"});const j=await r.json();if(!r.ok)return window.alert(j.error||"Unable to delete service.");setItems((old)=>old.filter((x)=>x._id!==item._id))}
   const counts=useMemo(()=>({total:items.length,published:items.filter(x=>x.status==="published").length,drafts:items.filter(x=>x.status==="draft").length}),[items]);
   return <div className="space-y-6">
