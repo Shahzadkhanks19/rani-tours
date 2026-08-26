@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { PublicEnquiryBridge } from "@/components/enquiries/public-enquiry-bridge";
 import "./globals.css";
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body className="m-0 bg-[#fffdf7] font-sans text-[#143124] antialiased selection:bg-[#b3df24] selection:text-[#003f22]">
         <PublicEnquiryBridge />
+        <PageViewTracker />
         {children}
       </body>
     </html>
