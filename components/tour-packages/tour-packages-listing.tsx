@@ -1,0 +1,90 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, CalendarDays, CheckCircle2, Compass, Headphones, MapPin, Phone, Route, ShieldCheck, Sparkles, UsersRound } from "lucide-react";
+import { siteContact } from "@/lib/site-data";
+
+type Package = {
+  _id: string;
+  title: string;
+  slug: string;
+  category: string;
+  location: string;
+  shortDescription: string;
+  heroImage: { url: string; alt?: string };
+  durationDays: number;
+  durationNights: number;
+  customizable?: boolean;
+  featured?: boolean;
+};
+
+const categories = [
+  { label: "Heritage & Royal", icon: Sparkles, slugs: ["rajasthan-heritage-tour", "royal-rajasthan-tour", "forts-palaces-tour"] },
+  { label: "Classic India", icon: Compass, slugs: ["golden-triangle-tour", "all-india-tour-packages"] },
+  { label: "Desert & Adventure", icon: Route, slugs: ["desert-safari-tour", "adventure-rajasthan-tour"] },
+  { label: "Family & Honeymoon", icon: UsersRound, slugs: ["family-rajasthan-tour", "honeymoon-rajasthan-tour"] },
+  { label: "Culture & Spiritual", icon: MapPin, slugs: ["cultural-rajasthan-tour", "pilgrimage-tour"] },
+  { label: "Flexible Tours", icon: CalendarDays, slugs: ["budget-rajasthan-tour", "wildlife-rajasthan-tour", "luxury-rajasthan-tour", "customised-tour-package"] },
+];
+
+export function TourPackagesListing({ packages }: { packages: Package[] }) {
+  const map = new globalThis.Map<string, Package>(packages.map((item) => [item.slug, item]));
+  const featured = packages.filter((item) => item.featured).slice(0, 5);
+  return <div className="bg-white text-[#17341f]">
+    <section className="relative isolate overflow-hidden bg-[#073d25] text-white">
+      <Image src="https://images.pexels.com/photos/36561998/pexels-photo-36561998.jpeg?auto=compress&cs=tinysrgb&w=1800" alt="Rajasthan heritage tour landscape" fill priority className="object-cover opacity-45"/>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#042b1a]/96 via-[#073d25]/82 to-[#073d25]/48"/>
+      <div className="relative mx-auto grid max-w-[1180px] gap-9 px-4 py-14 lg:grid-cols-[1.12fr_.88fr] lg:items-center lg:py-20">
+        <div>
+          <p className="text-[11px] font-black uppercase tracking-[.22em] text-[#e1bd58]">Tour Packages</p>
+          <h1 className="mt-3 max-w-3xl font-serif text-4xl font-black leading-[1.04] sm:text-5xl lg:text-[58px]">Explore Rajasthan & India <span className="text-[#b3df24]">Your Way</span></h1>
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-white/82">Private, customizable journeys for heritage, culture, desert, family, honeymoon, wildlife and all-India travel—planned around your dates and preferences.</p>
+          <div className="mt-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+            {[[ShieldCheck,"Private Tours"],[Sparkles,"Customizable"],[CheckCircle2,"Trusted Planning"],[Headphones,"24/7 Support"]].map(([Icon,label])=>{const I=Icon as typeof ShieldCheck;return <div key={String(label)} className="flex items-center gap-2 border-r border-white/15 last:border-r-0"><I className="size-5 text-[#e1bd58]"/><span className="text-[11px] font-bold">{String(label)}</span></div>})}
+          </div>
+        </div>
+        <aside className="rounded-[22px] bg-white p-6 text-[#17341f] shadow-2xl">
+          <p className="text-[10px] font-black uppercase tracking-[.18em] text-[#a17d25]">Plan Your Holiday</p>
+          <h2 className="mt-2 font-serif text-2xl font-black text-[#08713b]">Tell us where you want to travel</h2>
+          <p className="mt-3 text-sm leading-6 text-[#69756c]">Choose a package below or share your destinations, dates and group size. Our team will help shape the itinerary around you.</p>
+          <Link href="/get-quote" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#08723c] px-5 text-xs font-black text-white">Get Tour Enquiry <ArrowRight className="size-4"/></Link>
+          <div className="mt-4 grid grid-cols-2 gap-2"><a href={siteContact.phones[0].href} className="flex items-center justify-center gap-2 rounded-lg border border-[#17341f]/10 px-3 py-3 text-xs font-bold"><Phone className="size-4 text-[#08713b]"/>Call Us</a><a href={siteContact.whatsapp} className="rounded-lg bg-[#eef5df] px-3 py-3 text-center text-xs font-bold text-[#08713b]">WhatsApp</a></div>
+        </aside>
+      </div>
+    </section>
+
+    <section className="bg-[#f7f8f2] py-14">
+      <div className="mx-auto max-w-[1180px] px-4">
+        <Heading eyebrow="Explore by Travel Style" title="Find the Tour That Fits You"/>
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map(({label,icon:Icon,slugs})=>{const first=slugs.map((slug)=>map.get(slug)).find(Boolean);return <div key={label} className="rounded-2xl border border-[#153722]/8 bg-white p-5 shadow-sm"><span className="grid size-11 place-items-center rounded-xl bg-[#eef5df] text-[#08713b]"><Icon className="size-5"/></span><h3 className="mt-4 font-serif text-xl font-black">{label}</h3><div className="mt-3 flex flex-wrap gap-2">{slugs.map((slug)=>{const item=map.get(slug);return item?<Link key={slug} href={`/tour-packages/${slug}`} className="rounded-full bg-[#f7f8f2] px-3 py-1.5 text-[11px] font-bold text-[#526158] transition hover:bg-[#eaf4d8] hover:text-[#08713b]">{item.title}</Link>:null})}</div>{first?<Link href={`/tour-packages/${first.slug}`} className="mt-5 inline-flex items-center gap-1 text-xs font-black text-[#08713b]">Explore category <ArrowRight className="size-3.5"/></Link>:null}</div>})}
+        </div>
+      </div>
+    </section>
+
+    {featured.length ? <section className="mx-auto max-w-[1180px] px-4 py-14"><Heading eyebrow="Popular Tour Packages" title="Traveller Favourites"/><div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-5">{featured.map((item)=><PackageCard key={item._id} item={item} compact/>)}</div></section> : null}
+
+    <section className="bg-[#f7f8f2] py-14">
+      <div className="mx-auto max-w-[1180px] px-4">
+        <Heading eyebrow="All Tour Packages" title="Explore Every Published Package"/>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-[#718074]">Every package below is managed from the CMS and can be customized around your route, duration and travel preferences.</p>
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{packages.map((item)=><PackageCard key={item._id} item={item}/>)}</div>
+      </div>
+    </section>
+
+    <section className="mx-auto max-w-[1180px] px-4 py-14">
+      <div className="rounded-[26px] bg-[#073d25] px-6 py-8 text-white md:flex md:items-center md:justify-between md:gap-8 md:px-10">
+        <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-[#e1bd58]">Still need help?</p><h2 className="mt-2 font-serif text-2xl font-black sm:text-3xl">Our travel experts can help plan the perfect journey.</h2></div>
+        <div className="mt-5 flex flex-wrap gap-3 md:mt-0"><a href={siteContact.phones[0].href} className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-5 py-3 text-xs font-black"><Phone className="size-4"/>{siteContact.phones[0].display}</a><a href={siteContact.whatsapp} className="rounded-lg bg-[#b3df24] px-5 py-3 text-xs font-black text-[#073b25]">WhatsApp Us</a></div>
+      </div>
+    </section>
+  </div>;
+}
+
+function PackageCard({item,compact=false}:{item:Package;compact?:boolean}) {
+  return <Link href={`/tour-packages/${item.slug}`} className="group overflow-hidden rounded-2xl border border-[#153722]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div className={`relative overflow-hidden ${compact?"h-36":"h-52"}`}><Image src={item.heroImage.url} alt={item.heroImage.alt||item.title} fill className="object-cover transition duration-500 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"/><span className="absolute left-3 top-3 rounded-full bg-[#e1bd58] px-3 py-1 text-[9px] font-black uppercase tracking-wide text-[#17341f]">{item.category}</span></div>
+    <div className={compact?"p-4":"p-5"}><h3 className={`font-serif font-black ${compact?"text-base":"text-xl"}`}>{item.title}</h3><div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#6b786e]"><span className="inline-flex items-center gap-1"><CalendarDays className="size-3.5 text-[#08713b]"/>{item.durationDays} Days / {item.durationNights} Nights</span>{item.customizable?<span className="inline-flex items-center gap-1"><CheckCircle2 className="size-3.5 text-[#08713b]"/>Customizable</span>:null}</div>{!compact?<><p className="mt-3 line-clamp-2 text-sm leading-6 text-[#69756c]">{item.shortDescription}</p><p className="mt-3 line-clamp-1 text-xs font-bold text-[#9b7a24]">{item.location}</p></>:null}<span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-[#08713b]">View Details <ArrowRight className="size-3.5 transition group-hover:translate-x-1"/></span></div>
+  </Link>;
+}
+
+function Heading({eyebrow,title}:{eyebrow:string;title:string}) { return <div className="text-center"><p className="text-[10px] font-black uppercase tracking-[.19em] text-[#08713b]">{eyebrow}</p><h2 className="mt-2 font-serif text-3xl font-black sm:text-4xl">{title}</h2><div className="mx-auto mt-3 h-px w-20 bg-[#e1bd58]"/></div>; }
