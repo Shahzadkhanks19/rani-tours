@@ -16,16 +16,20 @@ export async function destroyCloudinaryImage(publicId: string) {
   }
 }
 
-export function collectPackagePublicIds(value: unknown) {
+export function collectCmsPublicIds(value: unknown, prefix: string) {
   const ids = new Set<string>();
   const walk = (item: unknown) => {
     if (!item) return;
     if (Array.isArray(item)) return item.forEach(walk);
     if (typeof item !== "object") return;
     const record = item as Record<string, unknown>;
-    if (typeof record.publicId === "string" && record.publicId.startsWith("rani-tours/tour-packages/")) ids.add(record.publicId);
+    if (typeof record.publicId === "string" && record.publicId.startsWith(prefix)) ids.add(record.publicId);
     Object.values(record).forEach(walk);
   };
   walk(value);
   return ids;
+}
+
+export function collectPackagePublicIds(value: unknown) {
+  return collectCmsPublicIds(value, "rani-tours/tour-packages/");
 }
