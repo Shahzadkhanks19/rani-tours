@@ -7,21 +7,11 @@ await mongoose.connect(uri);
 const p = (id, w = 1600) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
 const image = (id, alt, w = 1600) => ({ url: p(id, w), publicId: "", alt });
 
+// These IDs are deliberately curated from search results whose Pexels pages explicitly
+// identify the photographed place/subject. Do not add guessed photo IDs here.
 const pools = {
-  jodhpur: [37350638, 37350641, 18010572, 35394623, 34035714, 37350642],
-  ranthambore: [27960753, 24735988, 25785873, 24735987, 11934062],
-  chittorgarh: [35907573, 29433249, 29433252, 32760057, 29433246, 34596317, 34765911, 29433400],
-  bundi: [31794997, 29097522, 31760609, 16386149, 31760612, 14940424],
-  "north-india": [36721861, 37466126, 28689395, 15344913, 17070404, 19160128],
-  "south-india": [35347824, 35347829, 29988900, 35347836, 29988901, 27869350, 19743480],
-  "west-india": [37350638, 33658451, 23630487, 32262472, 15344913, 14337670],
-  "east-india": [36721861, 37466126, 28689395, 29988900, 35347824, 19160128],
-  "hill-stations": [36721861, 37466126, 28689395, 36721865, 36721857, 33658451],
-  "beach-destinations": [23630487, 30987015, 27667777, 33793089, 35916767, 32262472],
-  wildlife: [27960753, 24735988, 25785873, 24735987, 11934062],
-  spiritual: [19160128, 15344913, 17070404, 29097522, 31760609, 16386149],
-  honeymoon: [33658451, 23630487, 32262472, 35347824, 36721861, 14337670],
-  "weekend-getaways": [33658451, 15344913, 37350638, 27960753, 23630487, 36721861],
+  jodhpur: [37350602, 797824, 18010572, 37350638, 37350641, 35394623, 36470630, 37350610, 36470445, 19160102, 34035714, 6233443],
+  ranthambore: [11934062, 25785873, 36780892, 11943859, 36781003, 12436501, 31393397, 21701085, 36076418],
 };
 
 const Mixed = new mongoose.Schema({}, { strict: false, timestamps: true });
@@ -42,31 +32,13 @@ for (const [slug, ids] of Object.entries(pools)) {
   };
 
   const heroImage = next("destination hero", 1800);
-  const attractions = (doc.attractions || []).map((item) => ({
-    ...item,
-    image: next(item.title || "attraction"),
-  }));
-  const experiences = (doc.experiences || []).map((item) => ({
-    ...item,
-    image: next(item.title || "experience"),
-  }));
-  const gallery = Array.from({ length: Math.min(5, ids.length) }, (_, index) => next(`travel gallery ${index + 1}`));
+  const attractions = (doc.attractions || []).map((item) => ({ ...item, image: next(item.title || "attraction") }));
+  const experiences = (doc.experiences || []).map((item) => ({ ...item, image: next(item.title || "experience") }));
+  const gallery = Array.from({ length: Math.min(5, Math.max(0, ids.length - cursor)) }, (_, index) => next(`travel gallery ${index + 1}`));
 
-  await Destination.updateOne(
-    { slug },
-    {
-      $set: {
-        heroImage,
-        attractions,
-        experiences,
-        gallery,
-        "seo.ogImage": heroImage,
-      },
-    },
-  );
-
-  console.log(`Updated imagery for ${slug}`);
+  await Destination.updateOne({ slug }, { $set: { heroImage, attractions, experiences, gallery, "seo.ogImage": heroImage } });
+  console.log(`Updated verified imagery for ${slug}`);
 }
 
-console.log("Destination image relevance cleanup complete.");
+console.log("Verified destination image cleanup complete.");
 await mongoose.disconnect();
