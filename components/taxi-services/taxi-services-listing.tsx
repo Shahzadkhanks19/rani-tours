@@ -132,7 +132,7 @@ export function TaxiServicesListing({ services }: { services: Service[] }) {
 
       <section className="border-y border-[#17341f]/8 bg-[#fbfcf8] py-14">
         <div className="mx-auto max-w-[1180px] px-4">
-          <SectionHeading eyebrow="All Taxi Services" title="Explore Every Taxi Service" subtitle="Browse all published taxi services and choose exactly what you need." />
+          <SectionHeading eyebrow="All Taxi Services" title="Explore Every Taxi Service" subtitle="Browse all taxi services and choose exactly what you need." />
           <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((service) => (
               <Link key={service._id} href={`/taxi-services/${service.slug}`} className="group overflow-hidden rounded-[18px] border border-[#17341f]/10 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
