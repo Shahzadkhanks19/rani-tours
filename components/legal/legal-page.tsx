@@ -45,21 +45,35 @@ const highlights = {
   ],
 } as const;
 
-const heroImages: Record<LegalVariant, string> = {
-  privacy: "https://images.pexels.com/photos/3889855/pexels-photo-3889855.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  terms: "https://images.pexels.com/photos/3581368/pexels-photo-3581368.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  cancellation: "https://images.pexels.com/photos/3889855/pexels-photo-3889855.jpeg?auto=compress&cs=tinysrgb&w=1920",
+const heroImages: Record<LegalVariant, { src: string; alt: string; position: string }> = {
+  privacy: {
+    src: "https://images.pexels.com/photos/19195945/pexels-photo-19195945.jpeg?auto=compress&cs=tinysrgb&w=1920",
+    alt: "Hawa Mahal in Jaipur, Rajasthan",
+    position: "object-center",
+  },
+  terms: {
+    src: "https://images.pexels.com/photos/17831363/pexels-photo-17831363.jpeg?auto=compress&cs=tinysrgb&w=1920",
+    alt: "City Palace and Udaipur cityscape in Rajasthan",
+    position: "object-center",
+  },
+  cancellation: {
+    src: "https://images.pexels.com/photos/35130760/pexels-photo-35130760.jpeg?auto=compress&cs=tinysrgb&w=1920",
+    alt: "Aerial view of Jaisalmer Fort in Rajasthan",
+    position: "object-center",
+  },
 };
 
 export function LegalPage({ eyebrow, title, intro, updated, sections, variant }: LegalPageProps) {
+  const heroImage = heroImages[variant];
+
   return (
     <>
       <section className="relative overflow-hidden bg-[#f7f6f0]">
-        <div className="absolute inset-y-0 right-0 w-full lg:w-[58%]">
-          <Image src={heroImages[variant]} alt="Scenic Rajasthan and India travel landscape" fill priority className="object-cover object-center" sizes="(min-width:1024px) 58vw, 100vw" />
-          <div className="absolute inset-0 bg-white/25" />
+        <div className="absolute inset-y-0 right-0 w-full lg:w-[64%]">
+          <Image src={heroImage.src} alt={heroImage.alt} fill loading="eager" className={`object-cover ${heroImage.position}`} sizes="(min-width:1024px) 64vw, 100vw" />
+          <div className="absolute inset-0 bg-white/5" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#faf9f4] via-[#faf9f4]/95 to-white/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#faf9f4] via-[#faf9f4]/80 via-45% to-white/0" />
 
         <div className="relative mx-auto min-h-[455px] max-w-[1180px] px-4 py-12 sm:py-16">
           <div className="flex items-center gap-2 text-xs text-[#5d695f]"><Link href="/" className="transition hover:text-[#0b6531]">Home</Link><span>›</span><span>{title}</span></div>
