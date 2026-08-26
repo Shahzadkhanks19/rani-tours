@@ -10,15 +10,14 @@ import {
   CarFront,
   ChevronRight,
   CircleUserRound,
-  FileText,
   GalleryHorizontal,
   Gauge,
   LogOut,
   MapPinned,
   Menu,
   MessageSquareText,
+  ReceiptIndianRupee,
   Settings,
-  Users,
   X,
 } from "lucide-react";
 
@@ -35,9 +34,8 @@ const navigation = [
   { href: "/admin/fleet", label: "Fleet", icon: CarFront, ready: true },
   { href: "/admin/gallery", label: "Gallery", icon: GalleryHorizontal, ready: true },
   { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquareText, ready: true },
-  { href: "/admin/bookings", label: "Bookings", icon: FileText },
-  { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/billing", label: "Billing", icon: ReceiptIndianRupee, ready: true },
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3, ready: true },
   { href: "/admin/activity", label: "Activity", icon: Activity, ready: true },
   { href: "/admin/settings", label: "Settings", icon: Settings, ready: true },
 ];
@@ -73,7 +71,7 @@ export function AdminShell({ admin, children }: AdminShellProps) {
           {navigation.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
-            return <Link key={item.href} href={item.ready ? item.href : "/admin/dashboard"} onClick={() => setOpen(false)} className={`mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${active ? "bg-[#b3df24] font-semibold text-[#073b25]" : "text-white/75 hover:bg-white/8 hover:text-white"}`} title={item.ready ? item.label : `${item.label} — coming in the next CMS phases`}><Icon className="size-[18px] shrink-0"/><span className="flex-1">{item.label}</span>{!item.ready && <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide">Soon</span>}{active && <ChevronRight className="size-4"/>}</Link>;
+            return <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className={`mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${active ? "bg-[#b3df24] font-semibold text-[#073b25]" : "text-white/75 hover:bg-white/8 hover:text-white"}`}><Icon className="size-[18px] shrink-0"/><span className="flex-1">{item.label}</span>{active && <ChevronRight className="size-4"/>}</Link>;
           })}
         </nav>
         <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-[#073b25] p-3"><button onClick={logout} disabled={loggingOut} className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-white/75 transition hover:bg-white/8 hover:text-white disabled:opacity-60"><LogOut className="size-[18px]"/>{loggingOut ? "Signing out…" : "Sign out"}</button></div>
