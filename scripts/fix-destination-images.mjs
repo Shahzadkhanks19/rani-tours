@@ -1,103 +1,130 @@
+import { createHash } from "crypto";
 import mongoose from "mongoose";
 
 const uri = process.env.MONGODB_URI;
+const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+const apiKey = process.env.CLOUDINARY_API_KEY;
+const apiSecret = process.env.CLOUDINARY_API_SECRET;
 if (!uri) throw new Error("MONGODB_URI is required");
+if (!cloudName || !apiKey || !apiSecret) throw new Error("Cloudinary credentials are required for destination image seeding");
 await mongoose.connect(uri);
-
-const exact = (url, alt) => ({ url, publicId: "", alt });
-
-// Every URL below was selected for the exact landmark/destination named in the title.
-// If an exact image is not available, the card intentionally renders without an image
-// rather than showing a generic or incorrect travel photo.
-const HERO_IMAGES = {
-  jodhpur: exact("https://gostops.com/blog/wp-content/uploads/2016/11/Jodhpur-2.jpg", "Mehrangarh Fort overlooking Jodhpur Blue City"),
-  ranthambore: exact("https://www.ranthamborenationalpark.com/blog/wp-content/uploads/2017/03/Ranthambore_Tiger_Fateh_1.jpg", "Bengal tiger in Ranthambore National Park"),
-  chittorgarh: exact("https://static.toiimg.com/photo/62694616/.jpg", "Chittorgarh Fort Rajasthan"),
-  bundi: exact("https://www.indianrajputs.com/i/t/i/thumb800_bundi-Taragarh-fort-of-Bundi-princely-state-which-was-built-by-Rao-Raja-Bar-Singh-Hada-Chauhan-in-the-beginning-of-the-13th-century--1.jpg", "Taragarh Fort Bundi"),
-  "north-india": exact("https://i.pinimg.com/736x/1a/52/cd/1a52cde99939ebb778947a7e0a7734a3.jpg", "India Gate New Delhi"),
-  "south-india": exact("https://r1imghtlak.mmtcdn.com/071ab8bedd9111ec978c0a58a9feac02.jpg", "Kerala backwater houseboat"),
-  "west-india": exact("https://www.trawellino.com/media/images/blog_images/1751152608_fL7AGedg.jpg", "Gateway of India Mumbai"),
-  "east-india": exact("https://jckolkata.wordpress.com/wp-content/uploads/2020/07/queen-victorias-statue.jpg?w=1024", "Victoria Memorial Kolkata"),
-  "hill-stations": exact("https://www.stayvista.com/blog/wp-content/uploads/2025/04/Kullu_Valley_near_Manali_Himachal_Pradesh_India-edited-1024x768.jpg", "Manali Himalayan valley"),
-  "beach-destinations": exact("https://s7ap1.scene7.com/is/image/incredibleindia/2-baga-beach-goa-city-hero?qlt=82&ts=1742160280795", "Baga Beach Goa"),
-  wildlife: exact("https://www.ranthamborenationalpark.com/blog/wp-content/uploads/2017/03/Ranthambore_Tiger_Fateh_1.jpg", "Tiger in Ranthambore National Park"),
-  spiritual: exact("https://vishwanthretreat.com/wp-content/uploads/2025/07/2-1.jpg", "Dashashwamedh Ghat Varanasi"),
-  honeymoon: exact("https://avathioutdoors.gumlet.io/travelGuide/dev/udaipur_P6712.jpg?compress=true&format=webp&h=630&q=80&w=1200", "City Palace Udaipur"),
-  "weekend-getaways": exact("https://www.fabhotels.com/blog/wp-content/uploads/2019/05/Hawa-Mahal_600.jpg", "Hawa Mahal Jaipur"),
-};
-
-const TITLE_IMAGES = {
-  "Mehrangarh Fort": exact("https://gostops.com/blog/wp-content/uploads/2016/11/Jodhpur-2.jpg", "Mehrangarh Fort Jodhpur"),
-  "Jaswant Thada": exact("https://cms.patrika.com/wp-content/uploads/2024/03/11/jaswant_thada.jpg", "Jaswant Thada Jodhpur"),
-  "Umaid Bhawan Palace": exact("https://www.rajasthandriver.com/img/attractions/667x445_umaid-bhawan-palace-jodhpur-2.jpg", "Umaid Bhawan Palace Jodhpur"),
-  "Clock Tower & Sardar Market": exact("https://media.assettype.com/homegrown%2Fimport%2Fltoytmthmw-1542377247.gif?auto=format%2Ccompress&w=640", "Sardar Market Clock Tower Jodhpur"),
-
-  "Ranthambore National Park": exact("https://www.ranthamborenationalpark.com/blog/wp-content/uploads/2017/03/Ranthambore_Tiger_Fateh_1.jpg", "Tiger in Ranthambore National Park"),
-  "Ranthambore Fort": exact("https://api.welcomerajasthantours.com/uploads/1756889789261-882156829-ranthambhore-fort-bharatpur-rajasthan-1-attr-hero.jpeg", "Ranthambore Fort Rajasthan"),
-  "Trinetra Ganesh Temple": exact("https://media1.thrillophilia.com/filestore/jaew06pdkorfng8w9eqhj5vorgn3_shutterstock_2372569215.jpg?dpr=2&w=400", "Trinetra Ganesh Temple Ranthambore"),
-
-  "Chittorgarh Fort": exact("https://static.toiimg.com/photo/62694616/.jpg", "Chittorgarh Fort Rajasthan"),
-  "Vijay Stambh": exact("https://static2.tripoto.com/media/filter/nl/img/237878/SpotDocument/1568533106_1568533106589.jpg", "Vijay Stambh Chittorgarh"),
-  "Padmini Palace": exact("https://upload.wikimedia.org/wikipedia/commons/1/1e/......._padmini......_%2825107180249%29.jpg", "Rani Padmini Palace Chittorgarh"),
-
-  "Garh Palace": exact("https://commons.wikimedia.org/wiki/Special:FilePath/Garh%20Palace%2C%20Bundi%20Rajasthan.jpg", "Garh Palace Bundi"),
-  "Taragarh Fort": exact("https://www.indianrajputs.com/i/t/i/thumb800_bundi-Taragarh-fort-of-Bundi-princely-state-which-was-built-by-Rao-Raja-Bar-Singh-Hada-Chauhan-in-the-beginning-of-the-13th-century--1.jpg", "Taragarh Fort Bundi"),
-  "Raniji Ki Baori": exact("https://www.indianrajputs.com/i/t/i/thumb800_bundi-Rani-jis-stepwell-Bundi-In-1699-AD-Rao-Raja-Anirudh-Singh-Ji-Hada-the-Chauhan-ruler-of-Bundi-Maharani-Ladkanwar-Ji-Nathawat-of-Hada-built-this-beautiful-stepwell-In-Rajputana-queens-have-always-1.jpg", "Raniji ki Baori Bundi"),
-
-  "Delhi & Agra": exact("https://media.traveldepartment.com/dmxa8n1ci/image/upload/g_auto%2Cf_auto%2Cq_auto%3Abest%2Cc_lfill%2Cw_1000/v1702401117/discover_the_taj_mahal_2959996fa7.jpg", "Taj Mahal Agra"),
-  "Varanasi": exact("https://vishwanthretreat.com/wp-content/uploads/2025/07/2-1.jpg", "Dashashwamedh Ghat Varanasi"),
-  "Rajasthan": exact("https://www.fabhotels.com/blog/wp-content/uploads/2019/05/Hawa-Mahal_600.jpg", "Hawa Mahal Jaipur Rajasthan"),
-  "Himachal & Uttarakhand": exact("https://www.stayvista.com/blog/wp-content/uploads/2025/04/Kullu_Valley_near_Manali_Himachal_Pradesh_India-edited-1024x768.jpg", "Manali Himalayan valley"),
-
-  "Kerala": exact("https://r1imghtlak.mmtcdn.com/071ab8bedd9111ec978c0a58a9feac02.jpg", "Kerala backwater houseboat"),
-  "Tamil Nadu": exact("https://www.sreestours.com/wp-content/uploads/2025/08/Meenakshi-Amman-Temple-tickets.jpg", "Meenakshi Amman Temple Madurai Tamil Nadu"),
-  "Southern Hills": exact("https://www.sreestours.com/wp-content/uploads/2016/06/munnar-tour-e1466596391424.jpg", "Munnar tea plantations Kerala"),
-
-  "Mumbai": exact("https://www.trawellino.com/media/images/blog_images/1751152608_fL7AGedg.jpg", "Gateway of India Mumbai"),
-  "Goa": exact("https://s7ap1.scene7.com/is/image/incredibleindia/2-baga-beach-goa-city-hero?qlt=82&ts=1742160280795", "Baga Beach Goa"),
-
-  "Kolkata": exact("https://jckolkata.wordpress.com/wp-content/uploads/2020/07/queen-victorias-statue.jpg?w=1024", "Victoria Memorial Kolkata"),
-  "Odisha": exact("https://telugu.nativeplanet.com/img/2020/01/2-konark-sun-temple---front-elevation-1564142903-1579852194.jpg", "Konark Sun Temple Odisha"),
-  "Darjeeling": exact("https://www.transindiatravels.com/wp-content/uploads/darjeeling1.jpg", "Darjeeling tea gardens"),
-
-  "Manali": exact("https://www.stayvista.com/blog/wp-content/uploads/2025/04/Kullu_Valley_near_Manali_Himachal_Pradesh_India-edited-1024x768.jpg", "Manali Himalayan valley"),
-  "Munnar": exact("https://www.sreestours.com/wp-content/uploads/2016/06/munnar-tour-e1466596391424.jpg", "Munnar tea plantations"),
-  "Udaipur": exact("https://avathioutdoors.gumlet.io/travelGuide/dev/udaipur_P6712.jpg?compress=true&format=webp&h=630&q=80&w=1200", "City Palace Udaipur"),
-  "Jaipur": exact("https://www.fabhotels.com/blog/wp-content/uploads/2019/05/Hawa-Mahal_600.jpg", "Hawa Mahal Jaipur"),
-};
 
 const Mixed = new mongoose.Schema({}, { strict: false, timestamps: true });
 const Destination = mongoose.models.Destination || mongoose.model("Destination", Mixed, "destinations");
+const ALLOWED_LICENSES = ["cc0", "public domain", "cc by", "cc-by", "cc by-sa", "cc-by-sa"];
+const clean = (value = "") => String(value).replace(/<[^>]*>/g, "").replace(/&amp;/g, "&").trim();
+const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
 
-for (const [slug, heroImage] of Object.entries(HERO_IMAGES)) {
-  const doc = await Destination.findOne({ slug }).lean();
-  if (!doc) continue;
-
-  const mapCards = (items = []) => items.map((item) => ({
-    ...item,
-    image: TITLE_IMAGES[item.title] || null,
-  }));
-
-  const attractions = mapCards(doc.attractions || []);
-  const experiences = mapCards(doc.experiences || []);
-
-  // Galleries are cleared until we have separately verified, non-repeating exact photos.
-  // This prevents generic or unrelated images from appearing just to fill space.
-  await Destination.updateOne(
-    { slug },
-    {
-      $set: {
-        heroImage,
-        attractions,
-        experiences,
-        gallery: [],
-        "seo.ogImage": heroImage,
-      },
-    },
-  );
-
-  console.log(`Applied exact title imagery for ${slug}`);
+async function findCommonsImage(query) {
+  const params = new URLSearchParams({
+    action: "query",
+    format: "json",
+    origin: "*",
+    generator: "search",
+    gsrsearch: query,
+    gsrnamespace: "6",
+    gsrlimit: "12",
+    prop: "imageinfo",
+    iiprop: "url|extmetadata",
+    iiurlwidth: "1800",
+  });
+  const response = await fetch(`https://commons.wikimedia.org/w/api.php?${params}`, { headers: { "User-Agent": "RaniToursImageSeeder/1.0" } });
+  if (!response.ok) throw new Error(`Commons search failed (${response.status}) for ${query}`);
+  const json = await response.json();
+  const pages = Object.values(json?.query?.pages || {}).sort((a, b) => (a.index || 999) - (b.index || 999));
+  for (const page of pages) {
+    const info = page.imageinfo?.[0];
+    if (!info?.url) continue;
+    const meta = info.extmetadata || {};
+    const license = clean(meta.LicenseShortName?.value || meta.UsageTerms?.value || "");
+    if (!ALLOWED_LICENSES.some((allowed) => license.toLowerCase().includes(allowed))) continue;
+    const sourceUrl = info.descriptionurl || `https://commons.wikimedia.org/wiki/${encodeURIComponent(page.title.replace(/ /g, "_"))}`;
+    return {
+      downloadUrl: info.thumburl || info.url,
+      sourceUrl,
+      credit: clean(meta.Artist?.value || meta.Credit?.value || "Wikimedia Commons contributor"),
+      license,
+      licenseUrl: meta.LicenseUrl?.value || "",
+      title: page.title.replace(/^File:/, ""),
+    };
+  }
+  return null;
 }
 
-console.log("Exact destination imagery pass complete.");
+async function uploadToCloudinary(found, publicId, alt) {
+  const source = await fetch(found.downloadUrl, { headers: { "User-Agent": "RaniToursImageSeeder/1.0" } });
+  if (!source.ok) throw new Error(`Image download failed (${source.status}): ${found.sourceUrl}`);
+  const blob = await source.blob();
+  if (!blob.type.startsWith("image/")) throw new Error(`Commons returned non-image content: ${found.sourceUrl}`);
+
+  const timestamp = Math.floor(Date.now() / 1000);
+  const folder = "rani-tours/destinations";
+  const paramsToSign = `folder=${folder}&overwrite=true&public_id=${publicId}&timestamp=${timestamp}`;
+  const signature = createHash("sha1").update(`${paramsToSign}${apiSecret}`).digest("hex");
+  const form = new FormData();
+  form.append("file", blob, found.title || `${publicId}.jpg`);
+  form.append("api_key", apiKey);
+  form.append("timestamp", String(timestamp));
+  form.append("folder", folder);
+  form.append("public_id", publicId);
+  form.append("overwrite", "true");
+  form.append("signature", signature);
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: "POST", body: form });
+  const data = await response.json();
+  if (!response.ok || !data.secure_url) throw new Error(data?.error?.message || `Cloudinary upload failed for ${publicId}`);
+  return {
+    url: data.secure_url,
+    publicId: data.public_id || `${folder}/${publicId}`,
+    alt,
+    credit: found.credit,
+    sourceUrl: found.sourceUrl,
+    license: found.license,
+    licenseUrl: found.licenseUrl,
+  };
+}
+
+async function resolveImage(query, publicId, alt) {
+  const found = await findCommonsImage(query);
+  if (!found) {
+    console.warn(`No verified reusable Commons image found for: ${query}`);
+    return null;
+  }
+  console.log(`Using ${found.title} for ${alt} [${found.license}]`);
+  return uploadToCloudinary(found, publicId, alt);
+}
+
+const destinations = await Destination.find({}).lean();
+for (const doc of destinations) {
+  console.log(`\nProcessing ${doc.title}...`);
+  const placeContext = [doc.title, doc.state, doc.region, doc.country || "India"].filter(Boolean).join(" ");
+  const hero = await resolveImage(`${placeContext} travel landmark`, `${doc.slug}-hero`, `${doc.title}, ${doc.state || doc.region || "India"}`);
+
+  const mapCards = async (items = [], kind) => {
+    const output = [];
+    for (let index = 0; index < items.length; index += 1) {
+      const item = items[index];
+      const query = `${item.title} ${doc.title} ${doc.state || doc.region || "India"}`;
+      const image = await resolveImage(query, `${doc.slug}-${kind}-${slugify(item.title)}-${index + 1}`, `${item.title}, ${doc.title}`);
+      output.push({ ...item, image });
+    }
+    return output;
+  };
+
+  const attractions = await mapCards(doc.attractions || [], "attraction");
+  const experiences = await mapCards(doc.experiences || [], "experience");
+  const update = {
+    attractions,
+    experiences,
+    gallery: [],
+  };
+  if (hero) {
+    update.heroImage = hero;
+    update["seo.ogImage"] = hero;
+  }
+  await Destination.updateOne({ _id: doc._id }, { $set: update });
+  console.log(`Finished ${doc.title}`);
+}
+
+console.log("\nDestination images now use exact-title Wikimedia Commons searches and are hosted in Cloudinary.");
 await mongoose.disconnect();
