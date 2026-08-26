@@ -66,7 +66,7 @@ export function AdminLoginForm() {
 
       <button type="submit" disabled={loading} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#073b25] px-4 py-3.5 font-bold text-white transition hover:bg-[#0b6b3a] disabled:cursor-not-allowed disabled:opacity-65">
         {loading && <LoaderCircle className="size-5 animate-spin" />}
-        {loading ? "Signing in…" : "Sign in to CMS"}
+        {loading ? "Signing in…" : "Sign in"}
       </button>
     </form>
   );
