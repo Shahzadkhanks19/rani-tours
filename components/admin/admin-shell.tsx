@@ -34,7 +34,7 @@ const navigation = [
   { href: "/admin/destinations", label: "Destinations", icon: Building2, ready: true },
   { href: "/admin/fleet", label: "Fleet", icon: CarFront, ready: true },
   { href: "/admin/gallery", label: "Gallery", icon: GalleryHorizontal, ready: true },
-  { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquareText },
+  { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquareText, ready: true },
   { href: "/admin/bookings", label: "Bookings", icon: FileText },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
