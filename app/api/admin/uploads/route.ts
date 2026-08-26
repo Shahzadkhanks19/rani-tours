@@ -18,8 +18,11 @@ export async function POST(request: NextRequest) {
   if (!file.type.startsWith("image/")) return NextResponse.json({ error: "Only image uploads are allowed." }, { status: 400 });
   if (file.size > 8 * 1024 * 1024) return NextResponse.json({ error: "Image must be 8MB or smaller." }, { status: 400 });
 
+  const requestedFolder = String(form.get("folder") || "tour-packages");
+  const allowedFolders = new Set(["tour-packages", "taxi-services"]);
+  const area = allowedFolders.has(requestedFolder) ? requestedFolder : "tour-packages";
   const timestamp = Math.floor(Date.now() / 1000);
-  const folder = "rani-tours/tour-packages";
+  const folder = `rani-tours/${area}`;
   const signature = createHash("sha1").update(`folder=${folder}&timestamp=${timestamp}${apiSecret}`).digest("hex");
   const payload = new FormData();
   payload.append("file", file);
