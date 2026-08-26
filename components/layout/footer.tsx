@@ -5,7 +5,7 @@ import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { SiTripadvisor } from "react-icons/si";
 import { siteContact } from "@/lib/site-data";
 
-const quickLinks = ["Home", "About Us", "Taxi Services", "Tour Packages", "Destinations", "Fleet", "Corporate Travel", "Gallery", "Blog", "Contact", "Enquiry", "Privacy Policy"];
+const quickLinks = ["Home", "About Us", "Taxi Services", "Tour Packages", "Destinations", "Fleet", "Corporate Travel", "Gallery", "Contact", "Enquiry", "Privacy Policy"];
 const services = ["Local Taxi", "Rajasthan Tours", "Outstation Taxi", "All India Taxi", "Airport Transfers", "Wedding & Events"];
 const destinations = ["Jodhpur", "Jaisalmer", "Jaipur", "Udaipur", "Mount Abu", "Pushkar", "Ranthambore", "Ajmer", "Bikaner", "Many More"];
 
@@ -25,44 +25,14 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-3"><Image src="/rani-tours-icon.svg" alt="Rani Tour's logo" width={48} height={48} /><div><div className="font-serif text-2xl font-bold">Rani Tour&apos;s</div><div className="text-[9px] text-white/70">Your Tour Expert</div></div></div>
           <p className="mt-4 text-[11px] leading-[18px] text-white/70">Your trusted travel partner in Jodhpur for Rajasthan and all India taxi services. Safe journeys. Happy memories.</p>
-          <div className="mt-4 flex gap-2">
-            {socialLinks.map(({ label, href, icon: Icon }) => (
-              <a key={label} href={href} aria-label={label} className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white/85 transition duration-300 hover:-translate-y-1 hover:bg-[#d8b752] hover:text-[#003f22] hover:shadow-lg">
-                <Icon className="h-3.5 w-3.5" />
-              </a>
-            ))}
-          </div>
+          <div className="mt-4 flex gap-2">{socialLinks.map(({ label, href, icon: Icon }) => <a key={label} href={href} aria-label={label} className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white/85 transition duration-300 hover:-translate-y-1 hover:bg-[#d8b752] hover:text-[#003f22] hover:shadow-lg"><Icon className="h-3.5 w-3.5" /></a>)}</div>
         </div>
-
         <FooterGroup title="Quick Links"><div className="grid grid-cols-2 gap-x-5 gap-y-1.5">{quickLinks.map((item) => <Link key={item} href={item === "Home" ? "/" : `/${item.toLowerCase().replaceAll(" ", "-")}`} className={footerLinkClass}><span>{item}</span><ArrowUpRight className="h-3 w-3 opacity-0 transition duration-300 group-hover:opacity-100" /></Link>)}</div></FooterGroup>
         <FooterGroup title="Services"><div className="grid gap-1.5">{services.map((item) => <Link key={item} href="/taxi-services" className={footerLinkClass}><span>{item}</span><ArrowUpRight className="h-3 w-3 opacity-0 transition duration-300 group-hover:opacity-100" /></Link>)}</div></FooterGroup>
         <FooterGroup title="Destinations"><div className="grid grid-cols-2 gap-x-4 gap-y-1.5">{destinations.map((item) => <Link key={item} href="/destinations" className={footerLinkClass}><span>{item}</span><ArrowUpRight className="h-3 w-3 opacity-0 transition duration-300 group-hover:opacity-100" /></Link>)}</div></FooterGroup>
-        <FooterGroup title="Contact Us">
-          <div className="grid gap-2 text-[11px] text-white/75">
-            {siteContact.phones.map((phone) => <a key={phone.href} href={phone.href} className="flex w-fit items-center gap-2 transition duration-300 hover:translate-x-1 hover:text-[#e1bd58]"><Phone className="h-4 w-4 text-[#d8b752]" />{phone.display}</a>)}
-            <a href={siteContact.emailHref} className="flex w-fit items-center gap-2 transition duration-300 hover:translate-x-1 hover:text-[#e1bd58]"><Mail className="h-4 w-4 text-[#d8b752]" />{siteContact.email}</a>
-            <a href={siteContact.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 transition duration-300 hover:translate-x-1 hover:text-[#e1bd58]"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d8b752]" /><span>{siteContact.address}</span></a>
-          </div>
-        </FooterGroup>
+        <FooterGroup title="Contact Us"><div className="grid gap-2 text-[11px] text-white/75">{siteContact.phones.map((phone) => <a key={phone.href} href={phone.href} className="flex w-fit items-center gap-2 transition duration-300 hover:translate-x-1 hover:text-[#e1bd58]"><Phone className="h-4 w-4 text-[#d8b752]" />{phone.display}</a>)}<a href={siteContact.emailHref} className="flex w-fit items-center gap-2 transition duration-300 hover:translate-x-1 hover:text-[#e1bd58]"><Mail className="h-4 w-4 text-[#d8b752]" />{siteContact.email}</a><a href={siteContact.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 transition duration-300 hover:translate-x-1 hover:text-[#e1bd58]"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d8b752]" /><span>{siteContact.address}</span></a></div></FooterGroup>
       </div>
-
-      <div className="border-t border-white/15">
-        <div className="mx-auto flex max-w-[1180px] flex-col gap-3 px-4 py-4 text-[10px] text-white/65 sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 Rani Tour&apos;s. All Rights Reserved.</span>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link href="/terms-and-conditions" className="transition hover:text-[#e1bd58]">Terms & Conditions</Link><span>|</span>
-            <Link href="/privacy-policy" className="transition hover:text-[#e1bd58]">Privacy Policy</Link><span>|</span>
-            <Link href="/cancellation-policy" className="transition hover:text-[#e1bd58]">Cancellation Policy</Link><span>|</span>
-            <Link href="/faq" className="transition hover:text-[#e1bd58]">FAQ</Link>
-          </div>
-          <span>
-            Designed &amp; Developed by{" "}
-            <a href="https://builtbyshahzad.vercel.app" target="_blank" rel="noopener noreferrer" className="font-semibold text-white transition hover:text-[#e1bd58]">
-              Shahzad
-            </a>
-          </span>
-        </div>
-      </div>
+      <div className="border-t border-white/15"><div className="mx-auto flex max-w-[1180px] flex-col gap-3 px-4 py-4 text-[10px] text-white/65 sm:flex-row sm:items-center sm:justify-between"><span>© 2026 Rani Tour&apos;s. All Rights Reserved.</span><div className="flex flex-wrap items-center gap-4"><Link href="/terms-and-conditions" className="transition hover:text-[#e1bd58]">Terms & Conditions</Link><span>|</span><Link href="/privacy-policy" className="transition hover:text-[#e1bd58]">Privacy Policy</Link><span>|</span><Link href="/cancellation-policy" className="transition hover:text-[#e1bd58]">Cancellation Policy</Link><span>|</span><Link href="/faq" className="transition hover:text-[#e1bd58]">FAQ</Link></div><span>Designed &amp; Developed by <a href="https://builtbyshahzad.vercel.app" target="_blank" rel="noopener noreferrer" className="font-semibold text-white transition hover:text-[#e1bd58]">Shahzad</a></span></div></div>
     </footer>
   );
 }
