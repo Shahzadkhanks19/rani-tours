@@ -33,7 +33,7 @@ type AdminShellProps = {
 const navigation = [
   { href: "/admin/dashboard", label: "Dashboard", icon: Gauge, ready: true },
   { href: "/admin/tour-packages", label: "Tour Packages", icon: MapPinned, ready: true },
-  { href: "/admin/taxi-services", label: "Taxi Services", icon: CarFront },
+  { href: "/admin/taxi-services", label: "Taxi Services", icon: CarFront, ready: true },
   { href: "/admin/destinations", label: "Destinations", icon: Building2 },
   { href: "/admin/fleet", label: "Fleet", icon: CarFront },
   { href: "/admin/gallery", label: "Gallery", icon: GalleryHorizontal },
