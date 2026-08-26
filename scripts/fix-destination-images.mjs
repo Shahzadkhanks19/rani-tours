@@ -11,6 +11,7 @@ const ALLOWED_LICENSES = ["cc0", "public domain", "cc by", "cc-by", "cc by-sa", 
 const STOP_WORDS = new Set(["the", "and", "of", "in", "to", "a", "an", "india", "travel", "tour", "trip", "experience"]);
 const clean = (value = "") => String(value).replace(/<[^>]*>/g, "").replace(/&amp;/g, "&").replace(/&#39;/g, "'").trim();
 const words = (value = "") => clean(value).toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(/\s+/).filter((word) => word.length > 2 && !STOP_WORDS.has(word));
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const HERO_QUERIES = {
   jodhpur: { query: "Mehrangarh Fort Jodhpur Rajasthan", must: ["mehrangarh", "jodhpur"] },
@@ -37,7 +38,6 @@ const CARD_OVERRIDES = {
   "Blue City Walk": { query: "Blue City Jodhpur Rajasthan", must: ["jodhpur"] },
   "Bishnoi Village Experience": { query: "Bishnoi village Rajasthan Jodhpur", must: ["bishnoi"] },
   "Rajasthani Cuisine": { query: "Rajasthani thali Rajasthan cuisine", must: ["rajasthan"] },
-
   "Ranthambore National Park": { query: "Ranthambore National Park tiger", must: ["ranthambore"] },
   "Ranthambore Fort": { query: "Ranthambore Fort Rajasthan", must: ["ranthambore", "fort"] },
   "Padam Talao": { query: "Padam Talao Ranthambore", must: ["padam"] },
@@ -45,21 +45,18 @@ const CARD_OVERRIDES = {
   "Jungle Safari": { query: "Ranthambore safari jeep tiger", must: ["ranthambore"] },
   "Wildlife Photography": { query: "Ranthambore tiger wildlife", must: ["ranthambore"] },
   "Fort & Heritage Walk": { query: "Ranthambore Fort Rajasthan", must: ["ranthambore", "fort"] },
-
   "Chittorgarh Fort": { query: "Chittorgarh Fort Rajasthan", must: ["chittorgarh"] },
   "Vijay Stambh": { query: "Vijay Stambh Chittorgarh", must: ["vijay", "stambh"] },
   "Rana Kumbha Palace": { query: "Rana Kumbha Palace Chittorgarh", must: ["kumbha"] },
   "Padmini Palace": { query: "Padmini Palace Chittorgarh", must: ["padmini"] },
   "Fort Heritage Drive": { query: "Chittorgarh Fort Rajasthan", must: ["chittorgarh"] },
   "Sunset Views": { query: "Chittorgarh Fort sunset Rajasthan", must: ["chittorgarh"] },
-
   "Garh Palace": { query: "Garh Palace Bundi Rajasthan", must: ["garh", "bundi"] },
   "Taragarh Fort": { query: "Taragarh Fort Bundi Rajasthan", must: ["taragarh", "bundi"] },
   "Raniji Ki Baori": { query: "Raniji ki Baori Bundi", must: ["raniji", "bundi"] },
   "Nawal Sagar": { query: "Nawal Sagar Bundi", must: ["nawal", "bundi"] },
   "Heritage Walk": { query: "Bundi old city Rajasthan", must: ["bundi"] },
   "Stepwell Trail": { query: "Bundi stepwell Rajasthan", must: ["bundi"] },
-
   "Delhi & Agra": { query: "Taj Mahal Agra India", must: ["taj", "agra"] },
   "Himachal & Uttarakhand": { query: "Himachal Pradesh Himalaya India", must: ["himachal"] },
   Varanasi: { query: "Varanasi Ganges ghats India", must: ["varanasi"] },
@@ -97,45 +94,48 @@ function relevanceScore(title, query, must = []) {
   const hay = new Set(haystack);
   const required = must.map((term) => term.toLowerCase());
   if (required.length && !required.every((term) => haystack.some((word) => word.includes(term) || term.includes(word)))) return -1;
-  const queryWords = words(query);
-  return queryWords.reduce((score, word) => score + (hay.has(word) || haystack.some((candidate) => candidate.includes(word) || word.includes(candidate)) ? 1 : 0), 0);
+  return words(query).reduce((score, word) => score + (hay.has(word) || haystack.some((candidate) => candidate.includes(word) || word.includes(candidate)) ? 1 : 0), 0);
+}
+
+async function fetchWithRetry(url, options = {}, label = "request", attempts = 6) {
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (response.status !== 429 && response.status < 500) return response;
+      const retryAfter = Number(response.headers.get("retry-after") || 0);
+      const waitMs = retryAfter > 0 ? retryAfter * 1000 : Math.min(30000, 1500 * 2 ** attempt);
+      console.warn(`${label} returned ${response.status}; retrying in ${Math.ceil(waitMs / 1000)}s...`);
+      await sleep(waitMs);
+    } catch (error) {
+      if (attempt === attempts - 1) throw error;
+      const waitMs = Math.min(30000, 1500 * 2 ** attempt);
+      console.warn(`${label} failed; retrying in ${Math.ceil(waitMs / 1000)}s...`);
+      await sleep(waitMs);
+    }
+  }
+  return null;
 }
 
 async function imageUrlWorks(url) {
   try {
-    const response = await fetch(url, {
-      method: "HEAD",
-      headers: { "User-Agent": "RaniToursImageSeeder/2.0 (travel website image verification)" },
-    });
-    return response.ok && String(response.headers.get("content-type") || "").startsWith("image/");
+    const response = await fetchWithRetry(url, { method: "GET", headers: { "User-Agent": "RaniToursImageSeeder/3.0 (travel website; contact via site administrator)", Range: "bytes=0-1023" } }, "Image verification", 3);
+    return Boolean(response?.ok && String(response.headers.get("content-type") || "").startsWith("image/"));
   } catch {
     return false;
   }
 }
 
 async function findCommonsImage(query, must = []) {
-  const params = new URLSearchParams({
-    action: "query",
-    format: "json",
-    origin: "*",
-    generator: "search",
-    gsrsearch: query,
-    gsrnamespace: "6",
-    gsrlimit: "20",
-    prop: "imageinfo",
-    iiprop: "url|extmetadata|mime",
-    iiurlwidth: "1800",
-  });
-
-  const response = await fetch(`https://commons.wikimedia.org/w/api.php?${params}`, {
-    headers: { "User-Agent": "RaniToursImageSeeder/2.0 (travel website image verification)" },
-  });
-  if (!response.ok) throw new Error(`Commons search failed (${response.status}) for ${query}`);
+  await sleep(900);
+  const params = new URLSearchParams({ action: "query", format: "json", origin: "*", generator: "search", gsrsearch: query, gsrnamespace: "6", gsrlimit: "12", prop: "imageinfo", iiprop: "url|extmetadata|mime", iiurlwidth: "1600" });
+  const response = await fetchWithRetry(`https://commons.wikimedia.org/w/api.php?${params}`, { headers: { "User-Agent": "RaniToursImageSeeder/3.0 (travel website; contact via site administrator)", Accept: "application/json" } }, `Commons search for ${query}`);
+  if (!response?.ok) {
+    console.warn(`Skipping image after repeated Commons failure: ${query}`);
+    return null;
+  }
   const json = await response.json();
-  const pages = Object.values(json?.query?.pages || {});
   const candidates = [];
-
-  for (const page of pages) {
+  for (const page of Object.values(json?.query?.pages || {})) {
     const info = page.imageinfo?.[0];
     if (!info?.url || !String(info.mime || "").startsWith("image/")) continue;
     const meta = info.extmetadata || {};
@@ -144,21 +144,10 @@ async function findCommonsImage(query, must = []) {
     const title = String(page.title || "").replace(/^File:/, "");
     const score = relevanceScore(title, query, must);
     if (score < 0) continue;
-    const url = info.thumburl || info.url;
-    candidates.push({
-      url,
-      originalUrl: info.url,
-      sourceUrl: info.descriptionurl || `https://commons.wikimedia.org/wiki/${encodeURIComponent(String(page.title || "").replace(/ /g, "_"))}`,
-      credit: clean(meta.Artist?.value || meta.Credit?.value || "Wikimedia Commons contributor"),
-      license,
-      licenseUrl: meta.LicenseUrl?.value || "",
-      title,
-      score,
-    });
+    candidates.push({ url: info.thumburl || info.url, originalUrl: info.url, sourceUrl: info.descriptionurl || "", credit: clean(meta.Artist?.value || meta.Credit?.value || "Wikimedia Commons contributor"), license, licenseUrl: meta.LicenseUrl?.value || "", title, score });
   }
-
   candidates.sort((a, b) => b.score - a.score || a.title.length - b.title.length);
-  for (const candidate of candidates.slice(0, 8)) {
+  for (const candidate of candidates.slice(0, 5)) {
     if (await imageUrlWorks(candidate.url)) return candidate;
     if (candidate.originalUrl !== candidate.url && await imageUrlWorks(candidate.originalUrl)) return { ...candidate, url: candidate.originalUrl };
   }
@@ -166,58 +155,47 @@ async function findCommonsImage(query, must = []) {
 }
 
 async function resolveImage(spec, alt) {
-  const found = await findCommonsImage(spec.query, spec.must || []);
-  if (!found) {
-    console.warn(`No exact reusable Commons image found for: ${alt}`);
+  try {
+    const found = await findCommonsImage(spec.query, spec.must || []);
+    if (!found) {
+      console.warn(`No exact reusable Commons image found for: ${alt}`);
+      return null;
+    }
+    console.log(`Using ${found.title} for ${alt} [${found.license}]`);
+    return { url: found.url, publicId: "", alt, credit: found.credit, sourceUrl: found.sourceUrl, license: found.license, licenseUrl: found.licenseUrl };
+  } catch (error) {
+    console.warn(`Image lookup skipped for ${alt}: ${error instanceof Error ? error.message : String(error)}`);
     return null;
   }
-  console.log(`Using ${found.title} for ${alt} [${found.license}]`);
-  return {
-    url: found.url,
-    publicId: "",
-    alt,
-    credit: found.credit,
-    sourceUrl: found.sourceUrl,
-    license: found.license,
-    licenseUrl: found.licenseUrl,
-  };
 }
 
 const destinations = await Destination.find({}).sort({ sortOrder: 1, title: 1 }).lean();
 for (const doc of destinations) {
   console.log(`\nProcessing ${doc.title}...`);
+  try {
+    const heroSpec = HERO_QUERIES[doc.slug] || { query: `${doc.title} ${doc.state || doc.region || "India"}`, must: words(doc.title).slice(0, 1) };
+    const hero = await resolveImage(heroSpec, `${doc.title} destination`);
 
-  const heroSpec = HERO_QUERIES[doc.slug] || {
-    query: `${doc.title} ${doc.state || doc.region || "India"}`,
-    must: words(doc.title).slice(0, 1),
-  };
-  const hero = await resolveImage(heroSpec, `${doc.title} destination`);
+    const mapCards = async (items = []) => {
+      const output = [];
+      for (const item of items) {
+        const spec = CARD_OVERRIDES[item.title] || { query: `${item.title} ${doc.title} ${doc.state || doc.region || "India"}`, must: words(item.title).slice(0, 1) };
+        const image = await resolveImage(spec, `${item.title}, ${doc.title}`);
+        output.push({ ...item, image });
+      }
+      return output;
+    };
 
-  const mapCards = async (items = []) => {
-    const output = [];
-    for (const item of items) {
-      const override = CARD_OVERRIDES[item.title];
-      const spec = override || {
-        query: `${item.title} ${doc.title} ${doc.state || doc.region || "India"}`,
-        must: words(item.title).slice(0, 1),
-      };
-      const image = await resolveImage(spec, `${item.title}, ${doc.title}`);
-      output.push({ ...item, image });
-    }
-    return output;
-  };
-
-  const attractions = await mapCards(doc.attractions || []);
-  const experiences = await mapCards(doc.experiences || []);
-  const update = { attractions, experiences, gallery: [] };
-  if (hero) {
-    update.heroImage = hero;
-    update["seo.ogImage"] = hero;
+    const attractions = await mapCards(doc.attractions || []);
+    const experiences = await mapCards(doc.experiences || []);
+    const update = { attractions, experiences, gallery: [] };
+    if (hero) { update.heroImage = hero; update["seo.ogImage"] = hero; }
+    await Destination.updateOne({ _id: doc._id }, { $set: update });
+    console.log(`Finished ${doc.title}`);
+  } catch (error) {
+    console.warn(`Destination image pass skipped for ${doc.title}: ${error instanceof Error ? error.message : String(error)}`);
   }
-
-  await Destination.updateOne({ _id: doc._id }, { $set: update });
-  console.log(`Finished ${doc.title}`);
 }
 
-console.log("\nDestination imagery complete. All selected images are verified reusable Wikimedia Commons files and are referenced directly from Wikimedia; no Cloudinary upload or manual work is required.");
+console.log("\nDestination imagery pass finished. Temporary Wikimedia rate limits are retried automatically; failed individual lookups are skipped instead of stopping the seed.");
 await mongoose.disconnect();
