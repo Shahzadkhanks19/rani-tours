@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   if (file.size > 8 * 1024 * 1024) return NextResponse.json({ error: "Image must be 8MB or smaller." }, { status: 400 });
 
   const requestedFolder = String(form.get("folder") || "tour-packages");
-  const allowedFolders = new Set(["tour-packages", "taxi-services"]);
+  const allowedFolders = new Set(["tour-packages", "taxi-services", "destinations"]);
   const area = allowedFolders.has(requestedFolder) ? requestedFolder : "tour-packages";
   const timestamp = Math.floor(Date.now() / 1000);
   const folder = `rani-tours/${area}`;
