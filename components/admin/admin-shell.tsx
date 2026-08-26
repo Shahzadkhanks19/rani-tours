@@ -6,7 +6,6 @@ import { useState } from "react";
 import {
   Activity,
   BarChart3,
-  BookOpen,
   Building2,
   CarFront,
   ChevronRight,
@@ -19,7 +18,6 @@ import {
   Menu,
   MessageSquareText,
   Settings,
-  Star,
   Users,
   X,
 } from "lucide-react";
@@ -36,8 +34,6 @@ const navigation = [
   { href: "/admin/destinations", label: "Destinations", icon: Building2, ready: true },
   { href: "/admin/fleet", label: "Fleet", icon: CarFront, ready: true },
   { href: "/admin/gallery", label: "Gallery", icon: GalleryHorizontal, ready: true },
-  { href: "/admin/blog", label: "Blog", icon: BookOpen },
-  { href: "/admin/reviews", label: "Reviews", icon: Star },
   { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquareText },
   { href: "/admin/bookings", label: "Bookings", icon: FileText },
   { href: "/admin/users", label: "Users", icon: Users },
