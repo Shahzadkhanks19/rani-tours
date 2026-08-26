@@ -44,7 +44,7 @@ const data=[
  service({title:"All India Taxi",slug:"all-india-taxi",type:"All India Taxi",tagline:"From Jodhpur to Every Corner of India.",desc:"Long-distance taxi service from Jodhpur to destinations across North, South, East and West India.",overview:"Plan custom inter-state and multi-day taxi journeys with route flexibility and vehicle choices for every group size.",hero:imgs.road,form:"Plan Your All India Ride",order:15}),
  service({title:"Custom Taxi Booking",slug:"custom-taxi-booking",type:"Custom Taxi",tagline:"Your Plan. Your Route. Your Ride.",desc:"A fully customized taxi plan for routes or travel requirements that do not fit a standard service.",overview:"Tell us where, when and how you want to travel and we will build a suitable taxi plan around your requirements.",hero:imgs.road,form:"Build Your Custom Ride",order:16})
 ];
-const ImageSchema=new mongoose.Schema({url:String,publicId:String,alt:String},{_id:false});const Mixed=new mongoose.Schema({}, {strict:false,timestamps:true});
+const Mixed=new mongoose.Schema({}, {strict:false,timestamps:true});
 const Taxi=mongoose.models.TaxiService||mongoose.model("TaxiService",Mixed,"taxiservices");
-for(const item of data){await Taxi.findOneAndUpdate({slug:item.slug},{$set:item},{upsert:true,new:true,setDefaultsOnInsert:true});console.log(`Seeded ${item.slug}`)}
+for(const item of data){await Taxi.findOneAndUpdate({slug:item.slug},{$set:item},{upsert:true,returnDocument:"after",setDefaultsOnInsert:true});console.log(`Seeded ${item.slug}`)}
 console.log(`Done. ${data.length} taxi services seeded.`);await mongoose.disconnect();
