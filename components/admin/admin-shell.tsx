@@ -35,7 +35,7 @@ const navigation = [
   { href: "/admin/tour-packages", label: "Tour Packages", icon: MapPinned, ready: true },
   { href: "/admin/taxi-services", label: "Taxi Services", icon: CarFront, ready: true },
   { href: "/admin/destinations", label: "Destinations", icon: Building2, ready: true },
-  { href: "/admin/fleet", label: "Fleet", icon: CarFront },
+  { href: "/admin/fleet", label: "Fleet", icon: CarFront, ready: true },
   { href: "/admin/gallery", label: "Gallery", icon: GalleryHorizontal },
   { href: "/admin/blog", label: "Blog", icon: BookOpen },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
