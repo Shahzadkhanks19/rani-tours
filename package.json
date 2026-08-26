@@ -11,7 +11,7 @@
     "check": "npm run lint && npm run type-check && npm run build",
     "admin:create": "node --env-file=.env.local scripts/create-admin.mjs",
     "seed:taxi-services": "node --env-file=.env.local scripts/seed-taxi-services.mjs && node --env-file=.env.local scripts/fix-taxi-image-overrides.mjs",
-    "seed:tour-packages": "node --env-file=.env.local scripts/seed-tour-packages.mjs"
+    "seed:tour-packages": "node --env-file=.env.local scripts/seed-tour-packages.mjs && node --env-file=.env.local scripts/fix-tour-package-images.mjs"
   },
   "dependencies": {
     "lucide-react": "1.34.0",
