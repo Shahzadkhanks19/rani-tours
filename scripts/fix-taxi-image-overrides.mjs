@@ -37,7 +37,7 @@ const cardOverrides = {
   "jodhpur-local-taxi": [36213405, 37350667, 15344913, 33689320],
   "corporate-travel": [33988321, 18860533, 32176173, 31646408],
   "luxury-car-rental": [33988321, 35641554, 31646408, 32691096],
-  "bus-rental": [6657469, 27174508, 14909014].filter(Number.isFinite),
+  "bus-rental": [6657469, 27174508, 7276715],
 };
 
 for (const [slug, ids] of Object.entries(cardOverrides)) {
