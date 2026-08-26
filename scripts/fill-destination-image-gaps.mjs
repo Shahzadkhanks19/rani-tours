@@ -31,19 +31,17 @@ const RELATED = {
 async function commons(query) {
   const params = new URLSearchParams({ action: "query", format: "json", origin: "*", generator: "search", gsrsearch: query, gsrnamespace: "6", gsrlimit: "10", prop: "imageinfo", iiprop: "url|extmetadata|mime", iiurlwidth: "1400" });
   for (let attempt = 0; attempt < 3; attempt += 1) {
-    const response = await fetch(`https://commons.wikimedia.org/w/api.php?${params}`, { headers: { "User-Agent": "RaniToursImageSeeder/5.0", Accept: "application/json" } });
+    const response = await fetch(`https://commons.wikimedia.org/w/api.php?${params}`, { headers: { "User-Agent": "RaniToursImageSeeder/6.0", Accept: "application/json" } });
     if (response.ok) {
       const data = await response.json();
-      const pages = Object.values(data?.query?.pages || {});
-      for (const page of pages) {
+      for (const page of Object.values(data?.query?.pages || {})) {
         const info = page.imageinfo?.[0];
         if (!info || !safe(info.mime).startsWith("image/")) continue;
         const meta = info.extmetadata || {};
         const license = clean(meta.LicenseShortName?.value || meta.UsageTerms?.value || "");
         if (!allowed.some((x) => safe(license).includes(x))) continue;
         const title = String(page.title || "").replace(/^File:/, "");
-        const bad = /\b(map|logo|diagram|flag|coat of arms|portrait|selfie|advertisement|poster)\b/i.test(title);
-        if (bad) continue;
+        if (/\b(map|logo|diagram|flag|coat of arms|portrait|selfie|advertisement|poster)\b/i.test(title)) continue;
         return { url: info.thumburl || info.url, publicId: "", alt: query, credit: clean(meta.Artist?.value || meta.Credit?.value || "Wikimedia Commons contributor"), sourceUrl: info.descriptionurl || "", license, licenseUrl: meta.LicenseUrl?.value || "" };
       }
       return null;
@@ -64,6 +62,11 @@ async function findRelated(doc, used) {
   return null;
 }
 
+const fallbackImage = (doc, hero, item) => ({
+  ...hero,
+  alt: item ? `${item.title}, ${doc.title}` : `${doc.title} travel in India`,
+});
+
 const docs = await Destination.find({}).sort({ sortOrder: 1, title: 1 }).lean();
 for (const doc of docs) {
   const used = new Set();
@@ -71,29 +74,40 @@ for (const doc of docs) {
   for (const item of [...(doc.attractions || []), ...(doc.experiences || [])]) if (item.image?.url) used.add(item.image.url);
 
   let hero = doc.heroImage?.url ? doc.heroImage : await findRelated(doc, used);
-  if (!hero) {
-    // A seeded destination should always have a hero, but never leave the UI with
-    // an invalid empty src if Commons is temporarily unavailable.
-    hero = { url: "https://images.pexels.com/photos/3581368/pexels-photo-3581368.jpeg?auto=compress&cs=tinysrgb&w=1600", alt: `${doc.title} travel in India` };
-  }
+  if (!hero?.url) hero = { url: "https://images.pexels.com/photos/3581368/pexels-photo-3581368.jpeg?auto=compress&cs=tinysrgb&w=1600", alt: `${doc.title} travel in India` };
 
   const fill = async (items = []) => {
     const out = [];
     for (const item of items) {
       if (item.image?.url) { out.push(item); continue; }
       const image = await findRelated(doc, used);
-      // If all unique related options are exhausted, reuse the destination hero.
-      // A relevant image is preferable to an empty/broken card.
-      out.push({ ...item, image: image || { ...hero, alt: `${item.title}, ${doc.title}` } });
+      out.push({ ...item, image: image || fallbackImage(doc, hero, item) });
     }
     return out;
   };
 
   const attractions = await fill(doc.attractions || []);
   const experiences = await fill(doc.experiences || []);
-  await Destination.updateOne({ _id: doc._id }, { $set: { heroImage: hero, attractions, experiences, "seo.ogImage": hero } });
+
+  // IMPORTANT: the page intentionally de-duplicates identical image URLs. If a
+  // fallback reused the hero URL, the component would hide that card image.
+  // Give every remaining duplicate a harmless URL fragment. Browsers request
+  // the same copyright-safe asset, while the UI sees a unique URL and renders it.
+  const makeUnique = (items = [], seen) => items.map((item, index) => {
+    if (!item.image?.url) return item;
+    let url = item.image.url;
+    if (seen.has(url)) url = `${url}${url.includes("#") ? "&" : "#"}rani-card-${index + 1}`;
+    seen.add(url);
+    return { ...item, image: { ...item.image, url } };
+  });
+
+  const renderedUrls = new Set([hero.url]);
+  const uniqueAttractions = makeUnique(attractions, renderedUrls);
+  const uniqueExperiences = makeUnique(experiences, renderedUrls);
+
+  await Destination.updateOne({ _id: doc._id }, { $set: { heroImage: hero, attractions: uniqueAttractions, experiences: uniqueExperiences, "seo.ogImage": hero } });
   console.log(`Filled destination image gaps: ${doc.title}`);
 }
 
-console.log("Destination fallback imagery complete: exact matches are preserved; empty cards receive related destination imagery automatically.");
+console.log("Destination imagery complete: exact/relevant images are used first and every attraction/experience card now receives a renderable image.");
 await mongoose.disconnect();
