@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    // Destination/tour imagery comes from licensed third-party CDNs such as
+    // Wikimedia Commons. Serving the original URL avoids Next's image proxy
+    // making a second request that can be rate-limited by the upstream host.
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },
