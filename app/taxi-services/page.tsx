@@ -1,31 +1,4 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/floating-actions";
-import { Header } from "@/components/layout/header";
-import { TaxiServicesListing } from "@/components/taxi-services/taxi-services-listing";
-import { connectToDatabase } from "@/lib/db";
-import { TaxiService } from "@/models/TaxiService";
-
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  title: "Taxi Services in Jodhpur | Rani Tour's",
-  description: "Explore local, outstation, airport, railway, hotel, corporate, wedding and group taxi services from Jodhpur with Rani Tour's.",
-};
-
-export default async function TaxiServicesPage() {
-  await connectToDatabase();
-  const services = await TaxiService.find({ status: "published" })
-    .sort({ sortOrder: 1, title: 1 })
-    .select({ title: 1, slug: 1, tagline: 1, shortDescription: 1, heroImage: 1, serviceType: 1, popularRoutes: 1 })
-    .lean();
-
-  return (
-    <>
-      <Header />
-      <main><TaxiServicesListing services={JSON.parse(JSON.stringify(services))} /></main>
-      <Footer />
-      <FloatingActions />
-    </>
-  );
-}
+import { Footer } from "@/components/layout/footer";import { FloatingActions } from "@/components/layout/floating-actions";import { Header } from "@/components/layout/header";import { TaxiServicesListing } from "@/components/taxi-services/taxi-services-listing";import { connectToDatabase } from "@/lib/db";import { absoluteUrl,jsonLd,publicMetadata } from "@/lib/seo";import { TaxiService } from "@/models/TaxiService";
+export const dynamic="force-dynamic";export const metadata:Metadata=publicMetadata({title:"Taxi Services in Jodhpur",description:"Explore local, outstation, airport, railway, hotel, corporate, wedding and group taxi services from Jodhpur with Rani Tour's.",path:"/taxi-services",keywords:["taxi service Jodhpur","Jodhpur taxi","outstation taxi Jodhpur","Rajasthan taxi service"]});
+export default async function TaxiServicesPage(){await connectToDatabase();const services=await TaxiService.find({status:"published"}).sort({sortOrder:1,title:1}).select({title:1,slug:1,tagline:1,shortDescription:1,heroImage:1,serviceType:1,popularRoutes:1}).lean();const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:absoluteUrl("/")},{"@type":"ListItem",position:2,name:"Taxi Services",item:absoluteUrl("/taxi-services")}]};const list={"@context":"https://schema.org","@type":"ItemList",name:"Rani Tour's Taxi Services",numberOfItems:services.length,itemListElement:services.map((s,i)=>({"@type":"ListItem",position:i+1,name:String(s.title),url:absoluteUrl(`/taxi-services/${s.slug}`)}))};return <><Header/><main><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(breadcrumb)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(list)}}/><TaxiServicesListing services={JSON.parse(JSON.stringify(services))}/></main><Footer/><FloatingActions/></>}
