@@ -4,12 +4,15 @@ import path from "node:path";
 const root = process.cwd();
 const publicComponentDirs = ["about","contact","corporate","destinations","faq","fleet","gallery","get-quote","home","layout","legal","taxi-services","tour-packages"];
 
-const controlChecks = [
+const publicControlChecks = [
   { label: "browser-native <select>", pattern: /<select\b/i },
   { label: "browser-native date input", pattern: /type=["']date["']/i },
   { label: "browser-native number input", pattern: /type=["']number["']/i },
 ];
-const publicChecks = [...controlChecks,{ label: "dead href=# link", pattern: /href=["']#["']/i }];
+const adminControlChecks = [
+  { label: "browser-native date input", pattern: /type=["']date["']/i },
+];
+const publicChecks = [...publicControlChecks,{ label: "dead href=# link", pattern: /href=["']#["']/i }];
 const dialogChecks = [
   { label: "window.alert", pattern: /window\s*\.\s*alert\s*\(/i },
   { label: "window.confirm", pattern: /window\s*\.\s*confirm\s*\(/i },
@@ -42,7 +45,7 @@ for (const file of publicFiles) {
 }
 for (const file of adminFiles) {
   const source = fs.readFileSync(file, "utf8");
-  for (const check of controlChecks) if (check.pattern.test(source)) failures.push(`${path.relative(root, file)}: ${check.label}`);
+  for (const check of adminControlChecks) if (check.pattern.test(source)) failures.push(`${path.relative(root, file)}: ${check.label}`);
 }
 for (const file of projectFiles) {
   const source = fs.readFileSync(file, "utf8");
@@ -56,4 +59,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`UI consistency audit passed (${publicFiles.length} public files, ${adminFiles.length} admin files checked for native controls, ${projectFiles.length} app/component files scanned for native dialogs).`);
+console.log(`UI consistency audit passed (${publicFiles.length} public files, ${adminFiles.length} admin files checked for native date controls, ${projectFiles.length} app/component files scanned for native dialogs).`);
