@@ -11,6 +11,8 @@ function applySecurityHeaders(response:NextResponse,pathname:string){
  response.headers.set("X-Frame-Options","DENY");
  response.headers.set("Permissions-Policy","camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()");
  response.headers.set("Cross-Origin-Opener-Policy","same-origin");
+ response.headers.set("Cross-Origin-Resource-Policy","same-site");
+ response.headers.set("Origin-Agent-Cluster","?1");
  if(isProd)response.headers.set("Strict-Transport-Security","max-age=63072000; includeSubDomains; preload");
  if(pathname.startsWith("/admin")||pathname.startsWith("/api/")){response.headers.set("Cache-Control","no-store, max-age=0");response.headers.set("Pragma","no-cache");}
  if(pathname.startsWith("/admin"))response.headers.set("X-Robots-Tag","noindex, nofollow, noarchive, nosnippet");
@@ -18,18 +20,19 @@ function applySecurityHeaders(response:NextResponse,pathname:string){
  return response;
 }
 
+function normalizedHost(value:string|null){const host=value?.split(",")[0]?.trim().toLowerCase();return host&&host.length<=253&&!/[\s\\/]/.test(host)?host:null}
 function sameOrigin(request:NextRequest){
- const origin=request.headers.get("origin");
- const host=request.headers.get("x-forwarded-host")||request.headers.get("host");
+ const origin=request.headers.get("origin"),host=normalizedHost(request.headers.get("x-forwarded-host")||request.headers.get("host"));
  if(!origin||!host)return false;
- try{return new URL(origin).host===host}catch{return false}
+ try{const parsed=new URL(origin);return (parsed.protocol==="https:"||parsed.protocol==="http:")&&parsed.host.toLowerCase()===host}catch{return false}
 }
 
 export function proxy(request:NextRequest){
  const pathname=request.nextUrl.pathname,method=request.method.toUpperCase();
- if(method==="TRACE"||method==="CONNECT")return applySecurityHeaders(new NextResponse(null,{status:405}),pathname);
+ if(method==="TRACE"||method==="CONNECT")return applySecurityHeaders(new NextResponse(null,{status:405,headers:{Allow:"GET, HEAD, OPTIONS, POST, PUT, PATCH, DELETE"}}),pathname);
  if(pathname.startsWith("/api/admin/")&&unsafeMethods.has(method)&&!sameOrigin(request))return applySecurityHeaders(NextResponse.json({error:"Cross-site request blocked."},{status:403}),pathname);
- const contentLength=Number(request.headers.get("content-length")||0);
+ const rawLength=request.headers.get("content-length"),contentLength=rawLength===null?0:Number(rawLength);
+ if(rawLength!==null&&(!Number.isFinite(contentLength)||contentLength<0))return applySecurityHeaders(NextResponse.json({error:"Invalid request size."},{status:400}),pathname);
  if(pathname.startsWith("/api/admin/")&&unsafeMethods.has(method)&&contentLength>2*1024*1024&&!pathname.endsWith("/uploads"))return applySecurityHeaders(NextResponse.json({error:"Request payload is too large."},{status:413}),pathname);
  return applySecurityHeaders(NextResponse.next(),pathname);
 }
