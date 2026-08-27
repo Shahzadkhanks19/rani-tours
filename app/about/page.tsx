@@ -1,23 +1,3 @@
-import type { Metadata } from "next";
-import { AboutPageContent } from "@/components/about/about-page";
-import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/floating-actions";
-import { Header } from "@/components/layout/header";
-
-export const metadata: Metadata = {
-  title: "About Rani Tours | Trusted Taxi & Tour Company in Jodhpur",
-  description: "Learn about Rani Tours, a Jodhpur-based taxi and travel company providing reliable Rajasthan tours, outstation taxis and all-India travel services.",
-};
-
-export default function AboutPage() {
-  return (
-    <>
-      <Header />
-      <main>
-        <AboutPageContent />
-      </main>
-      <Footer />
-      <FloatingActions />
-    </>
-  );
-}
+import type { Metadata } from "next";import { AboutPageContent } from "@/components/about/about-page";import { Footer } from "@/components/layout/footer";import { FloatingActions } from "@/components/layout/floating-actions";import { Header } from "@/components/layout/header";import { absoluteUrl,jsonLd,publicMetadata } from "@/lib/seo";
+export const metadata:Metadata=publicMetadata({title:"About Rani Tours | Jodhpur Taxi & Tour Company",description:"Learn about Rani Tours, a Jodhpur-based travel company providing Rajasthan tours, outstation taxis, group travel and all-India journey planning.",path:"/about",keywords:["Rani Tours Jodhpur","Jodhpur travel company","Rajasthan tour operator"]});
+export default function AboutPage(){const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:absoluteUrl("/")},{"@type":"ListItem",position:2,name:"About",item:absoluteUrl("/about")}]};const about={"@context":"https://schema.org","@type":"AboutPage",name:"About Rani Tours",url:absoluteUrl("/about"),about:{"@id":`${absoluteUrl("/")}#organization`}};return <><Header/><main><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(breadcrumb)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(about)}}/><AboutPageContent/></main><Footer/><FloatingActions/></>}
