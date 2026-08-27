@@ -1,53 +1,39 @@
 @import "tailwindcss";
 
+:root {
+  --rani-green-950: #17341f;
+  --rani-green-900: #0b4d29;
+  --rani-green-800: #0b6531;
+  --rani-green-700: #147435;
+  --rani-green-100: #edf5e8;
+  --rani-gold: #d6a63a;
+  --rani-cream: #fff8ed;
+  --rani-border: #dadfd6;
+}
+
+/* Public controls deliberately avoid browser-native select/date/number UI. */
+.rani-control {
+  width: 100%;
+  border: 1px solid var(--rani-border);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: #27332a;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.rani-control:focus-within,
+.rani-control:focus { border-color: #4f8f50; box-shadow: 0 0 0 3px rgba(79,143,80,.10); }
+.rani-control input,
+.rani-control textarea { outline: none; }
+input[type="number"].rani-no-spinner::-webkit-inner-spin-button,
+input[type="number"].rani-no-spinner::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"].rani-no-spinner { -moz-appearance: textfield; }
+
 @media print {
-  @page {
-    size: A4 portrait;
-    margin: 0;
-  }
-
-  html,
-  body {
-    width: 210mm;
-    height: 297mm;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-  }
-
-  body {
-    overflow: hidden !important;
-  }
-
-  .invoice-preview-shell {
-    width: 210mm !important;
-    height: 297mm !important;
-    min-height: 297mm !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-  }
-
-  .invoice-a4 {
-    width: 210mm !important;
-    max-width: 210mm !important;
-    height: 297mm !important;
-    min-height: 297mm !important;
-    max-height: 297mm !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    break-after: avoid-page !important;
-    break-before: avoid-page !important;
-    break-inside: avoid-page !important;
-    page-break-after: avoid !important;
-    page-break-before: avoid !important;
-    page-break-inside: avoid !important;
-    box-shadow: none !important;
-  }
-
-  .invoice-a4,
-  .invoice-a4 * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
+  @page { size: A4 portrait; margin: 0; }
+  html, body { width: 210mm; height: 297mm; margin: 0 !important; padding: 0 !important; background: #ffffff !important; }
+  body { overflow: hidden !important; }
+  .invoice-preview-shell { width: 210mm !important; height: 297mm !important; min-height: 297mm !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; }
+  .invoice-a4 { width: 210mm !important; max-width: 210mm !important; height: 297mm !important; min-height: 297mm !important; max-height: 297mm !important; margin: 0 !important; overflow: hidden !important; break-after: avoid-page !important; break-before: avoid-page !important; break-inside: avoid-page !important; page-break-after: avoid !important; page-break-before: avoid !important; page-break-inside: avoid !important; box-shadow: none !important; }
+  .invoice-a4, .invoice-a4 * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }
