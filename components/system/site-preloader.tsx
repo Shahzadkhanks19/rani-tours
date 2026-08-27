@@ -5,16 +5,14 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 export function SitePreloader() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const key = "rani-tours-preloader-seen";
     const alreadySeen = sessionStorage.getItem(key) === "1";
-    if (alreadySeen) return;
-
-    setVisible(true);
-    sessionStorage.setItem(key, "1");
-    const timer = window.setTimeout(() => setVisible(false), 1050);
+    const delay = alreadySeen ? 0 : 1050;
+    if (!alreadySeen) sessionStorage.setItem(key, "1");
+    const timer = window.setTimeout(() => setVisible(false), delay);
     return () => window.clearTimeout(timer);
   }, []);
 
