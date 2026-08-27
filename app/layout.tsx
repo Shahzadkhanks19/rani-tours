@@ -1,30 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { SitePreloader } from "@/components/system/site-preloader";
+import { absoluteUrl, DEFAULT_DESCRIPTION, getSiteUrl, jsonLd, SITE_NAME } from "@/lib/seo";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Rani Tour's | Taxi & Rajasthan Tour Packages",
-    template: "%s | Rani Tour's",
-  },
-  description:
-    "Reliable taxi services, Rajasthan tours and custom travel experiences from Jodhpur with Rani Tour's.",
-  icons: {
-    icon: "/rani-tours-icon.svg",
-    shortcut: "/rani-tours-icon.svg",
-    apple: "/rani-tours-icon.svg",
-  },
-};
-
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className="m-0 bg-[#fffdf7] font-sans text-[#143124] antialiased selection:bg-[#d6a63a] selection:text-[#17341f]">
-        <SitePreloader />
-        <PageViewTracker />
-        {children}
-      </body>
-    </html>
-  );
-}
+export const viewport:Viewport={width:"device-width",initialScale:1,themeColor:"#143124",colorScheme:"light"};
+export const metadata:Metadata={metadataBase:new URL(getSiteUrl()),title:{default:"Rani Tour's | Taxi Service & Rajasthan Tour Packages",template:`%s | ${SITE_NAME}`},description:DEFAULT_DESCRIPTION,applicationName:SITE_NAME,authors:[{name:SITE_NAME}],creator:SITE_NAME,publisher:SITE_NAME,category:"travel",formatDetection:{email:false,address:false,telephone:false},alternates:{canonical:"/"},robots:{index:true,follow:true,"max-image-preview":"large","max-snippet":-1,"max-video-preview":-1},openGraph:{type:"website",siteName:SITE_NAME,title:"Rani Tour's | Taxi Service & Rajasthan Tour Packages",description:DEFAULT_DESCRIPTION,url:"/",locale:"en_IN",images:[{url:"/rani-tours-icon.svg",alt:"Rani Tour's"}]},twitter:{card:"summary_large_image",title:"Rani Tour's | Taxi Service & Rajasthan Tour Packages",description:DEFAULT_DESCRIPTION,images:["/rani-tours-icon.svg"]},icons:{icon:"/rani-tours-icon.svg",shortcut:"/rani-tours-icon.svg",apple:"/rani-tours-icon.svg"}};
+const organization={"@context":"https://schema.org","@type":["TravelAgency","LocalBusiness"],"@id":`${getSiteUrl()}/#organization`,name:SITE_NAME,url:getSiteUrl(),logo:absoluteUrl("/rani-tours-icon.svg"),description:DEFAULT_DESCRIPTION,address:{"@type":"PostalAddress",addressLocality:"Jodhpur",addressRegion:"Rajasthan",addressCountry:"IN"},areaServed:[{"@type":"City",name:"Jodhpur"},{"@type":"State",name:"Rajasthan"},{"@type":"Country",name:"India"}]};
+const website={"@context":"https://schema.org","@type":"WebSite","@id":`${getSiteUrl()}/#website`,url:getSiteUrl(),name:SITE_NAME,publisher:{"@id":`${getSiteUrl()}/#organization`},inLanguage:"en-IN"};
+export default function RootLayout({children}:Readonly<{children:React.ReactNode}>){return <html lang="en-IN" className="scroll-smooth" data-scroll-behavior="smooth"><body className="m-0 bg-[#fffdf7] font-sans text-[#143124] antialiased selection:bg-[#d6a63a] selection:text-[#17341f]"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(organization)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(website)}}/><SitePreloader/><PageViewTracker/>{children}</body></html>}
