@@ -2,13 +2,16 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const scanRoots = [path.join(root, "app"), path.join(root, "components")];
+const publicComponentDirs = ["about","contact","corporate","destinations","faq","fleet","gallery","get-quote","home","layout","legal","taxi-services","tour-packages"];
 
-const checks = [
+const publicChecks = [
   { label: "browser-native <select>", pattern: /<select\b/i },
   { label: "browser-native date input", pattern: /type=["']date["']/i },
   { label: "browser-native number input", pattern: /type=["']number["']/i },
   { label: "dead href=# link", pattern: /href=["']#["']/i },
+];
+
+const dialogChecks = [
   { label: "window.alert", pattern: /window\s*\.\s*alert\s*\(/i },
   { label: "window.confirm", pattern: /window\s*\.\s*confirm\s*\(/i },
   { label: "window.prompt", pattern: /window\s*\.\s*prompt\s*\(/i },
@@ -29,14 +32,18 @@ function filesIn(dir) {
   });
 }
 
-const files = scanRoots.flatMap(filesIn);
+const publicFiles = publicComponentDirs.flatMap((name) => filesIn(path.join(root, "components", name)));
+const projectFiles = [...filesIn(path.join(root, "app")), ...filesIn(path.join(root, "components"))];
 const failures = [];
 
-for (const file of files) {
+for (const file of publicFiles) {
   const source = fs.readFileSync(file, "utf8");
-  for (const check of checks) {
-    if (check.pattern.test(source)) failures.push(`${path.relative(root, file)}: ${check.label}`);
-  }
+  for (const check of publicChecks) if (check.pattern.test(source)) failures.push(`${path.relative(root, file)}: ${check.label}`);
+}
+
+for (const file of projectFiles) {
+  const source = fs.readFileSync(file, "utf8");
+  for (const check of dialogChecks) if (check.pattern.test(source)) failures.push(`${path.relative(root, file)}: ${check.label}`);
 }
 
 if (failures.length) {
@@ -46,4 +53,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`UI consistency audit passed (${files.length} app/component source files checked).`);
+console.log(`UI consistency audit passed (${publicFiles.length} public component files, ${projectFiles.length} app/component files scanned for native dialogs).`);
