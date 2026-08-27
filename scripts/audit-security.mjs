@@ -21,8 +21,14 @@ if(envExample.includes("ADMIN_SESSION_DAYS"))failures.push(".env.example still d
 if(!envExample.includes("ADMIN_SESSION_HOURS=8"))failures.push(".env.example missing ADMIN_SESSION_HOURS");
 
 function filesIn(dir){if(!fs.existsSync(dir))return[];return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const full=path.join(dir,e.name);return e.isDirectory()?filesIn(full):/\.(ts|tsx|js|jsx|mjs|cjs|json|md)$/.test(e.name)?[full]:[]})}
-const scanFiles=[...filesIn(path.join(root,"app")),...filesIn(path.join(root,"components")),...filesIn(path.join(root,"lib")),...filesIn(path.join(root,"scripts"))];
-for(const file of scanFiles){const src=fs.readFileSync(file,"utf8"),rel=path.relative(root,file);if(/eval\s*\(/.test(src))failures.push(`${rel}: eval() is forbidden`);if(/new\s+Function\s*\(/.test(src))failures.push(`${rel}: new Function() is forbidden`);if(/child_process|execSync\s*\(|spawnSync\s*\(/.test(src))failures.push(`${rel}: review process execution usage`);if(/mongodb(?:\+srv)?:\/\/[^\s"']+:[^\s"']+@/i.test(src))failures.push(`${rel}: possible MongoDB credential committed`);if(/(?:sk|re)_[A-Za-z0-9_-]{24,}/.test(src))failures.push(`${rel}: possible API secret committed`);}
+// The audit script intentionally contains signatures of dangerous constructs as data,
+// so exclude this file from the source scan to avoid flagging its own detectors.
+const auditFile=path.resolve(root,"scripts/audit-security.mjs");
+const scanFiles=[...filesIn(path.join(root,"app")),...filesIn(path.join(root,"components")),...filesIn(path.join(root,"lib")),...filesIn(path.join(root,"scripts"))].filter(file=>path.resolve(file)!==auditFile);
+const evalPattern=new RegExp("\\be"+"val\\s*\\(");
+const functionCtorPattern=new RegExp("\\bnew\\s+"+"Function\\s*\\(");
+const processExecPattern=new RegExp("child_"+"process|exec"+"Sync\\s*\\(|spawn"+"Sync\\s*\\(");
+for(const file of scanFiles){const src=fs.readFileSync(file,"utf8"),rel=path.relative(root,file);if(evalPattern.test(src))failures.push(`${rel}: dynamic evaluation is forbidden`);if(functionCtorPattern.test(src))failures.push(`${rel}: dynamic function construction is forbidden`);if(processExecPattern.test(src))failures.push(`${rel}: review process execution usage`);if(/mongodb(?:\+srv)?:\/\/[^\s"']+:[^\s"']+@/i.test(src))failures.push(`${rel}: possible MongoDB credential committed`);if(/(?:sk|re)_[A-Za-z0-9_-]{24,}/.test(src))failures.push(`${rel}: possible API secret committed`);}
 
 if(failures.length){console.error("Security audit failed:\n");for(const f of failures)console.error(`- ${f}`);process.exit(1)}
 console.log(`Security audit passed (${scanFiles.length} source/config files scanned): gateway, headers, sessions, auth abuse controls, uploads, enquiries, secret hygiene and dangerous-code checks are present.`);
