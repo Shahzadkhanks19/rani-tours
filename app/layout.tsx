@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { PublicEnquiryBridge } from "@/components/enquiries/public-enquiry-bridge";
+import { SitePreloader } from "@/components/system/site-preloader";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className="m-0 bg-[#fffdf7] font-sans text-[#143124] antialiased selection:bg-[#b3df24] selection:text-[#003f22]">
+      <body className="m-0 bg-[#fffdf7] font-sans text-[#143124] antialiased selection:bg-[#d6a63a] selection:text-[#17341f]">
+        <SitePreloader />
         <PublicEnquiryBridge />
         <PageViewTracker />
         {children}
