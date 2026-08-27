@@ -3,25 +3,26 @@ import path from "node:path";
 
 const root=process.cwd();
 const failures=[];
-const mustExist=["proxy.ts","lib/security.ts","lib/admin-auth.ts","app/api/enquiries/route.ts","app/api/admin/uploads/route.ts"];
+const mustExist=["proxy.ts","lib/security.ts","lib/admin-auth.ts","app/api/enquiries/route.ts","app/api/admin/uploads/route.ts","app/api/admin/auth/login/route.ts","app/api/admin/auth/forgot-password/route.ts","app/api/admin/auth/reset-password/route.ts","app/api/admin/auth/change-password/route.ts","scripts/create-admin.mjs"];
 for(const rel of mustExist)if(!fs.existsSync(path.join(root,rel)))failures.push(`Missing security file: ${rel}`);
-
 function read(rel){const file=path.join(root,rel);return fs.existsSync(file)?fs.readFileSync(file,"utf8"):""}
-const proxy=read("proxy.ts");
-const adminAuth=read("lib/admin-auth.ts");
-const security=read("lib/security.ts");
-const uploads=read("app/api/admin/uploads/route.ts");
-const enquiries=read("app/api/enquiries/route.ts");
+function compact(v){return v.replace(/\s+/g,"")}
 
-const requiredProxy=["Content-Security-Policy","Strict-Transport-Security","X-Frame-Options","X-Content-Type-Options","Permissions-Policy","sameOrigin(request)","/api/admin/"];
-for(const token of requiredProxy)if(!proxy.includes(token))failures.push(`proxy.ts missing ${token}`);
-for(const token of["httpOnly:true","sameSite:\"strict\"","priority:\"high\"","SESSION_VERSION = 2","passwordChangedAt","length>=12"])if(!adminAuth.replaceAll(" ","").includes(token.replaceAll(" ","")))failures.push(`admin-auth.ts missing ${token}`);
-for(const token of["enforceSameOrigin","enforceBodySize","jsonNoStore"])if(!security.includes(token))failures.push(`lib/security.ts missing ${token}`);
-for(const token of["allowedMime","validMagic","MAX_FILE_SIZE","enforceSameOrigin","rateLimit"])if(!uploads.includes(token))failures.push(`upload security missing ${token}`);
-for(const token of["enforceBodySize","rateLimit","validateContactInput","validateQuoteInput","dedupeKey"])if(!enquiries.includes(token))failures.push(`enquiry security missing ${token}`);
+const proxy=read("proxy.ts"),adminAuth=read("lib/admin-auth.ts"),security=read("lib/security.ts"),uploads=read("app/api/admin/uploads/route.ts"),enquiries=read("app/api/enquiries/route.ts"),login=read("app/api/admin/auth/login/route.ts"),forgot=read("app/api/admin/auth/forgot-password/route.ts"),reset=read("app/api/admin/auth/reset-password/route.ts"),change=read("app/api/admin/auth/change-password/route.ts"),bootstrap=read("scripts/create-admin.mjs"),gitignore=read(".gitignore"),envExample=read(".env.example");
 
-function filesIn(dir){if(!fs.existsSync(dir))return[];return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const full=path.join(dir,e.name);return e.isDirectory()?filesIn(full):/\.(ts|tsx|js|jsx|mjs|cjs)$/.test(e.name)?[full]:[]})}
-for(const file of filesIn(path.join(root,"app"))){const src=fs.readFileSync(file,"utf8"),rel=path.relative(root,file);if(/eval\s*\(/.test(src))failures.push(`${rel}: eval() is forbidden`);if(/new\s+Function\s*\(/.test(src))failures.push(`${rel}: new Function() is forbidden`);if(/dangerouslySetInnerHTML/.test(src)&&!rel.includes("structured-data"))failures.push(`${rel}: review dangerouslySetInnerHTML usage`);}
+for(const token of["Content-Security-Policy","Strict-Transport-Security","X-Frame-Options","X-Content-Type-Options","Permissions-Policy","Referrer-Policy","sameOrigin(request)","/api/admin/","no-store","noindex"] )if(!proxy.includes(token))failures.push(`proxy.ts missing ${token}`);
+for(const token of["httpOnly:true","sameSite:\"strict\"","priority:\"high\"","SESSION_VERSION=2","passwordChangedAt","length>=12","length<=128","ADMIN_SESSION_HOURS"] )if(!compact(adminAuth).includes(compact(token)))failures.push(`admin-auth.ts missing ${token}`);
+for(const token of["enforceSameOrigin","enforceBodySize","jsonNoStore","hasJsonContentType","sanitizePlainText"] )if(!security.includes(token))failures.push(`lib/security.ts missing ${token}`);
+for(const token of["allowedMime","validMagic","MAX_FILE_SIZE","enforceSameOrigin","rateLimit"] )if(!uploads.includes(token))failures.push(`upload security missing ${token}`);
+for(const token of["enforceBodySize","rateLimit","validateContactInput","validateQuoteInput","dedupeKey","user-agent"] )if(!enquiries.includes(token))failures.push(`enquiry security missing ${token}`);
+for(const [name,src,tokens] of [["login",login,["enforceSameOrigin","enforceBodySize","hasJsonContentType","admin-login-account","jsonNoStore"]],["forgot-password",forgot,["enforceSameOrigin","admin-forgot-email","20*60*1000","https://","genericMessage"]],["reset-password",reset,["enforceSameOrigin","admin-reset-token","validatePasswordStrength","clearAdminSession"]],["change-password",change,["enforceSameOrigin","validatePasswordStrength","clearAdminSession","verifyPassword"]],["bootstrap",bootstrap,["password.length < 12","password.length > 128","serverSelectionTimeoutMS"]]])for(const token of tokens)if(!src.includes(token))failures.push(`${name} security missing ${token}`);
+if(!gitignore.includes(".env*")||!gitignore.includes("!.env.example"))failures.push(".gitignore must ignore environment files except .env.example");
+if(envExample.includes("ADMIN_SESSION_DAYS"))failures.push(".env.example still documents deprecated ADMIN_SESSION_DAYS");
+if(!envExample.includes("ADMIN_SESSION_HOURS=8"))failures.push(".env.example missing ADMIN_SESSION_HOURS");
+
+function filesIn(dir){if(!fs.existsSync(dir))return[];return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const full=path.join(dir,e.name);return e.isDirectory()?filesIn(full):/\.(ts|tsx|js|jsx|mjs|cjs|json|md)$/.test(e.name)?[full]:[]})}
+const scanFiles=[...filesIn(path.join(root,"app")),...filesIn(path.join(root,"components")),...filesIn(path.join(root,"lib")),...filesIn(path.join(root,"scripts"))];
+for(const file of scanFiles){const src=fs.readFileSync(file,"utf8"),rel=path.relative(root,file);if(/eval\s*\(/.test(src))failures.push(`${rel}: eval() is forbidden`);if(/new\s+Function\s*\(/.test(src))failures.push(`${rel}: new Function() is forbidden`);if(/child_process|execSync\s*\(|spawnSync\s*\(/.test(src))failures.push(`${rel}: review process execution usage`);if(/mongodb(?:\+srv)?:\/\/[^\s"']+:[^\s"']+@/i.test(src))failures.push(`${rel}: possible MongoDB credential committed`);if(/(?:sk|re)_[A-Za-z0-9_-]{24,}/.test(src))failures.push(`${rel}: possible API secret committed`);}
 
 if(failures.length){console.error("Security audit failed:\n");for(const f of failures)console.error(`- ${f}`);process.exit(1)}
-console.log("Security audit passed: request gateway, sessions, uploads, enquiries and dangerous-code checks are present.");
+console.log(`Security audit passed (${scanFiles.length} source/config files scanned): gateway, headers, sessions, auth abuse controls, uploads, enquiries, secret hygiene and dangerous-code checks are present.`);
