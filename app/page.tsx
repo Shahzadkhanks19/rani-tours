@@ -1,19 +1,3 @@
-import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/floating-actions";
-import { Header } from "@/components/layout/header";
-import { Hero } from "@/components/home/hero";
-import { HomeSections } from "@/components/home/home-sections";
-
-export default function HomePage() {
-  return (
-    <>
-      <Header />
-      <main>
-        <Hero />
-        <HomeSections />
-      </main>
-      <Footer />
-      <FloatingActions />
-    </>
-  );
-}
+import type { Metadata } from "next";import { Footer } from "@/components/layout/footer";import { FloatingActions } from "@/components/layout/floating-actions";import { Header } from "@/components/layout/header";import { Hero } from "@/components/home/hero";import { HomeSections } from "@/components/home/home-sections";import { absoluteUrl,jsonLd,publicMetadata } from "@/lib/seo";
+export const metadata:Metadata=publicMetadata({title:"Taxi Service & Rajasthan Tour Packages from Jodhpur",description:"Plan local taxis, outstation journeys, Rajasthan tours, group travel and custom India trips from Jodhpur with Rani Tour's.",path:"/",keywords:["Jodhpur taxi service","Rajasthan tour packages","Jodhpur tour operator","Rajasthan taxi"]});
+export default function HomePage(){const services={"@context":"https://schema.org","@type":"ItemList",name:"Rani Tour's Travel Services",itemListElement:[{"@type":"ListItem",position:1,name:"Taxi Services",url:absoluteUrl("/taxi-services")},{"@type":"ListItem",position:2,name:"Tour Packages",url:absoluteUrl("/tour-packages")},{"@type":"ListItem",position:3,name:"Destinations",url:absoluteUrl("/destinations")},{"@type":"ListItem",position:4,name:"Corporate Travel",url:absoluteUrl("/corporate")},{"@type":"ListItem",position:5,name:"Fleet",url:absoluteUrl("/fleet")}]};return <><Header/><main><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(services)}}/><Hero/><HomeSections/></main><Footer/><FloatingActions/></>}
