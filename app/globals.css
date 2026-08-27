@@ -25,9 +25,31 @@
 .rani-control:focus { border-color: #4f8f50; box-shadow: 0 0 0 3px rgba(79,143,80,.10); }
 .rani-control input,
 .rani-control textarea { outline: none; }
-input[type="number"].rani-no-spinner::-webkit-inner-spin-button,
-input[type="number"].rani-no-spinner::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Numeric fields keep numeric semantics but never expose Chrome/Edge spinner UI. */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
 input[type="number"].rani-no-spinner { -moz-appearance: textfield; }
+
+/* Any legacy CMS select is visually normalized while module-level AdminSelect is preferred. */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23526758' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .85rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem !important;
+}
 
 @media print {
   @page { size: A4 portrait; margin: 0; }
