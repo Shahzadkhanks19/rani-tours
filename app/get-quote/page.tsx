@@ -1,23 +1,3 @@
-import type { Metadata } from "next";
-import { GetQuotePageContent } from "@/components/get-quote/get-quote-page";
-import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/floating-actions";
-import { Header } from "@/components/layout/header";
-
-export const metadata: Metadata = {
-  title: "Get a Quote | Rani Tour's Jodhpur",
-  description: "Request a travel quote from Rani Tour's in Jodhpur for local taxis, Rajasthan tours, outstation travel, corporate transport, Force Travellers and buses.",
-};
-
-export default function GetQuotePage() {
-  return (
-    <>
-      <Header />
-      <main>
-        <GetQuotePageContent />
-      </main>
-      <Footer />
-      <FloatingActions />
-    </>
-  );
-}
+import type { Metadata } from "next";import { GetQuotePageContent } from "@/components/get-quote/get-quote-page";import { Footer } from "@/components/layout/footer";import { FloatingActions } from "@/components/layout/floating-actions";import { Header } from "@/components/layout/header";import { absoluteUrl,jsonLd,publicMetadata } from "@/lib/seo";
+export const metadata:Metadata=publicMetadata({title:"Get a Taxi or Tour Quote in Jodhpur",description:"Request a custom travel quote for local taxis, outstation journeys, Rajasthan tours, corporate transport, Tempo Travellers and buses from Jodhpur.",path:"/get-quote",keywords:["taxi quote Jodhpur","Rajasthan tour quote","Tempo Traveller Jodhpur"]});
+export default function GetQuotePage(){const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:absoluteUrl("/")},{"@type":"ListItem",position:2,name:"Get a Quote",item:absoluteUrl("/get-quote")}]};return <><Header/><main><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(breadcrumb)}}/><GetQuotePageContent/></main><Footer/><FloatingActions/></>}
