@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Home, RotateCcw, TriangleAlert } from "lucide-react";
 
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -16,7 +17,7 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
             <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-[#667067]">Please retry the application. If the problem continues, return to the homepage and try again in a moment.</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <button type="button" onClick={reset} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#d6a63a] px-6 text-sm font-bold text-[#17341f] transition hover:bg-[#e5b84d]"><RotateCcw className="h-4 w-4"/>Try Again</button>
-              <a href="/" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#bdcaba] bg-white px-6 text-sm font-bold text-[#0b4d29] transition hover:border-[#0b6531] hover:bg-[#f5f9f2]"><Home className="h-4 w-4"/>Go Home</a>
+              <Link href="/" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#bdcaba] bg-white px-6 text-sm font-bold text-[#0b4d29] transition hover:border-[#0b6531] hover:bg-[#f5f9f2]"><Home className="h-4 w-4"/>Go Home</Link>
             </div>
           </section>
         </main>
