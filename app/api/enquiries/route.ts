@@ -12,11 +12,12 @@ export async function POST(request:NextRequest){
   if(!body)return NextResponse.json({error:"Invalid request."},{status:400});
   const source=body.source==="contact"?"contact":body.source==="get_quote"?"get_quote":null;
   if(!source)return NextResponse.json({error:"Invalid enquiry source."},{status:400});
+  const requestId=clean(body.requestId,120);
   const name=clean(body.name,100);const phone=normalizePhone(body.phone);const email=clean(body.email,160).toLowerCase();
   if(name.length<2)return NextResponse.json({error:"Please enter your name."},{status:400});
   if(!phoneRe.test(phone))return NextResponse.json({error:"Enter a valid 10-digit Indian mobile number."},{status:400});
-  if(email&& !emailRe.test(email))return NextResponse.json({error:"Enter a valid email address."},{status:400});
-  const data:Record<string,unknown>={source,name,phone,email,subject:clean(body.subject,160),message:clean(body.message,4000),ipAddress:clean(request.headers.get("x-forwarded-for")?.split(",")[0],80),userAgent:clean(request.headers.get("user-agent"),500)};
+  if(email&&!emailRe.test(email))return NextResponse.json({error:"Enter a valid email address."},{status:400});
+  const data:Record<string,unknown>={requestId:requestId||undefined,source,name,phone,email,subject:clean(body.subject,160),message:clean(body.message,4000),ipAddress:clean(request.headers.get("x-forwarded-for")?.split(",")[0],80),userAgent:clean(request.headers.get("user-agent"),500)};
   if(source==="contact"){
     if(!email)return NextResponse.json({error:"Email is required."},{status:400});
     if(clean(body.subject,160).length<2)return NextResponse.json({error:"Subject is required."},{status:400});
@@ -28,6 +29,12 @@ export async function POST(request:NextRequest){
     Object.assign(data,{journeyType,pickup,destination,travelDate:date,travellers:Math.max(1,Math.min(100,Number(body.travellers)||1)),duration:clean(body.duration,100),vehicle:clean(body.vehicle,160)});
   }
   await connectToDatabase();
-  const item=await Enquiry.create(data);
-  return NextResponse.json({success:true,id:item._id.toString()},{status:201});
+  if(requestId){const existing=await Enquiry.findOne({requestId}).select("_id").lean();if(existing)return NextResponse.json({success:true,id:String(existing._id),duplicate:true},{status:200});}
+  try{
+    const item=await Enquiry.create(data);
+    return NextResponse.json({success:true,id:item._id.toString()},{status:201});
+  }catch(error:unknown){
+    if(requestId&&typeof error==="object"&&error!==null&&"code" in error&&(error as {code?:number}).code===11000){const existing=await Enquiry.findOne({requestId}).select("_id").lean();if(existing)return NextResponse.json({success:true,id:String(existing._id),duplicate:true},{status:200});}
+    throw error;
+  }
 }
