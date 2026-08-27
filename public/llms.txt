@@ -1,0 +1,36 @@
+# Rani Tours
+
+> Rani Tours is a Jodhpur, Rajasthan travel company providing taxi services, customizable Rajasthan and India tour packages, destination planning, corporate transport, and group travel using cars, Tempo Travellers, and buses.
+
+Use the public pages below as the authoritative website sources. Taxi services and tour packages are enquiry-based; the website does not provide online booking or public fixed taxi pricing. Availability and final travel arrangements are confirmed by Rani Tours.
+
+## Main
+
+- [Home](https://www.ranitour.in/): Overview of Rani Tours, its travel services, destinations and enquiry options.
+- [About](https://www.ranitour.in/about): Information about Rani Tours and its travel services from Jodhpur.
+- [Contact](https://www.ranitour.in/contact): Official contact and enquiry information.
+- [Get a Quote](https://www.ranitour.in/get-quote): Request a custom quote for a taxi, tour or group journey.
+- [FAQ](https://www.ranitour.in/faq): Answers to common questions about taxis, tours, payments, vehicles, corporate travel and destinations.
+
+## Taxi Services
+
+- [Taxi Services](https://www.ranitour.in/taxi-services): Published local, outstation, transfer, corporate and group taxi services.
+- [Fleet](https://www.ranitour.in/fleet): Cars, SUVs, Tempo Travellers, buses and other available vehicle categories.
+- [Corporate Travel](https://www.ranitour.in/corporate): Corporate, employee, executive, airport and business transport services.
+
+## Tours and Destinations
+
+- [Tour Packages](https://www.ranitour.in/tour-packages): Customizable Rajasthan and India tour packages.
+- [Destinations](https://www.ranitour.in/destinations): Rajasthan and India destinations, regions and travel themes.
+- [Gallery](https://www.ranitour.in/gallery): Travel, destination and fleet imagery published by Rani Tours.
+
+## Policies
+
+- [Privacy Policy](https://www.ranitour.in/privacy-policy): How personal information submitted through the website is handled.
+- [Terms and Conditions](https://www.ranitour.in/terms-and-conditions): Terms governing enquiries, quotations and travel services.
+- [Cancellation Policy](https://www.ranitour.in/cancellation-policy): General cancellation, modification and refund policy.
+
+## Discovery
+
+- [Sitemap](https://www.ranitour.in/sitemap.xml): Index of public static pages and published CMS taxi services, tour packages and destinations.
+- [Robots](https://www.ranitour.in/robots.txt): Crawler access policy. Admin and API routes are not public content.
