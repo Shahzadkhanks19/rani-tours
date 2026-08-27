@@ -1,19 +1,3 @@
-import type { Metadata } from "next";
-import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/floating-actions";
-import { Header } from "@/components/layout/header";
-import { TourPackagesListing } from "@/components/tour-packages/tour-packages-listing";
-import { connectToDatabase } from "@/lib/db";
-import { TourPackage } from "@/models/TourPackage";
-
-export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Tour Packages from Jodhpur | Rajasthan & India | Rani Tour's",
-  description: "Explore customizable Rajasthan heritage, desert, family, honeymoon, wildlife, Golden Triangle and all-India tour packages with Rani Tour's.",
-};
-
-export default async function TourPackagesPage() {
-  await connectToDatabase();
-  const packages = await TourPackage.find({ status: "published" }).sort({ sortOrder: 1, title: 1 }).select({ title:1, slug:1, category:1, location:1, shortDescription:1, heroImage:1, durationDays:1, durationNights:1, customizable:1, featured:1 }).lean();
-  return <><Header/><main><TourPackagesListing packages={JSON.parse(JSON.stringify(packages))}/></main><Footer/><FloatingActions/></>;
-}
+import type { Metadata } from "next";import { Footer } from "@/components/layout/footer";import { FloatingActions } from "@/components/layout/floating-actions";import { Header } from "@/components/layout/header";import { TourPackagesListing } from "@/components/tour-packages/tour-packages-listing";import { connectToDatabase } from "@/lib/db";import { absoluteUrl,jsonLd,publicMetadata } from "@/lib/seo";import { TourPackage } from "@/models/TourPackage";
+export const dynamic="force-dynamic";export const metadata:Metadata=publicMetadata({title:"Tour Packages from Jodhpur | Rajasthan & India",description:"Explore customizable Rajasthan heritage, desert, family, honeymoon, wildlife, Golden Triangle and all-India tour packages with Rani Tour's.",path:"/tour-packages",keywords:["Rajasthan tour packages","Jodhpur tour packages","Rajasthan holiday packages","India tour packages"]});
+export default async function TourPackagesPage(){await connectToDatabase();const packages=await TourPackage.find({status:"published"}).sort({sortOrder:1,title:1}).select({title:1,slug:1,category:1,location:1,shortDescription:1,heroImage:1,durationDays:1,durationNights:1,customizable:1,featured:1}).lean();const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"Home",item:absoluteUrl("/")},{"@type":"ListItem",position:2,name:"Tour Packages",item:absoluteUrl("/tour-packages")}]};const list={"@context":"https://schema.org","@type":"ItemList",name:"Rani Tour's Tour Packages",numberOfItems:packages.length,itemListElement:packages.map((p,i)=>({"@type":"ListItem",position:i+1,name:String(p.title),url:absoluteUrl(`/tour-packages/${p.slug}`)}))};return <><Header/><main><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(breadcrumb)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd(list)}}/><TourPackagesListing packages={JSON.parse(JSON.stringify(packages))}/></main><Footer/><FloatingActions/></>}
