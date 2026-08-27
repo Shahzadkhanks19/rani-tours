@@ -14,7 +14,8 @@
     "seed:taxi-services": "node --env-file=.env.local scripts/seed-taxi-services.mjs && node --env-file=.env.local scripts/fix-taxi-image-overrides.mjs",
     "seed:tour-packages": "node --env-file=.env.local scripts/seed-tour-packages.mjs && node --env-file=.env.local scripts/fix-tour-package-images.mjs && node --env-file=.env.local scripts/fix-tour-package-itineraries.mjs",
     "seed:destinations": "node --env-file=.env.local scripts/seed-destinations.mjs && node --env-file=.env.local scripts/fix-destination-images.mjs && node --env-file=.env.local scripts/fill-destination-image-gaps.mjs",
-    "seed:fleet": "node --env-file=.env.local scripts/seed-fleet.mjs"
+    "seed:fleet": "node --env-file=.env.local scripts/seed-fleet.mjs",
+    "seed:gallery": "node --env-file=.env.local scripts/seed-gallery.mjs"
   },
   "dependencies": {
     "lucide-react": "1.34.0",
