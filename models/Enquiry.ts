@@ -9,6 +9,7 @@ const NoteSchema = new Schema({
 
 const EnquirySchema = new Schema({
   requestId:{type:String,default:"",trim:true,index:true,sparse:true},
+  dedupeKey:{type:String,default:"",trim:true,index:true,sparse:true},
   source:{type:String,enum:["get_quote","contact"],required:true,index:true},
   name:{type:String,required:true,trim:true},
   phone:{type:String,required:true,trim:true,index:true},
@@ -32,5 +33,6 @@ const EnquirySchema = new Schema({
 },{timestamps:true});
 
 EnquirySchema.index({requestId:1},{unique:true,sparse:true});
+EnquirySchema.index({dedupeKey:1},{unique:true,sparse:true});
 EnquirySchema.index({name:"text",phone:"text",email:"text",subject:"text",message:"text",pickup:"text",destination:"text"});
 export const Enquiry=models.Enquiry||model("Enquiry",EnquirySchema);
