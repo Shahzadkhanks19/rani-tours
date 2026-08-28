@@ -9,10 +9,28 @@ export function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 420);
-    onScroll();
+    let frame = 0;
+    let lastVisible = window.scrollY > 420;
+    setShowTop(lastVisible);
+
+    const update = () => {
+      frame = 0;
+      const nextVisible = window.scrollY > 420;
+      if (nextVisible !== lastVisible) {
+        lastVisible = nextVisible;
+        setShowTop(nextVisible);
+      }
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
