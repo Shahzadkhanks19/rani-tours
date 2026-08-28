@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
 import { ArrowRight, BusFront, Car, CheckCircle2, Headphones, MapPinned, Plane, ShieldCheck, UsersRound } from "lucide-react";
 import { GoogleReviewsSlider } from "@/components/home/google-reviews-slider";
 import { SiteCta } from "@/components/layout/site-cta";
@@ -38,23 +35,23 @@ export function HomeSections() {
     <>
       <section className="bg-[#fff8ed] py-4">
         <div className="mx-auto grid max-w-[1180px] grid-cols-2 gap-y-4 rounded-2xl border border-[#eadfce] bg-white/85 px-5 py-5 shadow-sm sm:grid-cols-3 lg:grid-cols-6">
-          {stats.map(([Icon, value, label], index) => (
-            <motion.div key={label} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="flex items-center gap-3 border-[#e8dfd3] px-2 lg:border-r lg:last:border-r-0">
+          {stats.map(([Icon, value, label]) => (
+            <div key={label} className="home-reveal flex items-center gap-3 border-[#e8dfd3] px-2 lg:border-r lg:last:border-r-0">
               <Icon className="h-8 w-8 shrink-0 text-[#0b6531]" strokeWidth={1.8} />
               <div><div className="text-lg font-bold leading-none text-[#17341f]">{value}</div><div className="mt-1 text-[10px] leading-4 text-[#5f665f]">{label}</div></div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="bg-[#fffdf9] py-8 sm:py-10">
+      <section className="home-below-fold bg-[#fffdf9] py-8 sm:py-10">
         <div className="mx-auto max-w-[1180px] px-4">
           <SectionHeading eyebrow="OUR SERVICES" title="Your Journey, Our Commitment" subtitle="From local rides to all India travel — we've got you covered." />
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {services.map((service, index) => {
+            {services.map((service) => {
               const Icon = service.icon;
               return (
-                <motion.article key={service.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} whileHover={{ y: -5 }} className="overflow-hidden rounded-xl border border-[#e3ddd3] bg-white shadow-[0_8px_22px_rgba(48,44,34,.08)]">
+                <article key={service.title} className="home-reveal home-lift-card overflow-hidden rounded-xl border border-[#e3ddd3] bg-white shadow-[0_8px_22px_rgba(48,44,34,.08)]">
                   <div className="relative h-28 overflow-hidden"><Image src={service.image} alt={service.title} fill sizes="(max-width:768px) 100vw, 190px" className="object-cover transition duration-500 hover:scale-105" /></div>
                   <div className="relative px-4 pb-4 pt-7 text-center">
                     <div className="absolute left-1/2 top-0 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-4 border-white bg-white text-[#0b6531] shadow"><Icon className="h-6 w-6" /></div>
@@ -62,33 +59,33 @@ export function HomeSections() {
                     <p className="mt-2 min-h-[54px] text-[11px] leading-[18px] text-[#666]">{service.text}</p>
                     <Link href={service.href} className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#0b6531] transition hover:text-[#0b4d29]">Explore <ArrowRight className="h-3.5 w-3.5" /></Link>
                   </div>
-                </motion.article>
+                </article>
               );
             })}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#fffdf9] pb-8">
+      <section className="home-below-fold bg-[#fffdf9] pb-8">
         <div className="mx-auto max-w-[1180px] px-4">
           <div className="flex items-end justify-between gap-4">
             <div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#0b6531]">Popular Tour Packages</p><h2 className="font-serif text-3xl font-bold text-[#17341f]">Handpicked Journeys Across India</h2></div>
             <Link href="/tour-packages" className="hidden rounded-xl border border-[#0b6531]/30 bg-[#edf5e8] px-4 py-2 text-xs font-bold text-[#0b6531] transition hover:bg-[#0b6531] hover:text-white sm:inline-flex">View All Packages</Link>
           </div>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {packages.map((item, index) => (
-              <motion.article key={item.title} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} whileHover={{ y: -4 }} className="overflow-hidden rounded-xl border border-[#e2ddd4] bg-white shadow-sm transition-shadow hover:shadow-md">
+            {packages.map((item) => (
+              <article key={item.title} className="home-reveal home-lift-card overflow-hidden rounded-xl border border-[#e2ddd4] bg-white shadow-sm transition-shadow hover:shadow-md">
                 <Link href={item.href} className="block h-full">
                   <div className="relative h-32"><Image src={item.image} alt={item.title} fill sizes="(max-width:768px) 100vw, 230px" className="object-cover transition duration-500 hover:scale-105" /></div>
                   <div className="p-3"><h3 className="font-serif text-sm font-bold text-[#17341f]">{item.title}</h3><div className="mt-3 flex items-center justify-between gap-2"><span className="rounded bg-[#edf5e8] px-2 py-1 text-[10px] font-bold text-[#0b6531]">{item.meta}</span><span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#0b6531]">View Details <ArrowRight className="h-3 w-3"/></span></div></div>
                 </Link>
-              </motion.article>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#fff8ed] py-8">
+      <section className="home-below-fold relative overflow-hidden bg-[#fff8ed] py-8">
         <div className="absolute inset-y-0 right-0 hidden w-[28%] bg-[radial-gradient(circle_at_center,#e5b46f_0,transparent_68%)] opacity-30 lg:block" />
         <div className="relative mx-auto grid max-w-[1180px] gap-8 px-4 lg:grid-cols-[.9fr_1.2fr]">
           <div>
