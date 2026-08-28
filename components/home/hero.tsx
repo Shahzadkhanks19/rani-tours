@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import { Headphones, MapPin, ShieldCheck } from "lucide-react";
-import { motion } from "motion/react";
 import { TripSearch } from "@/components/home/trip-search";
 
 const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=86&w=2200";
@@ -15,7 +12,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(4,19,10,.7)_0%,transparent_34%)]" />
 
       <div className="relative mx-auto grid min-h-[600px] max-w-[1180px] items-center gap-10 px-4 py-14 lg:grid-cols-[1fr_380px] lg:py-8">
-        <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-[650px] py-6">
+        <div className="hero-intro max-w-[650px] py-6">
           <h1 className="font-serif text-[54px] font-bold leading-[0.98] tracking-[-0.035em] sm:text-[66px] lg:text-[76px]">
             Travel Anywhere<br /><span className="text-[#68a95e]">in India</span>
           </h1>
@@ -28,7 +25,7 @@ export function Hero() {
             <span className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-[#e0bb4c]" />Safe & Reliable</span>
             <span className="flex items-center gap-2"><Headphones className="h-5 w-5 text-[#e0bb4c]" />24/7 Support</span>
           </div>
-        </motion.div>
+        </div>
 
         <TripSearch />
       </div>
