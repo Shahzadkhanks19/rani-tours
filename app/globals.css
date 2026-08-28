@@ -11,6 +11,8 @@
   --rani-border: #dadfd6;
 }
 
+html { scroll-behavior: smooth; }
+
 /* Public controls deliberately avoid browser-native select/date/number UI. */
 .rani-control {
   width: 100%;
@@ -49,6 +51,16 @@ select {
   background-position: right .85rem center;
   background-size: 1rem;
   padding-right: 2.5rem !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-animation-duration: .01ms !important;
+  }
 }
 
 @media print {
