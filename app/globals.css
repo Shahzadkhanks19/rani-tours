@@ -36,12 +36,25 @@ html { scroll-behavior: smooth; }
 
 #main-content:focus { outline: none; }
 
-/* Keep the above-the-fold hero entrance effect without hydrating Framer Motion. */
+/* Keep polished entrance effects without hydrating Framer Motion. */
 @keyframes hero-intro-in {
   from { opacity: 0; transform: translateY(26px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes home-reveal-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .hero-intro { animation: hero-intro-in .7s ease-out both; }
+.home-reveal { animation: home-reveal-in .5s ease-out both; }
+.home-lift-card { transition: transform .2s ease, box-shadow .2s ease; }
+.home-lift-card:hover { transform: translateY(-5px); }
+
+/* Skip off-screen layout/paint work while reserving approximate section space. */
+.home-below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 520px;
+}
 
 /* Public controls deliberately avoid browser-native select/date/number UI. */
 .rani-control {
