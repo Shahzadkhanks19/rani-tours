@@ -12,9 +12,14 @@ export function SitePreloader() {
     const key = "rani-tours-preloader-seen";
     if (sessionStorage.getItem(key) === "1" || reduceMotion) return;
     sessionStorage.setItem(key, "1");
-    setVisible(true);
-    const timer = window.setTimeout(() => setVisible(false), 420);
-    return () => window.clearTimeout(timer);
+
+    const showTimer = window.setTimeout(() => setVisible(true), 0);
+    const hideTimer = window.setTimeout(() => setVisible(false), 420);
+
+    return () => {
+      window.clearTimeout(showTimer);
+      window.clearTimeout(hideTimer);
+    };
   }, [reduceMotion]);
 
   return (
