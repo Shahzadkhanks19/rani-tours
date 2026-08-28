@@ -2,11 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Next optimizes trusted/public remote imagery by default. Individual
-    // Image usages can still opt out with `unoptimized` when an upstream host
-    // is unreliable, rate-limited, redirect-heavy, or otherwise unsuitable
-    // for the server-side image optimizer.
-    formats: ["image/avif", "image/webp"],
+    // CMS content currently includes imagery from a broad mix of third-party
+    // hosts. Some of those hosts reject or mishandle Next's server-side image
+    // optimizer requests, which can make otherwise valid destination/tour
+    // images appear broken. Keep direct delivery enabled until those assets are
+    // migrated to controlled/reliable CDN storage (for example Cloudinary).
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },
