@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const unsafeMethods=new Set(["POST","PUT","PATCH","DELETE"]);
 const isProd=process.env.NODE_ENV==="production";
 const scriptSrc=["'self'","'unsafe-inline'",...(isProd?[]:["'unsafe-eval'"])].join(" ");
-const csp=["default-src 'self'","base-uri 'self'","form-action 'self'","frame-ancestors 'none'","object-src 'none'",`script-src ${scriptSrc}`,"style-src 'self' 'unsafe-inline'","img-src 'self' data: blob: https:","font-src 'self' data:","connect-src 'self' https://api.cloudinary.com https://res.cloudinary.com","media-src 'self' https:","worker-src 'self' blob:","manifest-src 'self'",...(isProd?["upgrade-insecure-requests"]:[])].join("; ");
+const csp=["default-src 'self'","base-uri 'self'","form-action 'self'","frame-ancestors 'none'","object-src 'none'",`script-src ${scriptSrc}`,"style-src 'self' 'unsafe-inline'","img-src 'self' data: blob: https:","font-src 'self' data:","connect-src 'self' https://api.cloudinary.com https://res.cloudinary.com","frame-src 'self' https://www.google.com https://maps.google.com","media-src 'self' https:","worker-src 'self' blob:","manifest-src 'self'",...(isProd?["upgrade-insecure-requests"]:[])].join("; ");
 
 function applySecurityHeaders(response:NextResponse,pathname:string){
  response.headers.set("Content-Security-Policy",csp);
