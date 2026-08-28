@@ -4,6 +4,8 @@ import path from "node:path";
 const root = process.cwd();
 const failures = [];
 const warnings = [];
+const config = fs.readFileSync(path.join(root, "next.config.ts"), "utf8");
+const imageOptimizationDisabled = /unoptimized\s*:\s*true/.test(config);
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -25,7 +27,11 @@ for (const file of files) {
 
   for (const match of source.matchAll(/<Image\b([\s\S]*?)\/>/g)) {
     const props = match[1];
-    if (/\bfill\b/.test(props) && !/\bsizes\s*=/.test(props)) failures.push(`${rel}: fill Image is missing sizes`);
+    if (/\bfill\b/.test(props) && !/\bsizes\s*=/.test(props)) {
+      const message = `${rel}: fill Image is missing sizes`;
+      if (imageOptimizationDisabled) warnings.push(message);
+      else failures.push(message);
+    }
   }
 
   const priorities = [...source.matchAll(/<Image\b[\s\S]*?\bpriority\b[\s\S]*?\/>/g)].length;
@@ -35,8 +41,7 @@ for (const file of files) {
 const globals = fs.readFileSync(path.join(root, "app", "globals.css"), "utf8");
 if (!globals.includes("prefers-reduced-motion")) failures.push("app/globals.css: reduced-motion fallback missing");
 
-const config = fs.readFileSync(path.join(root, "next.config.ts"), "utf8");
-if (/unoptimized\s*:\s*true/.test(config)) warnings.push("next.config.ts: global image optimization is disabled; external CMS/CDN reliability currently takes precedence, but this should be reviewed with production Lighthouse data");
+if (imageOptimizationDisabled) warnings.push("next.config.ts: global image optimization is disabled; external CMS/CDN reliability currently takes precedence. Missing sizes are reported as notes until optimization is enabled, because sizes does not change the downloaded source in unoptimized mode.");
 
 if (failures.length) {
   console.error("Performance audit failed:\n\n" + [...new Set(failures)].map((item) => `- ${item}`).join("\n"));
