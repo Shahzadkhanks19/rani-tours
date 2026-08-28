@@ -10,8 +10,7 @@ export function FloatingActions() {
 
   useEffect(() => {
     let frame = 0;
-    let lastVisible = window.scrollY > 420;
-    setShowTop(lastVisible);
+    let lastVisible = false;
 
     const update = () => {
       frame = 0;
@@ -26,6 +25,7 @@ export function FloatingActions() {
       if (!frame) frame = window.requestAnimationFrame(update);
     };
 
+    frame = window.requestAnimationFrame(update);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
