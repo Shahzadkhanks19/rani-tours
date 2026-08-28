@@ -2,9 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Public travel imagery comes from external CDNs. Serving original URLs
-    // avoids an additional Next image-proxy request to rate-limited hosts.
-    unoptimized: true,
+    // Next optimizes trusted/public remote imagery by default. Individual
+    // Image usages can still opt out with `unoptimized` when an upstream host
+    // is unreliable, rate-limited, redirect-heavy, or otherwise unsuitable
+    // for the server-side image optimizer.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },
