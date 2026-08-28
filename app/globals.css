@@ -45,8 +45,14 @@ html { scroll-behavior: smooth; }
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.hero-intro { animation: hero-intro-in .7s ease-out both; }
+@keyframes gallery-reveal-in {
+  from { opacity: 0; transform: scale(.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+.hero-intro,
+.hero-reveal { animation: hero-intro-in .7s ease-out both; }
 .home-reveal { animation: home-reveal-in .5s ease-out both; }
+.gallery-reveal { animation: gallery-reveal-in .24s ease-out both; }
 .home-lift-card { transition: transform .2s ease, box-shadow .2s ease; }
 .home-lift-card:hover { transform: translateY(-5px); }
 
