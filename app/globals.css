@@ -51,6 +51,7 @@ html { scroll-behavior: smooth; }
 .home-lift-card:hover { transform: translateY(-5px); }
 
 /* Skip off-screen layout/paint work while reserving approximate section space. */
+.defer-render,
 .home-below-fold {
   content-visibility: auto;
   contain-intrinsic-size: auto 520px;
