@@ -14,20 +14,20 @@ const stats = [
 ] as const;
 
 const services = [
-  { title: "Local Services", href: "/taxi-services/jodhpur-local-taxi", text: "Sightseeing, airport pickup, railway station transfers and hotel drop services in Jodhpur", image: "https://images.unsplash.com/photo-1764243213897-45e6def5ad3e?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
-  { title: "Rajasthan Tours", href: "/taxi-services/rajasthan-taxi-service", text: "Explore Rajasthan's iconic destinations with comfort and care", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
-  { title: "Outstation Taxi", href: "/taxi-services/outstation-taxi", text: "Taxi service for any destination across India — safe and reliable", image: "https://images.unsplash.com/photo-1650643683806-cdaf346a0bb2?auto=format&fit=crop&q=82&w=900", icon: Car },
-  { title: "All India Taxi Service", href: "/taxi-services/all-india-taxi", text: "Travel anywhere in India with comfort, on time every time", image: "https://images.unsplash.com/photo-1532664189809-02133fee698d?auto=format&fit=crop&q=82&w=900", icon: MapPinned },
-  { title: "Airport & Railway Transfers", href: "/taxi-services/airport-transfers", text: "Timely airport pickups and drop-offs to all major locations", image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=82&w=900", icon: Plane },
-  { title: "Corporate & Events", href: "/corporate", text: "Corporate travel, staff transport and event transportation solutions", image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=82&w=900", icon: BusFront },
+  { title: "Local Services", href: "/taxi-services/jodhpur-local-taxi", text: "Sightseeing, airport pickup, railway station transfers and hotel drop services in Jodhpur", image: "https://images.unsplash.com/photo-1764243213897-45e6def5ad3e?auto=format&fit=crop&q=72&w=640", icon: MapPinned },
+  { title: "Rajasthan Tours", href: "/taxi-services/rajasthan-taxi-service", text: "Explore Rajasthan's iconic destinations with comfort and care", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=72&w=640", icon: MapPinned },
+  { title: "Outstation Taxi", href: "/taxi-services/outstation-taxi", text: "Taxi service for any destination across India — safe and reliable", image: "https://images.unsplash.com/photo-1650643683806-cdaf346a0bb2?auto=format&fit=crop&q=72&w=640", icon: Car },
+  { title: "All India Taxi Service", href: "/taxi-services/all-india-taxi", text: "Travel anywhere in India with comfort, on time every time", image: "https://images.unsplash.com/photo-1532664189809-02133fee698d?auto=format&fit=crop&q=72&w=640", icon: MapPinned },
+  { title: "Airport & Railway Transfers", href: "/taxi-services/airport-transfers", text: "Timely airport pickups and drop-offs to all major locations", image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=72&w=640", icon: Plane },
+  { title: "Corporate & Events", href: "/corporate", text: "Corporate travel, staff transport and event transportation solutions", image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=72&w=640", icon: BusFront },
 ];
 
 const packages = [
-  { title: "Rajasthan Heritage Tour", meta: "8 Days / 7 Nights", href: "/tour-packages/rajasthan-heritage-tour", image: "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=82&w=900" },
-  { title: "Desert Safari Tour", meta: "4 Days / 3 Nights", href: "/tour-packages/desert-safari-tour", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=82&w=900" },
-  { title: "Family Rajasthan Tour", meta: "6 Days / 5 Nights", href: "/tour-packages/family-rajasthan-tour", image: "https://images.unsplash.com/photo-1764243213897-45e6def5ad3e?auto=format&fit=crop&q=82&w=900" },
-  { title: "Honeymoon Rajasthan Tour", meta: "5 Days / 4 Nights", href: "/tour-packages/honeymoon-rajasthan-tour", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=82&w=900" },
-  { title: "All India Tour Packages", meta: "Custom Journey", href: "/tour-packages/all-india-tour-packages", image: "https://images.unsplash.com/photo-1650643683806-cdaf346a0bb2?auto=format&fit=crop&q=82&w=900" },
+  { title: "Rajasthan Heritage Tour", meta: "8 Days / 7 Nights", href: "/tour-packages/rajasthan-heritage-tour", image: "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=72&w=640" },
+  { title: "Desert Safari Tour", meta: "4 Days / 3 Nights", href: "/tour-packages/desert-safari-tour", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&q=72&w=640" },
+  { title: "Family Rajasthan Tour", meta: "6 Days / 5 Nights", href: "/tour-packages/family-rajasthan-tour", image: "https://images.unsplash.com/photo-1764243213897-45e6def5ad3e?auto=format&fit=crop&q=72&w=640" },
+  { title: "Honeymoon Rajasthan Tour", meta: "5 Days / 4 Nights", href: "/tour-packages/honeymoon-rajasthan-tour", image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=72&w=640" },
+  { title: "All India Tour Packages", meta: "Custom Journey", href: "/tour-packages/all-india-tour-packages", image: "https://images.unsplash.com/photo-1650643683806-cdaf346a0bb2?auto=format&fit=crop&q=72&w=640" },
 ];
 
 export function HomeSections() {
@@ -52,7 +52,7 @@ export function HomeSections() {
               const Icon = service.icon;
               return (
                 <article key={service.title} className="home-reveal home-lift-card overflow-hidden rounded-xl border border-[#e3ddd3] bg-white shadow-[0_8px_22px_rgba(48,44,34,.08)]">
-                  <div className="relative h-28 overflow-hidden"><Image src={service.image} alt={service.title} fill sizes="(max-width:768px) 100vw, 190px" className="object-cover transition duration-500 hover:scale-105" /></div>
+                  <div className="relative h-28 overflow-hidden"><Image src={service.image} alt={service.title} fill sizes="(max-width:640px) calc(100vw - 2rem), (max-width:1024px) 50vw, 190px" className="object-cover transition duration-500 hover:scale-105" /></div>
                   <div className="relative px-4 pb-4 pt-7 text-center">
                     <div className="absolute left-1/2 top-0 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-4 border-white bg-white text-[#0b6531] shadow"><Icon className="h-6 w-6" /></div>
                     <h3 className="font-serif text-base font-bold text-[#17341f]">{service.title}</h3>
@@ -76,7 +76,7 @@ export function HomeSections() {
             {packages.map((item) => (
               <article key={item.title} className="home-reveal home-lift-card overflow-hidden rounded-xl border border-[#e2ddd4] bg-white shadow-sm transition-shadow hover:shadow-md">
                 <Link href={item.href} className="block h-full">
-                  <div className="relative h-32"><Image src={item.image} alt={item.title} fill sizes="(max-width:768px) 100vw, 230px" className="object-cover transition duration-500 hover:scale-105" /></div>
+                  <div className="relative h-32"><Image src={item.image} alt={item.title} fill sizes="(max-width:640px) calc(100vw - 2rem), (max-width:1024px) 50vw, 230px" className="object-cover transition duration-500 hover:scale-105" /></div>
                   <div className="p-3"><h3 className="font-serif text-sm font-bold text-[#17341f]">{item.title}</h3><div className="mt-3 flex items-center justify-between gap-2"><span className="rounded bg-[#edf5e8] px-2 py-1 text-[10px] font-bold text-[#0b6531]">{item.meta}</span><span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#0b6531]">View Details <ArrowRight className="h-3 w-3"/></span></div></div>
                 </Link>
               </article>
