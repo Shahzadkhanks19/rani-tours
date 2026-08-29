@@ -2,11 +2,6 @@ const RASTER_IMAGE_RE=/\.(?:jpe?g|png|webp)$/i;
 const FORTUNER_COMMONS_FILE="2025 Toyota Fortuner 2.8 Q 4x2 in Platinum White Pearl Mica, front right.jpg";
 const FORTUNER_THUMB_BASE="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2025_Toyota_Fortuner_2.8_Q_4x2_in_Platinum_White_Pearl_Mica,_front_right.jpg";
 
-function sameOriginProxy(src:string,width:number){
-  const params=new URLSearchParams({url:src,width:String(width)});
-  return `/api/image?${params.toString()}`;
-}
-
 export function publicImageUrl(src:string,width:number){
   if(!src||src.startsWith("/")||src.startsWith("data:"))return src;
   try{
@@ -15,8 +10,7 @@ export function publicImageUrl(src:string,width:number){
 
     if(url.hostname==="commons.wikimedia.org"&&decodeURIComponent(url.pathname).includes(FORTUNER_COMMONS_FILE)){
       const encodedName=encodeURIComponent(FORTUNER_COMMONS_FILE.replaceAll(" ","_")).replaceAll("%2C",",");
-      const thumb=`${FORTUNER_THUMB_BASE}/${safeWidth}px-${encodedName}`;
-      return sameOriginProxy(thumb,safeWidth);
+      return `${FORTUNER_THUMB_BASE}/${safeWidth}px-${encodedName}`;
     }
 
     if((url.hostname==="commons.wikimedia.org"||url.hostname.endsWith(".wikimedia.org"))&&url.pathname.includes("Special:Redirect/file/")){
