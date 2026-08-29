@@ -2,8 +2,15 @@
 
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
-import { FaWhatsapp } from "react-icons/fa";
 import { siteContact } from "@/lib/site-data";
+
+function WhatsappIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-7 w-7" fill="currentColor">
+      <path d="M12.04 2a9.84 9.84 0 0 0-8.49 14.8L2 22l5.34-1.4A9.9 9.9 0 1 0 12.04 2Zm0 17.97a8.11 8.11 0 0 1-4.13-1.13l-.3-.18-3.17.83.85-3.09-.2-.31a8.13 8.13 0 1 1 6.95 3.88Zm4.46-6.1c-.24-.12-1.44-.71-1.67-.79-.22-.08-.39-.12-.55.12-.16.25-.63.8-.77.96-.14.16-.29.18-.53.06-.25-.12-1.03-.38-1.96-1.21-.73-.65-1.21-1.44-1.35-1.69-.14-.24-.02-.37.1-.5.11-.11.25-.28.37-.43.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.43-.06-.12-.55-1.34-.76-1.84-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.3-.23.25-.86.84-.86 2.05 0 1.2.88 2.37 1 2.53.12.16 1.73 2.64 4.19 3.7.58.25 1.04.4 1.4.52.58.19 1.12.16 1.54.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.28Z" />
+    </svg>
+  );
+}
 
 export function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
@@ -54,7 +61,7 @@ export function FloatingActions() {
         title="WhatsApp Rani Tours"
         className="grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_14px_34px_rgba(37,211,102,.3)] transition duration-200 hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-[#20bd5a] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9bd500] focus-visible:ring-offset-2"
       >
-        <FaWhatsapp className="h-7 w-7" />
+        <WhatsappIcon />
       </a>
     </div>
   );
