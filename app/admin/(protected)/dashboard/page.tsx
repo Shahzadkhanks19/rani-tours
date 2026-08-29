@@ -12,7 +12,7 @@ import { TourPackage } from "@/models/TourPackage";
 
 export default async function AdminDashboardPage(){
   await connectToDatabase();
-  const [recentActivity,totalPackages,publishedPackages,totalTaxi,publishedTaxi,totalDestinations,publishedDestinations,totalFleet,publishedFleet,totalGallery,publishedGallery,totalEnquiries,newEnquiries,totalInvoices,revenueAgg]=await Promise.all([
+  const [recentActivity,totalPackages,publishedPackages,totalTaxi,publishedTaxi,totalDestinations,publishedDestinations,totalFleet,publishedFleet,totalGallery,publishedGallery,totalEnquiries,newEnquiries,draftInvoices,issuedInvoices,draftRevenue,issuedRevenue]=await Promise.all([
     ActivityLog.find({}).sort({createdAt:-1}).limit(8).lean(),
     TourPackage.countDocuments({}),TourPackage.countDocuments({status:"published"}),
     TaxiService.countDocuments({}),TaxiService.countDocuments({status:"published"}),
@@ -20,9 +20,12 @@ export default async function AdminDashboardPage(){
     FleetVehicle.countDocuments({}),FleetVehicle.countDocuments({status:"published"}),
     GalleryItem.countDocuments({}),GalleryItem.countDocuments({status:"published"}),
     Enquiry.countDocuments({}),Enquiry.countDocuments({status:"new"}),
-    Invoice.countDocuments({status:{$ne:"cancelled"}}),Invoice.aggregate([{$match:{status:{$ne:"cancelled"}}},{$group:{_id:null,value:{$sum:"$amountPaid"}}}]),
+    Invoice.countDocuments({status:"draft"}),Invoice.countDocuments({status:"issued"}),
+    Invoice.aggregate([{$match:{status:"draft"}},{$group:{_id:null,value:{$sum:"$amountPaid"}}}]),
+    Invoice.aggregate([{$match:{status:"issued"}},{$group:{_id:null,value:{$sum:"$amountPaid"}}}]),
   ]);
-  const revenue=Number(revenueAgg[0]?.value||0);
+  const totalInvoices=Number(draftInvoices)+Number(issuedInvoices);
+  const revenue=Number(draftRevenue[0]?.value||0)+Number(issuedRevenue[0]?.value||0);
   const cards=[
     {label:"Tour Packages",value:totalPackages,detail:`${publishedPackages} active`,icon:PackageCheck,href:"/admin/tour-packages"},
     {label:"Taxi Services",value:totalTaxi,detail:`${publishedTaxi} active`,icon:CarFront,href:"/admin/taxi-services"},
