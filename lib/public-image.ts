@@ -2,7 +2,9 @@ const RASTER_IMAGE_RE=/\.(?:jpe?g|png|webp)$/i;
 const FORTUNER_COMMONS_FILE="2025 Toyota Fortuner 2.8 Q 4x2 in Platinum White Pearl Mica, front right.jpg";
 const FORTUNER_THUMB_BASE="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2025_Toyota_Fortuner_2.8_Q_4x2_in_Platinum_White_Pearl_Mica,_front_right.jpg";
 
-function localBridge(url:URL){return `/api/image?url=${encodeURIComponent(url.toString())}`;}
+function bridgeWikimedia(url:URL){
+  return `/api/image?url=${encodeURIComponent(url.toString())}`;
+}
 
 export function publicImageUrl(src:string,width:number){
   if(!src||src.startsWith("/")||src.startsWith("data:"))return src;
@@ -10,19 +12,14 @@ export function publicImageUrl(src:string,width:number){
     const url=new URL(src);
     const safeWidth=Math.max(160,Math.min(2000,Math.round(width)));
 
-    // This host returned a server error through Next's optimizer in Lighthouse.
-    // Use the local fleet fallback instead of exposing a broken network request.
-    if(url.hostname==="aaitoursandtravels.com")return "/images/fleet/vehicle-fallback.svg";
-
     if(url.hostname==="commons.wikimedia.org"&&decodeURIComponent(url.pathname).includes(FORTUNER_COMMONS_FILE)){
       const encodedName=encodeURIComponent(FORTUNER_COMMONS_FILE.replaceAll(" ","_")).replaceAll("%2C",",");
-      const thumb=new URL(`${FORTUNER_THUMB_BASE}/${safeWidth}px-${encodedName}`);
-      return localBridge(thumb);
+      return bridgeWikimedia(new URL(`${FORTUNER_THUMB_BASE}/${safeWidth}px-${encodedName}`));
     }
 
     if((url.hostname==="commons.wikimedia.org"||url.hostname.endsWith(".wikimedia.org"))&&url.pathname.includes("Special:Redirect/file/")){
       url.searchParams.set("width",String(safeWidth));
-      return localBridge(url);
+      return bridgeWikimedia(url);
     }
 
     if(url.hostname==="upload.wikimedia.org"&&url.pathname.includes("/wikipedia/commons/")){
@@ -36,7 +33,7 @@ export function publicImageUrl(src:string,width:number){
             parts[parts.length-1]=`${safeWidth}px-${filename}`;
             url.pathname=`/${parts.join("/")}`;
             url.search="";
-            return localBridge(url);
+            return bridgeWikimedia(url);
           }
         }
         const filename=parts[parts.length-1];
@@ -45,10 +42,10 @@ export function publicImageUrl(src:string,width:number){
           const fileParts=parts.slice(commonsIndex+1);
           url.pathname=`/${[...prefix,"thumb",...fileParts,`${safeWidth}px-${filename}`].join("/")}`;
           url.search="";
-          return localBridge(url);
+          return bridgeWikimedia(url);
         }
       }
-      return localBridge(url);
+      return bridgeWikimedia(url);
     }
 
     if(url.hostname==="images.pexels.com"){
