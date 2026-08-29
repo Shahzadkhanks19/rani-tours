@@ -9,12 +9,13 @@ import { ActivityLog } from "@/models/ActivityLog";
 import { AdminUser } from "@/models/AdminUser";
 
 const scrypt = promisify(scryptCallback);
-const SESSION_COOKIE = "__Host-rani_admin_session";
-const LEGACY_SESSION_COOKIE = "rani_admin_session";
+const PRODUCTION_SESSION_COOKIE = "__Host-rani_admin_session";
+const DEVELOPMENT_SESSION_COOKIE = "rani_admin_session";
 const SESSION_VERSION = 2;
 
 type SessionPayload = { v:number; sub:string; email:string; role:"super_admin"|"admin"; iat:number; exp:number; pwd:number };
 
+function sessionCookieName(){return process.env.NODE_ENV==="production"?PRODUCTION_SESSION_COOKIE:DEVELOPMENT_SESSION_COOKIE}
 function getSessionSecret(){const secret=process.env.ADMIN_JWT_SECRET;if(!secret||secret.length<48)throw new Error("ADMIN_JWT_SECRET must be configured with at least 48 characters.");return secret}
 function base64UrlEncode(value:string){return Buffer.from(value).toString("base64url")}
 function signPayload(encodedPayload:string){return createHmac("sha256",getSessionSecret()).update(encodedPayload).digest("base64url")}
@@ -26,9 +27,9 @@ export async function verifyPassword(password:string,storedHash:string){const[sa
 export function createSessionToken(payload:{sub:string;email:string;role:"super_admin"|"admin";pwd:number}){const hours=Math.min(24,Math.max(1,Number(process.env.ADMIN_SESSION_HOURS||8)));const now=Math.floor(Date.now()/1000);const sessionPayload:SessionPayload={...payload,v:SESSION_VERSION,iat:now,exp:now+hours*60*60};const encoded=base64UrlEncode(JSON.stringify(sessionPayload));return `${encoded}.${signPayload(encoded)}`}
 export function verifySessionToken(token:string|undefined):SessionPayload|null{if(!token||token.length>4096)return null;const[encoded,signature,...rest]=token.split(".");if(!encoded||!signature||rest.length)return null;const expected=signPayload(encoded);const actualBuffer=Buffer.from(signature);const expectedBuffer=Buffer.from(expected);if(actualBuffer.length!==expectedBuffer.length||!timingSafeEqual(actualBuffer,expectedBuffer))return null;try{const payload=JSON.parse(Buffer.from(encoded,"base64url").toString("utf8")) as SessionPayload;const now=Math.floor(Date.now()/1000);if(payload.v!==SESSION_VERSION||payload.exp<=now||payload.iat>now+60||payload.exp-payload.iat>24*60*60||!payload.sub||!payload.email)return null;return payload}catch{return null}}
 
-export async function setAdminSession(admin:{_id:{toString():string};email:string;role:"super_admin"|"admin";passwordChangedAt?:Date|null}){const cookieStore=await cookies();const hours=Math.min(24,Math.max(1,Number(process.env.ADMIN_SESSION_HOURS||8)));cookieStore.delete(LEGACY_SESSION_COOKIE);cookieStore.set(SESSION_COOKIE,createSessionToken({sub:admin._id.toString(),email:admin.email,role:admin.role,pwd:passwordVersion(admin.passwordChangedAt)}),{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"strict",path:"/",maxAge:hours*60*60,priority:"high"})}
-export async function clearAdminSession(){const cookieStore=await cookies();for(const name of[SESSION_COOKIE,LEGACY_SESSION_COOKIE])cookieStore.set(name,"",{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"strict",path:"/",maxAge:0})}
-export async function getAdminSession(){const cookieStore=await cookies();return verifySessionToken(cookieStore.get(SESSION_COOKIE)?.value)}
+export async function setAdminSession(admin:{_id:{toString():string};email:string;role:"super_admin"|"admin";passwordChangedAt?:Date|null}){const cookieStore=await cookies();const hours=Math.min(24,Math.max(1,Number(process.env.ADMIN_SESSION_HOURS||8)));const name=sessionCookieName();const obsolete=name===PRODUCTION_SESSION_COOKIE?DEVELOPMENT_SESSION_COOKIE:PRODUCTION_SESSION_COOKIE;cookieStore.delete(obsolete);cookieStore.set(name,createSessionToken({sub:admin._id.toString(),email:admin.email,role:admin.role,pwd:passwordVersion(admin.passwordChangedAt)}),{httpOnly:true,secure:process.env.NODE_ENV==="production",sameSite:"strict",path:"/",maxAge:hours*60*60,priority:"high"})}
+export async function clearAdminSession(){const cookieStore=await cookies();for(const name of[PRODUCTION_SESSION_COOKIE,DEVELOPMENT_SESSION_COOKIE])cookieStore.set(name,"",{httpOnly:true,secure:name===PRODUCTION_SESSION_COOKIE,sameSite:"strict",path:"/",maxAge:0})}
+export async function getAdminSession(){const cookieStore=await cookies();return verifySessionToken(cookieStore.get(sessionCookieName())?.value)}
 export async function getCurrentAdmin(){const session=await getAdminSession();if(!session)return null;await connectToDatabase();const admin=await AdminUser.findOne({_id:session.sub,isActive:true}).lean();if(!admin||String(admin.email).toLowerCase()!==session.email.toLowerCase()||passwordVersion(admin.passwordChangedAt)!==session.pwd)return null;return{id:admin._id.toString(),name:admin.name as string,email:admin.email as string,role:admin.role as "super_admin"|"admin"}}
 export async function requireAdminPage(){const admin=await getCurrentAdmin();if(!admin)redirect("/admin/login");return admin}
 export async function requireAdminApi(){return getCurrentAdmin()}
