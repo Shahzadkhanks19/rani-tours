@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Headphones, MapPin, ShieldCheck } from "lucide-react";
 import { TripSearch } from "@/components/home/trip-search";
 
-const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=82&w=1600";
+const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=76&w=1600";
 
 export function Hero() {
   return (
