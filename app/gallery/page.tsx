@@ -7,7 +7,8 @@ import { connectToDatabase } from "@/lib/db";
 import { absoluteUrl, jsonLd, publicMetadata } from "@/lib/seo";
 import { GalleryItem } from "@/models/GalleryItem";
 
-export const dynamic="force-dynamic";
+export const revalidate = 300;
+
 export const metadata: Metadata = publicMetadata({
   title: "Travel Gallery | Rajasthan Destinations & Fleet",
   description: "Explore memorable destinations, travel moments, vehicles and journeys with Rani Tour's across Rajasthan and India.",
