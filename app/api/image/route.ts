@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 const ALLOWED_HOSTS = new Set([
   "upload.wikimedia.org",
   "commons.wikimedia.org",
-  "aaitoursandtravels.com",
 ]);
+const MAX_REDIRECTS = 3;
 
 function getAllowedSource(value: string | null) {
   if (!value) throw new Error("Missing image URL");
@@ -15,16 +15,34 @@ function getAllowedSource(value: string | null) {
   return url;
 }
 
-export async function GET(request: NextRequest) {
-  try {
-    const source = getAllowedSource(request.nextUrl.searchParams.get("url"));
-    const response = await fetch(source, {
+async function fetchAllowedImage(initialUrl: URL) {
+  let currentUrl = initialUrl;
+  for (let redirect = 0; redirect <= MAX_REDIRECTS; redirect += 1) {
+    const response = await fetch(currentUrl, {
+      redirect: "manual",
       headers: {
         Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
         "User-Agent": "RaniToursImageBridge/1.0",
       },
       next: { revalidate: 604800 },
     });
+
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get("location");
+      if (!location || redirect === MAX_REDIRECTS) throw new Error("Too many redirects");
+      currentUrl = getAllowedSource(new URL(location, currentUrl).toString());
+      continue;
+    }
+
+    return response;
+  }
+  throw new Error("Unable to load image");
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const source = getAllowedSource(request.nextUrl.searchParams.get("url"));
+    const response = await fetchAllowedImage(source);
 
     if (!response.ok) {
       return NextResponse.json({ error: "Unable to load image" }, { status: 502 });
