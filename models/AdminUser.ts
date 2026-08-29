@@ -15,8 +15,6 @@ const adminUserSchema = new Schema(
   { timestamps: true }
 );
 
-adminUserSchema.index({ email: 1 }, { unique: true });
-
 export type AdminUserDocument = InferSchemaType<typeof adminUserSchema> & {
   _id: { toString(): string };
 };
