@@ -8,8 +8,8 @@ const NoteSchema = new Schema({
 },{_id:true});
 
 const EnquirySchema = new Schema({
-  requestId:{type:String,default:"",trim:true,index:true,sparse:true},
-  dedupeKey:{type:String,default:"",trim:true,index:true,sparse:true},
+  requestId:{type:String,default:"",trim:true},
+  dedupeKey:{type:String,default:"",trim:true},
   source:{type:String,enum:["get_quote","contact"],required:true,index:true},
   name:{type:String,required:true,trim:true},
   phone:{type:String,required:true,trim:true,index:true},
