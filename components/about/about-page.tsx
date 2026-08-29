@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Car, Clock3, Headphones, HeartHandshake, MapPinned, ReceiptText, Route, ShieldCheck, UserRoundCheck, UsersRound } from "lucide-react";
+import { Car, Clock3, HeartHandshake, MapPinned, Route, ShieldCheck, UsersRound } from "lucide-react";
+import { FaFileInvoiceDollar, FaHeadset, FaMapMarkedAlt, FaRoute, FaTaxi, FaUserTie } from "react-icons/fa";
 import { TripSearch } from "@/components/home/trip-search";
 import { SiteCta } from "@/components/layout/site-cta";
 
 const heroImage="https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=86&w=2200";const jodhpurClockTowerImage="https://images.unsplash.com/photo-1677144702435-ef871adac31c?auto=format&fit=crop&q=84&w=1400";const jodhpurStoryImage=heroImage;
 const heroFeatures=[[MapPinned,"Local Expertise","Deep knowledge of Rajasthan & India"],[ShieldCheck,"Reliable Service","On-time, every time with safety"],[Car,"Comfortable Travel","Well maintained vehicles"],[HeartHandshake,"Customer First","Your satisfaction is our priority"]] as const;
-const promises=[[UserRoundCheck,"Experienced Drivers","Courteous, professional and well-trained drivers who know the best routes."],[Car,"Well Maintained Vehicles","Clean, comfortable and regularly serviced vehicles for a safe journey."],[MapPinned,"All India Coverage","From Jodhpur to any destination across India — we’ve got you covered."],[ReceiptText,"Transparent Pricing","No hidden charges. What we quote is what you pay."],[Route,"Custom Itineraries","Tailor-made packages and routes as per your requirement."],[Headphones,"24/7 Support","We are always just a call away, before, during and after your journey."]] as const;
+const promises=[[FaUserTie,"Experienced Drivers","Courteous, professional and well-trained drivers who know the best routes."],[FaTaxi,"Well Maintained Vehicles","Clean, comfortable and regularly serviced vehicles for a safe journey."],[FaMapMarkedAlt,"All India Coverage","From Jodhpur to any destination across India — we’ve got you covered."],[FaFileInvoiceDollar,"Transparent Pricing","No hidden charges. What we quote is what you pay."],[FaRoute,"Custom Itineraries","Tailor-made packages and routes as per your requirement."],[FaHeadset,"24/7 Support","We are always just a call away, before, during and after your journey."]] as const;
 const destinations=[
   {name:"Delhi",href:"/destinations/north-india",image:"https://images.unsplash.com/photo-1591689837200-57e6d0d7d199?auto=format&fit=crop&q=84&w=900"},
   {name:"Mumbai",href:"/destinations/west-india",image:"https://images.unsplash.com/photo-1598434192043-71111c1b3f41?auto=format&fit=crop&q=84&w=900"},
