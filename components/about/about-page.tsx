@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Car, Clock3, FileText, Headphones, HeartHandshake, MapPinned, ReceiptText, Route, ShieldCheck, UserRoundCheck, UsersRound } from "lucide-react";
+import { Car, Clock3, Headphones, HeartHandshake, MapPinned, ReceiptText, Route, ShieldCheck, UserRoundCheck, UsersRound } from "lucide-react";
 import { TripSearch } from "@/components/home/trip-search";
 import { SiteCta } from "@/components/layout/site-cta";
 
