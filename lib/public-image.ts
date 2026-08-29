@@ -1,0 +1,56 @@
+const RASTER_IMAGE_RE=/\.(?:jpe?g|png|webp)$/i;
+
+export function publicImageUrl(src:string,width:number){
+  if(!src||src.startsWith("/")||src.startsWith("data:"))return src;
+  try{
+    const url=new URL(src);
+    const safeWidth=Math.max(160,Math.min(2000,Math.round(width)));
+
+    if(url.hostname==="upload.wikimedia.org"&&url.pathname.includes("/wikipedia/commons/")){
+      const parts=url.pathname.split("/").filter(Boolean);
+      const commonsIndex=parts.indexOf("commons");
+      if(commonsIndex>=0){
+        const thumbIndex=parts.indexOf("thumb",commonsIndex+1);
+        if(thumbIndex>=0&&parts.length>=thumbIndex+5){
+          const filename=parts[parts.length-2];
+          if(RASTER_IMAGE_RE.test(decodeURIComponent(filename))){
+            parts[parts.length-1]=`${safeWidth}px-${filename}`;
+            url.pathname=`/${parts.join("/")}`;
+            url.search="";
+            return url.toString();
+          }
+        }
+        const filename=parts[parts.length-1];
+        if(RASTER_IMAGE_RE.test(decodeURIComponent(filename))&&parts.length>=commonsIndex+4){
+          const prefix=parts.slice(0,commonsIndex+1);
+          const fileParts=parts.slice(commonsIndex+1);
+          url.pathname=`/${[...prefix,"thumb",...fileParts,`${safeWidth}px-${filename}`].join("/")}`;
+          url.search="";
+          return url.toString();
+        }
+      }
+    }
+
+    if(url.hostname==="images.pexels.com"){
+      url.searchParams.set("auto","compress");
+      url.searchParams.set("cs","tinysrgb");
+      url.searchParams.set("w",String(safeWidth));
+      return url.toString();
+    }
+
+    if(url.hostname==="images.unsplash.com"){
+      url.searchParams.set("auto","format");
+      url.searchParams.set("fit","crop");
+      url.searchParams.set("q","76");
+      url.searchParams.set("w",String(safeWidth));
+      return url.toString();
+    }
+
+    if(url.searchParams.has("imwidth")){
+      url.searchParams.set("imwidth",String(safeWidth));
+      return url.toString();
+    }
+
+    return src;
+  }catch{return src;}
+}
