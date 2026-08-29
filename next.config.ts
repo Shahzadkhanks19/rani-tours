@@ -6,11 +6,12 @@ const nextConfig: NextConfig = {
   // dynamic public routes emit their metadata there consistently.
   htmlLimitedBots: /.*/,
   images: {
-    // Keep remote image delivery under our own origin. This prevents third-party
-    // image hosts from setting cookies in visitors' browsers while still
-    // allowing CMS-managed images to come from the approved source list.
-    loader: "custom",
-    loaderFile: "./lib/image-loader.ts",
+    // Use Next.js' native same-origin image optimizer. Remote assets are fetched
+    // server-side, resized and re-encoded before reaching the browser, avoiding
+    // third-party cookies while reducing oversized CMS/fleet image payloads.
+    formats: ["image/avif", "image/webp"],
+    qualities: [55, 60, 62, 70, 75],
+    minimumCacheTTL: 86400,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },
