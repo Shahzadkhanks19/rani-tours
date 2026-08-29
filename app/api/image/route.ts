@@ -4,7 +4,7 @@ const ALLOWED_HOSTS = new Set([
   "upload.wikimedia.org",
   "commons.wikimedia.org",
 ]);
-const MAX_REDIRECTS = 3;
+const MAX_REDIRECTS = 4;
 
 function getAllowedSource(value: string | null) {
   if (!value) throw new Error("Missing image URL");
@@ -17,12 +17,15 @@ function getAllowedSource(value: string | null) {
 
 async function fetchAllowedImage(initialUrl: URL) {
   let currentUrl = initialUrl;
+
   for (let redirect = 0; redirect <= MAX_REDIRECTS; redirect += 1) {
     const response = await fetch(currentUrl, {
       redirect: "manual",
       headers: {
-        Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-        "User-Agent": "RaniToursImageBridge/1.0",
+        Accept: "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        Referer: "https://commons.wikimedia.org/",
+        "User-Agent": "Mozilla/5.0 (compatible; RaniTours/1.0; +https://ranitours.com)",
       },
       next: { revalidate: 604800 },
     });
@@ -36,6 +39,7 @@ async function fetchAllowedImage(initialUrl: URL) {
 
     return response;
   }
+
   throw new Error("Unable to load image");
 }
 
@@ -45,23 +49,35 @@ export async function GET(request: NextRequest) {
     const response = await fetchAllowedImage(source);
 
     if (!response.ok) {
-      return NextResponse.json({ error: "Unable to load image" }, { status: 502 });
+      return NextResponse.json(
+        { error: "Unable to load image" },
+        { status: 502, headers: { "Cache-Control": "no-store" } },
+      );
     }
 
     const contentType = response.headers.get("content-type") || "image/jpeg";
     if (!contentType.startsWith("image/")) {
-      return NextResponse.json({ error: "Invalid image response" }, { status: 502 });
+      return NextResponse.json(
+        { error: "Invalid image response" },
+        { status: 502, headers: { "Cache-Control": "no-store" } },
+      );
     }
 
-    return new NextResponse(response.body, {
+    const bytes = await response.arrayBuffer();
+
+    return new NextResponse(bytes, {
       status: 200,
       headers: {
         "Content-Type": contentType,
+        "Content-Length": String(bytes.byteLength),
         "Cache-Control": "public, max-age=86400, s-maxage=604800, stale-while-revalidate=2592000",
         "X-Content-Type-Options": "nosniff",
       },
     });
   } catch {
-    return NextResponse.json({ error: "Unable to load image" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Unable to load image" },
+      { status: 400, headers: { "Cache-Control": "no-store" } },
+    );
   }
 }
