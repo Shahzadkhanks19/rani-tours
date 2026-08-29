@@ -6,6 +6,11 @@ export function publicImageUrl(src:string,width:number){
     const url=new URL(src);
     const safeWidth=Math.max(160,Math.min(2000,Math.round(width)));
 
+    if((url.hostname==="commons.wikimedia.org"||url.hostname.endsWith(".wikimedia.org"))&&url.pathname.includes("Special:Redirect/file/")){
+      url.searchParams.set("width",String(safeWidth));
+      return url.toString();
+    }
+
     if(url.hostname==="upload.wikimedia.org"&&url.pathname.includes("/wikipedia/commons/")){
       const parts=url.pathname.split("/").filter(Boolean);
       const commonsIndex=parts.indexOf("commons");
