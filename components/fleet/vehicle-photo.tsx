@@ -9,7 +9,12 @@ type VehiclePhotoProps = {
   image: { url: string; alt?: string };
 };
 
-const unreliableHosts=new Set(["ncdtempotravellerhire.com","www.ncdtempotravellerhire.com"]);
+const unreliableHosts=new Set([
+  "ncdtempotravellerhire.com",
+  "www.ncdtempotravellerhire.com",
+  "aaitoursandtravels.com",
+  "www.aaitoursandtravels.com",
+]);
 function initialFallback(src:string){try{return unreliableHosts.has(new URL(src).hostname)}catch{return !src}}
 
 export function VehiclePhoto({ name, image }: VehiclePhotoProps) {
