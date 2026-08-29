@@ -2,12 +2,12 @@ import Image from "next/image";
 import { Headphones, MapPin, ShieldCheck } from "lucide-react";
 import { TripSearch } from "@/components/home/trip-search";
 
-const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=76&w=1600";
+const heroImage = "https://images.unsplash.com/photo-1569096610945-1a094be04c74?auto=format&fit=crop&q=60&w=1200";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#102317] text-white">
-      <Image src={heroImage} alt="Mehrangarh Fort in Jodhpur at golden hour" fill priority fetchPriority="high" sizes="100vw" className="object-cover object-center" />
+      <Image src={heroImage} alt="Mehrangarh Fort in Jodhpur at golden hour" fill priority fetchPriority="high" quality={60} sizes="100vw" className="object-cover object-center" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,24,15,.92)_0%,rgba(8,28,16,.72)_42%,rgba(5,16,10,.18)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(4,19,10,.7)_0%,transparent_34%)]" />
 
