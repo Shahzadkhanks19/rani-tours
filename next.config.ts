@@ -2,12 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // CMS content currently includes imagery from a broad mix of third-party
-    // hosts. Some of those hosts reject or mishandle Next's server-side image
-    // optimizer requests, which can make otherwise valid destination/tour
-    // images appear broken. Keep direct delivery enabled until those assets are
-    // migrated to controlled/reliable CDN storage (for example Cloudinary).
-    unoptimized: true,
+    // Keep remote image delivery under our own origin. This prevents third-party
+    // image hosts from setting cookies in visitors' browsers while still
+    // allowing CMS-managed images to come from the approved source list.
+    loader: "custom",
+    loaderFile: "./lib/image-loader.ts",
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },
