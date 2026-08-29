@@ -63,8 +63,8 @@ export function GoogleReviewsSlider() {
         ))}
       </div>
 
-      <div className="mt-4 flex justify-center gap-1.5" aria-label="Google review slider pages">
-        {reviews.map((review, dotIndex) => <button key={review.name} type="button" onClick={() => setIndex(dotIndex)} aria-label={`Show review ${dotIndex + 1}`} aria-current={dotIndex === index ? "true" : undefined} className={`h-1.5 rounded-full transition-all ${dotIndex === index ? "w-5 bg-[#1a73e8]" : "w-1.5 bg-[#bdc1c6] hover:bg-[#80868b]"}`} />)}
+      <div className="mt-3 flex justify-center gap-0.5" aria-label="Google review slider pages">
+        {reviews.map((review, dotIndex) => <button key={review.name} type="button" onClick={() => setIndex(dotIndex)} aria-label={`Show review ${dotIndex + 1}`} aria-current={dotIndex === index ? "true" : undefined} className="group grid h-7 min-w-7 place-items-center rounded-full" ><span className={`h-1.5 rounded-full transition-all ${dotIndex === index ? "w-5 bg-[#1a73e8]" : "w-1.5 bg-[#bdc1c6] group-hover:bg-[#80868b]"}`} /></button>)}
       </div>
     </div>
   );
