@@ -21,8 +21,8 @@ export function Header() {
 
       <header className="sticky top-0 z-50 border-b border-[#17341f]/8 bg-white shadow-sm">
         <div className="mx-auto flex min-h-[82px] max-w-[1180px] items-center justify-between gap-4 px-4">
-          <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Rani Tour's - Your Tour Expert home">
-            <Image src="/rani-tours-icon.svg" alt="Rani Tour's phoenix logo" width={54} height={54} priority />
+          <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Rani Tour's Your Tour Expert">
+            <Image src="/rani-tours-icon.svg" alt="" aria-hidden="true" width={54} height={54} priority />
             <div className="leading-none"><div className="font-serif text-[26px] font-bold text-[#0b6531]">Rani Tour&apos;s</div><div className="mt-1 text-center text-[10px] font-medium text-[#313d31]">Your Tour Expert</div></div>
           </Link>
           <HeaderNavigation />
