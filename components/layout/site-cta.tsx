@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Headphones, Phone } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
+import { Headphones, MessageCircle, Phone } from "lucide-react";
 import { siteContact } from "@/lib/site-data";
 
 export function SiteCta() {
@@ -16,7 +15,7 @@ export function SiteCta() {
           <div className="relative mt-6 grid gap-3 sm:flex lg:mt-0 lg:justify-end">
             <Link href="/get-quote" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#e4b63f] px-6 text-xs font-bold text-[#17341f] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f0c653] hover:shadow-md">Get a Quote <span className="ml-2">→</span></Link>
             <a href={siteContact.phones[0].href} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-5 text-xs font-bold text-white transition hover:bg-white hover:text-[#0b4d29]"><Phone className="h-4 w-4" />Call Now</a>
-            <a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-5 text-xs font-bold text-white transition hover:bg-white hover:text-[#0b4d29]"><FaWhatsapp className="h-4 w-4" />WhatsApp</a>
+            <a href={siteContact.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-5 text-xs font-bold text-white transition hover:bg-white hover:text-[#0b4d29]"><MessageCircle className="h-4 w-4" />WhatsApp</a>
           </div>
         </div>
       </div>
