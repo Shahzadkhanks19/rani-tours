@@ -6,6 +6,10 @@ function bridgeWikimedia(url:URL){
   return `/api/image?url=${encodeURIComponent(url.toString())}`;
 }
 
+export function isBridgedPublicImage(src:string){
+  return src.startsWith("/api/image?url=");
+}
+
 export function publicImageUrl(src:string,width:number){
   if(!src||src.startsWith("/")||src.startsWith("data:"))return src;
   try{
