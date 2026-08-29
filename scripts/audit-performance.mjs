@@ -20,7 +20,10 @@ const files = [...walk(path.join(root, "app")), ...walk(path.join(root, "compone
 for (const file of files) {
   const source = fs.readFileSync(file, "utf8");
   const rel = path.relative(root, file);
+  const isClientComponent = /^\s*["']use client["'];/m.test(source);
 
+  if (/from\s+["']motion\/react["']|from\s+["']framer-motion["']/.test(source)) failures.push(`${rel}: animation library import reintroduced; prefer CSS/native transitions or a narrowly scoped client island`);
+  if (isClientComponent && /from\s+["']react-icons(?:\/[^"']+)?["']/.test(source)) warnings.push(`${rel}: react-icons is imported by a client component; prefer a small inline SVG or lucide icon when this component is on a hot route`);
   if (/https?:\/\/fonts\.(?:googleapis|gstatic)\.com/i.test(source)) failures.push(`${rel}: remote Google font request can block rendering; use next/font or local/system fonts`);
   if (/@import\s+(?:url\()?['"]?https?:\/\//i.test(source)) failures.push(`${rel}: remote CSS @import can block rendering`);
   if (/<video\b[^>]*\bautoplay\b/i.test(source)) failures.push(`${rel}: autoplay video can consume bandwidth and main-thread work`);
