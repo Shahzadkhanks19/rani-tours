@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
   // dynamic public routes emit their metadata there consistently.
   htmlLimitedBots: /.*/,
   images: {
+    // The restricted Wikimedia bridge is a same-origin image source with a
+    // dynamic `url` query parameter. Allow Next Image to consume that local
+    // route on pages that still use the native optimizer around bridged images.
+    // The bridge itself validates the upstream host, so this does not broaden
+    // which remote origins the application can proxy.
+    localPatterns: [{ pathname: "/api/image" }],
+
     // Use Next.js' native same-origin image optimizer. Remote assets are fetched
     // server-side, resized and re-encoded before reaching the browser, avoiding
     // third-party cookies while reducing oversized CMS/fleet image payloads.
