@@ -12,6 +12,11 @@ import { TourPackage } from "@/models/TourPackage";
 type Props = { params: Promise<{ slug: string }> };
 export const dynamic = "force-dynamic";
 
+const FALLBACK_TOUR_IMAGE = {
+  url: "https://images.pexels.com/photos/33726478/pexels-photo-33726478.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  alt: "Rajasthan tour landscape",
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   await connectToDatabase();
@@ -33,9 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return publicMetadata({
     title: seo?.metaTitle || String(p.title),
-    description: seo?.metaDescription || String(p.shortDescription),
+    description: seo?.metaDescription || String(p.shortDescription || "Explore this private tour package with Rani Tours."),
     path: seo?.canonicalUrl || `/tour-packages/${slug}`,
-    image: seo?.ogImage?.url || String((p.heroImage as { url?: string } | undefined)?.url || ""),
+    image: seo?.ogImage?.url || String((p.heroImage as { url?: string } | undefined)?.url || FALLBACK_TOUR_IMAGE.url),
     keywords: seo?.keywords,
   });
 }
@@ -44,8 +49,6 @@ export default async function TourPackagePage({ params }: Props) {
   const { slug } = await params;
   await connectToDatabase();
 
-  // The package itself is required. Fleet and related packages are supporting
-  // sections, so a temporary failure in either must not take down the page.
   const p = await TourPackage.findOne({ slug, status: "published" }).lean();
   if (!p) notFound();
 
@@ -70,21 +73,40 @@ export default async function TourPackagePage({ params }: Props) {
       .lean(),
   ]);
 
+  const rawPackage = JSON.parse(JSON.stringify(p)) as Record<string, unknown>;
+  const heroImage = rawPackage.heroImage as { url?: string; alt?: string } | undefined;
+  if (!heroImage?.url) rawPackage.heroImage = FALLBACK_TOUR_IMAGE;
+  if (!Array.isArray(rawPackage.gallery)) rawPackage.gallery = [];
+  if (!Array.isArray(rawPackage.itinerary)) rawPackage.itinerary = [];
+  if (!Array.isArray(rawPackage.highlights)) rawPackage.highlights = [];
+  if (!Array.isArray(rawPackage.inclusions)) rawPackage.inclusions = [];
+  if (!Array.isArray(rawPackage.exclusions)) rawPackage.exclusions = [];
+  if (!Array.isArray(rawPackage.faq)) rawPackage.faq = [];
+
   const fleet = fleetResult.status === "fulfilled" ? fleetResult.value : [];
+  const safeFleet = JSON.parse(JSON.stringify(fleet)).filter(
+    (item: { _id?: string; name?: string }) => Boolean(item?._id && item?.name),
+  );
+
   const related = relatedResult.status === "fulfilled" ? relatedResult.value : [];
-  const filteredRelated = related.filter((item) => String(item.slug) !== slug).slice(0, 4);
+  const safeRelated = JSON.parse(JSON.stringify(related)).filter(
+    (item: { _id?: string; slug?: string; title?: string; heroImage?: { url?: string } }) =>
+      Boolean(item?._id && item?.slug && item?.title && item?.heroImage?.url && item.slug !== slug),
+  ).slice(0, 4);
 
   const seo = p.seo as { metaDescription?: string } | undefined;
-  const description = cleanDescription(seo?.metaDescription || p.shortDescription);
+  const description = cleanDescription(
+    seo?.metaDescription || String(p.shortDescription || "Explore this private tour package with Rani Tours."),
+  );
   const url = absoluteUrl(`/tour-packages/${slug}`);
-  const image = String((p.heroImage as { url?: string } | undefined)?.url || "");
+  const image = String((rawPackage.heroImage as { url?: string } | undefined)?.url || FALLBACK_TOUR_IMAGE.url);
   const schema = {
     "@context": "https://schema.org",
     "@type": "TouristTrip",
     name: String(p.title),
     description,
     url,
-    image: image || undefined,
+    image,
     provider: { "@id": `${absoluteUrl("/")}#organization` },
     touristType: "Travelers",
   };
@@ -105,11 +127,7 @@ export default async function TourPackagePage({ params }: Props) {
       <main>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumb) }} />
-        <TourPackageDetail
-          pkg={JSON.parse(JSON.stringify(p))}
-          fleet={JSON.parse(JSON.stringify(fleet))}
-          related={JSON.parse(JSON.stringify(filteredRelated))}
-        />
+        <TourPackageDetail pkg={rawPackage as never} fleet={safeFleet} related={safeRelated} />
       </main>
       <Footer />
       <FloatingActions />
