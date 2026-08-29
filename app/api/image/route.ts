@@ -54,7 +54,7 @@ function clampWidth(value: string | null) {
 
 function clampQuality(value: string | null) {
   const quality = Number(value);
-  if (!Number.isFinite(quality)) return 76;
+  if (!Number.isFinite(quality)) return 62;
   return Math.max(40, Math.min(90, Math.round(quality)));
 }
 
@@ -70,6 +70,7 @@ function resizeUpstreamUrl(url: URL, width: number, quality: number) {
   if (url.hostname === "images.pexels.com") {
     url.searchParams.set("auto", "compress");
     url.searchParams.set("cs", "tinysrgb");
+    url.searchParams.set("q", String(quality));
     url.searchParams.set("w", String(width));
     return url;
   }
