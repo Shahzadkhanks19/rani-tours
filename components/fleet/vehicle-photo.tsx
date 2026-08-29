@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { publicImageUrl } from "@/lib/public-image";
+import { isBridgedPublicImage, publicImageUrl } from "@/lib/public-image";
 
 type VehiclePhotoProps = {
   name: string;
@@ -19,10 +19,12 @@ function initialFallback(src:string){try{return unreliableHosts.has(new URL(src)
 
 export function VehiclePhoto({ name, image }: VehiclePhotoProps) {
   const [fallback, setFallback] = useState(()=>initialFallback(image.url));
+  const src=fallback ? "/images/fleet/vehicle-fallback.svg" : publicImageUrl(image.url, 520);
 
   return (
     <Image
-      src={fallback ? "/images/fleet/vehicle-fallback.svg" : publicImageUrl(image.url, 520)}
+      src={src}
+      unoptimized={isBridgedPublicImage(src)}
       alt={image.alt || name}
       fill
       sizes="(min-width: 1280px) 280px, (min-width: 768px) 50vw, 100vw"
