@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit",
+    "type-check": "node -e \"require('fs').rmSync('.next/types',{recursive:true,force:true})\" && tsc --noEmit",
     "audit:public-ui": "node scripts/audit-public-ui.mjs",
     "audit:security": "node scripts/audit-security.mjs",
     "audit:seo": "node scripts/audit-seo.mjs",
