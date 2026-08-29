@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Lighthouse and search-engine parsers expect dynamic metadata such as
+  // descriptions to be present in <head>. Disable streamed metadata so all
+  // dynamic public routes emit their metadata there consistently.
+  htmlLimitedBots: /.*/,
   images: {
     // Keep remote image delivery under our own origin. This prevents third-party
     // image hosts from setting cookies in visitors' browsers while still
