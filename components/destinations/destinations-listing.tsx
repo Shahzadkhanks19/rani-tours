@@ -3,14 +3,196 @@ import Link from "next/link";
 import { ArrowRight, Headphones, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 import { SiteCta } from "@/components/layout/site-cta";
 import { publicImageUrl } from "@/lib/public-image";
-type D={_id:string;title:string;slug:string;tagline?:string;shortDescription:string;heroImage:{url:string;alt?:string};entityType:string;categoryType:string;featured?:boolean;knownFor?:string[]};
-export function DestinationsListing({destinations}:{destinations:D[]}){const cities=destinations.filter(d=>d.categoryType==="city");const regions=destinations.filter(d=>d.categoryType==="region");const themes=destinations.filter(d=>d.categoryType==="theme");return <div className="bg-white text-[#17341f]">
-<section className="relative isolate overflow-hidden bg-[#073d25] text-white"><Image src={publicImageUrl("https://images.pexels.com/photos/33726478/pexels-photo-33726478.jpeg?auto=compress&cs=tinysrgb&w=1900",1600)} alt="Rajasthan destination landscape" fill priority fetchPriority="high" sizes="100vw" className="object-cover opacity-45"/><div className="absolute inset-0 bg-gradient-to-r from-[#042b1a]/95 via-[#073d25]/78 to-transparent"/><div className="relative mx-auto max-w-[1180px] px-4 py-16 lg:py-24"><div className="text-xs text-white/70"><Link href="/">Home</Link> <span className="mx-2">›</span> Destinations</div><p className="mt-8 text-xs font-black uppercase tracking-[.2em] text-[#e1bd58]">Explore India With Rani Tours</p><h1 className="mt-3 max-w-2xl font-serif text-5xl font-black sm:text-6xl">Discover <span className="text-[#e1bd58]">Destinations</span></h1><p className="mt-5 max-w-2xl text-[15px] leading-7 text-white/82">From Rajasthan&apos;s forts and desert cities to mountains, beaches, wildlife and spiritual journeys across India, find the place that inspires your next trip.</p><div className="mt-8 flex flex-wrap gap-6 text-xs font-bold"><span className="inline-flex items-center gap-2"><MapPin className="size-5 text-[#e1bd58]"/>{destinations.length}+ destination guides</span><span className="inline-flex items-center gap-2"><Sparkles className="size-5 text-[#e1bd58]"/>Custom itineraries</span><span className="inline-flex items-center gap-2"><Headphones className="size-5 text-[#e1bd58]"/>24/7 travel support</span></div></div></section>
-<section className="mx-auto max-w-[1180px] px-4 py-14"><Heading eyebrow="Royal Heritage, Timeless Beauty" title="Explore Rajasthan & Beyond" text="Choose a city, region or travel theme and discover attractions, experiences and planning ideas for your journey."/><div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{cities.map(d=><Card key={d._id} d={d}/>)}</div></section>
-<Section title="Explore India by Region" eyebrow="Across the Country" items={regions}/><section className="mx-auto max-w-[1180px] px-4 py-14"><Heading eyebrow="Travel Your Way" title="Explore by Travel Style"/><div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{themes.map(d=><Card key={d._id} d={d}/>)}</div></section>
-<section className="mx-auto max-w-[1180px] px-4 pb-6"><div className="rounded-[22px] border border-[#17341f]/10 bg-[#fff8ed] px-6 py-7 md:flex md:items-center md:justify-between md:gap-8"><div><p className="text-xs font-black uppercase tracking-[.16em] text-[#775a12]">Looking for something else?</p><h2 className="mt-2 font-serif text-2xl font-black sm:text-3xl">We can plan a journey to any destination in India.</h2><p className="mt-2 text-xs text-[#59645c]">Tell us where you want to go and we will help shape the route around your dates and preferences.</p></div><Link href="/get-quote" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#147435] px-5 py-3 text-xs font-black text-white transition hover:bg-[#0b6531] md:mt-0">Plan Your Trip <ArrowRight className="size-4"/></Link></div></section>
-<section className="border-t border-[#17341f]/8 py-12"><div className="mx-auto max-w-[1180px] px-4"><Heading eyebrow="Why Travel With Rani Tours?" title="Travel With Confidence"/><div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{["Trusted & Reliable","Comfortable Travel","Flexible Itineraries","24/7 Travel Support"].map((x,i)=><div key={x} className="text-center"><span className="mx-auto grid size-12 place-items-center rounded-full bg-[#edf5e8] text-[#08713b]">{i===3?<Headphones className="size-5"/>:<ShieldCheck className="size-5"/>}</span><h3 className="mt-3 font-black">{x}</h3></div>)}</div></div></section><SiteCta/>
-</div>}
-function Section({title,eyebrow,items}:{title:string;eyebrow:string;items:D[]}){return <section className="bg-[#f7f8f2] py-14"><div className="mx-auto max-w-[1180px] px-4"><Heading eyebrow={eyebrow} title={title}/><div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{items.map(d=><Card key={d._id} d={d}/>)}</div></div></section>}
-function Card({d}:{d:D}){const imageSrc=publicImageUrl(d.heroImage.url,640);return <Link href={`/destinations/${d.slug}`} className="group overflow-hidden rounded-2xl border border-[#17341f]/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div className="relative h-48 overflow-hidden"><Image src={imageSrc} alt={d.heroImage.alt||d.title} fill sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent"/><span className="absolute bottom-3 left-3 rounded-full bg-white/90 px-3 py-1 text-[9px] font-black uppercase tracking-wide text-[#08713b]">{d.categoryType}</span></div><div className="p-4"><p className="text-[10px] font-bold text-[#755811]">{d.tagline}</p><h3 className="mt-1 font-serif text-xl font-black">{d.title}</h3><p className="mt-2 line-clamp-2 text-xs leading-5 text-[#59645c]">{d.shortDescription}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-[#08713b]">Explore Destination <ArrowRight className="size-3.5"/></span></div></Link>}
-function Heading({eyebrow,title,text}:{eyebrow:string;title:string;text?:string}){return <div className="text-center"><p className="text-[10px] font-black uppercase tracking-[.2em] text-[#08713b]">{eyebrow}</p><h2 className="mt-2 font-serif text-3xl font-black sm:text-4xl">{title}</h2>{text?<p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#59645c]">{text}</p>:null}<div className="mx-auto mt-3 h-px w-20 bg-[#e1bd58]"/></div>}
+
+type D = {
+  _id: string;
+  title: string;
+  slug: string;
+  tagline?: string;
+  shortDescription: string;
+  heroImage: { url: string; alt?: string };
+  entityType: string;
+  categoryType: string;
+  featured?: boolean;
+  knownFor?: string[];
+};
+
+export function DestinationsListing({ destinations }: { destinations: D[] }) {
+  const cities = destinations.filter((destination) => destination.categoryType === "city");
+  const regions = destinations.filter((destination) => destination.categoryType === "region");
+  const themes = destinations.filter((destination) => destination.categoryType === "theme");
+
+  return (
+    <div className="bg-white text-[#17341f]">
+      <section className="relative isolate overflow-hidden bg-[#073d25] text-white">
+        <Image
+          src={publicImageUrl(
+            "https://images.pexels.com/photos/33726478/pexels-photo-33726478.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            1200,
+          )}
+          alt="Rajasthan destination landscape"
+          fill
+          priority
+          fetchPriority="high"
+          quality={60}
+          sizes="100vw"
+          className="object-cover opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#042b1a]/95 via-[#073d25]/78 to-transparent" />
+        <div className="relative mx-auto max-w-[1180px] px-4 py-16 lg:py-24">
+          <div className="text-xs text-white/70">
+            <Link href="/">Home</Link> <span className="mx-2">›</span> Destinations
+          </div>
+          <p className="mt-8 text-xs font-black uppercase tracking-[.2em] text-[#e1bd58]">
+            Explore India With Rani Tours
+          </p>
+          <h1 className="mt-3 max-w-2xl font-serif text-5xl font-black sm:text-6xl">
+            Discover <span className="text-[#e1bd58]">Destinations</span>
+          </h1>
+          <p className="mt-5 max-w-2xl text-[15px] leading-7 text-white/82">
+            From Rajasthan&apos;s forts and desert cities to mountains, beaches, wildlife and spiritual
+            journeys across India, find the place that inspires your next trip.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-6 text-xs font-bold">
+            <span className="inline-flex items-center gap-2">
+              <MapPin className="size-5 text-[#e1bd58]" />
+              {destinations.length}+ destination guides
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Sparkles className="size-5 text-[#e1bd58]" />
+              Custom itineraries
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Headphones className="size-5 text-[#e1bd58]" />
+              24/7 travel support
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1180px] px-4 py-14">
+        <Heading
+          eyebrow="Royal Heritage, Timeless Beauty"
+          title="Explore Rajasthan & Beyond"
+          text="Choose a city, region or travel theme and discover attractions, experiences and planning ideas for your journey."
+        />
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {cities.map((destination) => (
+            <Card key={destination._id} d={destination} />
+          ))}
+        </div>
+      </section>
+
+      <Section title="Explore India by Region" eyebrow="Across the Country" items={regions} />
+
+      <section className="mx-auto max-w-[1180px] px-4 py-14">
+        <Heading eyebrow="Travel Your Way" title="Explore by Travel Style" />
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {themes.map((destination) => (
+            <Card key={destination._id} d={destination} />
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1180px] px-4 pb-6">
+        <div className="rounded-[22px] border border-[#17341f]/10 bg-[#fff8ed] px-6 py-7 md:flex md:items-center md:justify-between md:gap-8">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[.16em] text-[#775a12]">
+              Looking for something else?
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-black sm:text-3xl">
+              We can plan a journey to any destination in India.
+            </h2>
+            <p className="mt-2 text-xs text-[#59645c]">
+              Tell us where you want to go and we will help shape the route around your dates and preferences.
+            </p>
+          </div>
+          <Link
+            href="/get-quote"
+            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#147435] px-5 py-3 text-xs font-black text-white transition hover:bg-[#0b6531] md:mt-0"
+          >
+            Plan Your Trip <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </section>
+
+      <section className="border-t border-[#17341f]/8 py-12">
+        <div className="mx-auto max-w-[1180px] px-4">
+          <Heading eyebrow="Why Travel With Rani Tours?" title="Travel With Confidence" />
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {["Trusted & Reliable", "Comfortable Travel", "Flexible Itineraries", "24/7 Travel Support"].map(
+              (item, index) => (
+                <div key={item} className="text-center">
+                  <span className="mx-auto grid size-12 place-items-center rounded-full bg-[#edf5e8] text-[#08713b]">
+                    {index === 3 ? <Headphones className="size-5" /> : <ShieldCheck className="size-5" />}
+                  </span>
+                  <h3 className="mt-3 font-black">{item}</h3>
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      </section>
+      <SiteCta />
+    </div>
+  );
+}
+
+function Section({ title, eyebrow, items }: { title: string; eyebrow: string; items: D[] }) {
+  return (
+    <section className="bg-[#f7f8f2] py-14">
+      <div className="mx-auto max-w-[1180px] px-4">
+        <Heading eyebrow={eyebrow} title={title} />
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((destination) => (
+            <Card key={destination._id} d={destination} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Card({ d }: { d: D }) {
+  const imageSrc = publicImageUrl(d.heroImage.url, 640);
+  return (
+    <Link
+      href={`/destinations/${d.slug}`}
+      className="group overflow-hidden rounded-2xl border border-[#17341f]/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div className="relative h-48 overflow-hidden">
+        <Image
+          src={imageSrc}
+          alt={d.heroImage.alt || d.title}
+          fill
+          quality={60}
+          sizes="(min-width: 1024px) 280px, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+        <span className="absolute bottom-3 left-3 rounded-full bg-white/90 px-3 py-1 text-[9px] font-black uppercase tracking-wide text-[#08713b]">
+          {d.categoryType}
+        </span>
+      </div>
+      <div className="p-4">
+        <p className="text-[10px] font-bold text-[#755811]">{d.tagline}</p>
+        <h3 className="mt-1 font-serif text-xl font-black">{d.title}</h3>
+        <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#59645c]">{d.shortDescription}</p>
+        <span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-[#08713b]">
+          Explore Destination <ArrowRight className="size-3.5" />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+function Heading({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
+  return (
+    <div className="text-center">
+      <p className="text-[10px] font-black uppercase tracking-[.2em] text-[#08713b]">{eyebrow}</p>
+      <h2 className="mt-2 font-serif text-3xl font-black sm:text-4xl">{title}</h2>
+      {text ? <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#59645c]">{text}</p> : null}
+      <div className="mx-auto mt-3 h-px w-20 bg-[#e1bd58]" />
+    </div>
+  );
+}
